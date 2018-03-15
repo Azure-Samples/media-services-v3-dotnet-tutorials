@@ -1,57 +1,17 @@
-# Project Name
+# Azure Media Services v3 tutorials starter samples
 
-(short, 1-3 sentenced, description of the project)
+The projects in this repository support the Azure Media Services v3 tutorials topics:
 
-## Features
+* UploadEncodeAndStreamFiles.csproj - [Tutorial: Upload, encode, download, and stream videos](https://docs.microsoft.com/azure/media-services/latest/stream-files-tutorial)
 
-This project framework provides the following features:
+## Prerequisites
 
-* Feature 1
-* Feature 2
-* ...
+To run samples in this repository:
 
-## Getting Started
+* If you do not have Visual Studio installed, you can get [Visual Studio Community 2017, Visual Studio Professional 2017, or Visual Studio Enterprise 2017](https://www.visualstudio.com/downloads/).
+* An Azure Media Services account. See the steps described in [Create a Media Services account](https://docs.microsoft.com/azure/media-services/latest/create-account-cli-quickstart).
 
-### Prerequisites
+## To run each project in the solution
 
-(ideally very short, if any)
-
-- OS
-- Library version
-- ...
-
-### Installation
-
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
-
-### Quickstart
-(Add steps to get up and running quickly)
-
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
-
-
-## Demo
-
-A demo app is included to show how to use the project.
-
-To run the demo, follow these steps:
-
-(Add steps to start up the demo)
-
-1.
-2.
-3.
-
-## Resources
-
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+* Select it as the **Set as Startup project**.
+* Add appropriate values to App.config.

@@ -1,0 +1,52 @@
+{
+  "parameters": {
+    "subscriptionId": "00000000-0000-0000-0000-000000000000",
+    "resourceGroupName": "contoso",
+    "accountName": "contosomedia",
+    "assetName": "ClimbingMountLogan",
+    "api-version": "2018-02-01-privatepreview",
+    "parameters": {
+      "properties": {
+        "description": "A documentary showing the ascent of Mount Logan"
+      }
+    }
+  },
+  "responses": {
+    "201": {
+      "body": {
+        "name": "ClimbingMountLogan",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/assets/ClimbingMountLogan",
+        "type": "Microsoft.Media/mediaservices/assets",
+        "properties": {
+          "assetId": "98b19a0f-a4cf-4e00-beb7-522000c4c313",
+          "created": "2018-02-11T22:31:44.377Z",
+          "lastModified": "2018-02-11T22:31:44.377Z",
+          "alternateId": null,
+          "description": "A documentary showing the ascent of Mount Logan",
+          "container": null,
+          "storageAccountId": null,
+          "storageEncryptionFormat": "None",
+          "storageEncryptionKey": null
+        }
+      }
+    },
+    "200": {
+      "body": {
+        "name": "ClimbingMountLogan",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/assets/ClimbingMountLogan",
+        "type": "Microsoft.Media/mediaservices/assets",
+        "properties": {
+          "assetId": "98b19a0f-a4cf-4e00-beb7-522000c4c313",
+          "created": "2018-02-11T22:31:44.377Z",
+          "lastModified": "2018-02-11T22:31:44.53Z",
+          "alternateId": null,
+          "description": "A documentary showing the ascent of Mount Logan",
+          "container": null,
+          "storageAccountId": null,
+          "storageEncryptionFormat": "None",
+          "storageEncryptionKey": null
+        }
+      }
+    }
+  }
+}
