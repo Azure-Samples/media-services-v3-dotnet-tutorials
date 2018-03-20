@@ -16,9 +16,9 @@
             "location": null,
             "tags": null,
             "properties": {
-              "created": "2018-02-12T18:51:22.0416157-05:00",
+              "created": "2018-02-20T21:56:36.0469015-05:00",
               "description": "A sample transform using the standard encoder with a built in preset.",
-              "lastModified": "2018-02-12T18:51:22.0416157-05:00",
+              "lastModified": "2018-02-20T21:56:36.0469015-05:00",
               "outputs": [
                 {
                   "onError": "StopProcessingJob",
@@ -32,15 +32,15 @@
             }
           },
           {
-            "name": "SampleEncodeAndAnalyzeSpeech",
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/SampleEncodeAndAnalyzeSpeech",
+            "name": "SampleEncodeAndVideoIndex",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/SampleEncodeAndVideoIndex",
             "type": "Microsoft.Media/mediaservices/transforms",
             "location": null,
             "tags": null,
             "properties": {
-              "created": "2018-02-12T18:51:22.0455931-05:00",
-              "description": "A sample transform using the standard encoder with a built in preset and the speech analyzer.",
-              "lastModified": "2018-02-12T18:51:22.0455931-05:00",
+              "created": "2018-02-20T21:56:36.0519014-05:00",
+              "description": "A sample transform using the standard encoder with a built in preset and the video indexer.",
+              "lastModified": "2018-02-20T21:56:36.0519014-05:00",
               "outputs": [
                 {
                   "onError": "StopProcessingJob",
@@ -53,7 +53,11 @@
                 {
                   "onError": "StopProcessingJob",
                   "relativePriority": "Normal",
-                  "preset": {}
+                  "preset": {
+                    "@odata.type": "#Microsoft.Media.VideoAnalyzerPreset",
+                    "audioLanguage": "en-US",
+                    "audioInsightsOnly": false
+                  }
                 }
               ]
             }

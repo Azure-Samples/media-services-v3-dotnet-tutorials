@@ -10,21 +10,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// ISO/IEC 13818-1, MPEG-2 Transport Stream output.
+    /// A CMAF based output format.
     /// </summary>
-    [Newtonsoft.Json.JsonObject("#Microsoft.Media.TransportStreamFormat")]
-    public partial class TransportStreamFormat : MultiBitrateFormat
+    [Newtonsoft.Json.JsonObject("#Microsoft.Media.CmafFormat")]
+    public partial class CmafFormat : MultiBitrateFormat
     {
         /// <summary>
-        /// Initializes a new instance of the TransportStreamFormat class.
+        /// Initializes a new instance of the CmafFormat class.
         /// </summary>
-        public TransportStreamFormat()
+        public CmafFormat()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the TransportStreamFormat class.
+        /// Initializes a new instance of the CmafFormat class.
         /// </summary>
         /// <param name="filenamePattern">Gets or sets the pattern of the
         /// filename to use excluding the extension. REVIEW: List "macros" that
@@ -33,7 +33,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// manifest file name to use excluding the extension. REVIEW: List
         /// "macros" that can be used and give examples.</param>
         /// <param name="outputFiles">Gets the list of output files.</param>
-        public TransportStreamFormat(string filenamePattern = default(string), string manifestFilename = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
+        public CmafFormat(string filenamePattern = default(string), string manifestFilename = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
             : base(filenamePattern, manifestFilename, outputFiles)
         {
             CustomInit();

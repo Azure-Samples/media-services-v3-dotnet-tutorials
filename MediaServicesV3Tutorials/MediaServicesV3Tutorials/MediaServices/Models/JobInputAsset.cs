@@ -4,6 +4,7 @@
 
 namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -26,15 +27,15 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the JobInputAsset class.
         /// </summary>
+        /// <param name="assetName">Path to the asset such as
+        /// "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}".</param>
         /// <param name="label">Label of the JobInput.  Used to match JobInputs
         /// to TransformInputs.  If no Label is given then the JobInputs are
         /// matched by index.</param>
         /// <param name="files">List of files.  Required for JobInputAzureBlob.
         /// It optionally can be used for JobInputAsset to tell the service to
         /// only use the files specified from the Asset.</param>
-        /// <param name="assetName">Path to the asset such as
-        /// "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}".</param>
-        public JobInputAsset(string label = default(string), IList<string> files = default(IList<string>), string assetName = default(string))
+        public JobInputAsset(string assetName, string label = default(string), IList<string> files = default(IList<string>))
             : base(label, files)
         {
             AssetName = assetName;
@@ -53,5 +54,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         [JsonProperty(PropertyName = "assetName")]
         public string AssetName { get; set; }
 
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            if (AssetName == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "AssetName");
+            }
+        }
     }
 }

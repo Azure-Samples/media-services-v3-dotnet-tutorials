@@ -10,21 +10,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// A CMAF based output format.
+    /// A multi bitrate MP4 format that is optimized for use by streaming
+    /// endpoint in Azure Media Services.
     /// </summary>
-    [Newtonsoft.Json.JsonObject("#Microsoft.Media.CmafOutput")]
-    public partial class CmafOutput : MultiBitrateFormat
+    [Newtonsoft.Json.JsonObject("#Microsoft.Media.StreamingEndpointOptimizedFormat")]
+    public partial class StreamingEndpointOptimizedFormat : MultiBitrateMp4Format
     {
         /// <summary>
-        /// Initializes a new instance of the CmafOutput class.
+        /// Initializes a new instance of the StreamingEndpointOptimizedFormat
+        /// class.
         /// </summary>
-        public CmafOutput()
+        public StreamingEndpointOptimizedFormat()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the CmafOutput class.
+        /// Initializes a new instance of the StreamingEndpointOptimizedFormat
+        /// class.
         /// </summary>
         /// <param name="filenamePattern">Gets or sets the pattern of the
         /// filename to use excluding the extension. REVIEW: List "macros" that
@@ -33,7 +36,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// manifest file name to use excluding the extension. REVIEW: List
         /// "macros" that can be used and give examples.</param>
         /// <param name="outputFiles">Gets the list of output files.</param>
-        public CmafOutput(string filenamePattern = default(string), string manifestFilename = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
+        public StreamingEndpointOptimizedFormat(string filenamePattern = default(string), string manifestFilename = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
             : base(filenamePattern, manifestFilename, outputFiles)
         {
             CustomInit();

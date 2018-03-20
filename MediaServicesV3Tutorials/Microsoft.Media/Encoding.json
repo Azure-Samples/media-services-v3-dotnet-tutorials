@@ -124,8 +124,8 @@
       "type": "object",
       "description": "An object to represent AAC audio encoding settings."
     },
-    "AudioIndexerPreset": {
-      "x-ms-discriminator-value": "#Microsoft.Media.AudioIndexerPreset",
+    "AudioAnalyzerPreset": {
+      "x-ms-discriminator-value": "#Microsoft.Media.AudioAnalyzerPreset",
       "allOf": [
         {
           "$ref": "#/definitions/Preset"
@@ -138,7 +138,7 @@
         }
       },
       "type": "object",
-      "description": "An audio indexer preset that analyzes the audio."
+      "description": "An audio analyzer preset that analyzes and transcribes the audio."
     },
     "Overlay": {
       "discriminator": "@odata.type",
@@ -275,7 +275,7 @@
               },
               {
                 "value": "Cfr",
-                "description": "Frames will be duplicated and dropped to achieve exactly the requested constant frame rate"
+                "description": "Frames will be duplicated and/or dropped to achieve exactly the requested constant frame rate"
               },
               {
                 "value": "Vfr",
@@ -283,7 +283,7 @@
               },
               {
                 "value": "Drop",
-                "description": "As pass through but destroys all timestamps, making the muxer generate fresh timestamps based on frame-rate does not work for our version of ffmpeg!!!"
+                "description": "As pass through but destroys all timestamps, making the muxer generate fresh timestamps based on frame-rate"
               }
             ],
             "modelAsExtensible": true
@@ -493,8 +493,8 @@
       "type": "object",
       "description": "GOP aligned multi bitrate output."
     },
-    "CmafOutput": {
-      "x-ms-discriminator-value": "#Microsoft.Media.CmafOutput",
+    "CmafFormat": {
+      "x-ms-discriminator-value": "#Microsoft.Media.CmafFormat",
       "allOf": [
         {
           "$ref": "#/definitions/MultiBitrateFormat"
@@ -616,19 +616,19 @@
       "properties": {
         "left": {
           "type": "string",
-          "description": "Gets or sets number of pixels from the left-margin"
+          "description": "Gets or sets number of pixels from the left-margin. This can be absolute pixel value e.g 100 or relative to the size of the video e.g: 50%."
         },
         "top": {
           "type": "string",
-          "description": "Gets or sets number of pixels from the top-margin"
+          "description": "Gets or sets number of pixels from the top-margin. This can be absolute pixel value e.g 100 or relative to the size of the video e.g: 50%."
         },
         "width": {
           "type": "string",
-          "description": "Gets or sets width of the region in pixels"
+          "description": "Gets or sets width of the region in pixels. This can be absolute pixel value e.g 100 or relative to the size of the video e.g: 50%."
         },
         "height": {
           "type": "string",
-          "description": "Gets or sets height of the region in pixels"
+          "description": "Gets or sets height of the region in pixels. This can be absolute pixel value e.g 100 or relative to the size of the video e.g: 50%."
         }
       },
       "type": "object",
@@ -1111,10 +1111,7 @@
             "ContentAdaptiveMultipleBitrateMP4",
             "AACGoodQualityAudio",
             "H264MultipleBitrate1080p",
-            "H264MultipleBitrate720p",
-            "SaasMultipleBitrate",
-            "SaasProxy",
-            "SaaSThumbnail"
+            "H264MultipleBitrate720p"
           ],
           "x-ms-enum": {
             "name": "EncoderNamedPreset",
@@ -1138,18 +1135,6 @@
               {
                 "value": "H264MultipleBitrate720p",
                 "description": "Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 kbps to 400 kbps, and stereo AAC audio."
-              },
-              {
-                "value": "SaasMultipleBitrate",
-                "description": "Auto-generate a bitrate ladder (bitrate-resolution pairs) based on the input resolution and bitrate. The auto-generated preset will never exceed the input resolution and bitrate. For example, if the input is 720p at 3Mbps, output will remain 720p at best, and will start at rates lower than 3Mbps.  This preset does not encode audio. It should therefore be paired an output that uses SaasProxy in order to produce a complete streaming set."
-              },
-              {
-                "value": "SaasProxy",
-                "description": "Produce a streaming set with only a single video bitrate with audio that is optimized for fast turnaround time."
-              },
-              {
-                "value": "SaaSThumbnail",
-                "description": "Produces a Thumbnail"
               }
             ],
             "modelAsExtensible": true
@@ -1262,16 +1247,21 @@
       "type": "object",
       "description": "Preset for Media Encoder Standard."
     },
-    "VideoIndexerPreset": {
-      "x-ms-discriminator-value": "#Microsoft.Media.VideoIndexerPreset",
+    "VideoAnalyzerPreset": {
+      "x-ms-discriminator-value": "#Microsoft.Media.VideoAnalyzerPreset",
       "allOf": [
         {
-          "$ref": "#/definitions/AudioIndexerPreset"
+          "$ref": "#/definitions/AudioAnalyzerPreset"
         }
       ],
-      "properties": {},
+      "properties": {
+        "audioInsightsOnly": {
+          "type": "boolean",
+          "description": "Gets or sets whether to get insights for audio only."
+        }
+      },
       "type": "object",
-      "description": "A video indexer preset that analyzes the audio and video."
+      "description": "A video analyzer preset that analyzes both audio and video."
     },
     "ClosedCaptionStream": {
       "x-ms-discriminator-value": "#Microsoft.Media.ClosedCaptionStream",
@@ -1315,16 +1305,16 @@
       "type": "object",
       "description": "Object to represent audio stream selection."
     },
-    "StreamingEndpointOptimizedOutput": {
-      "x-ms-discriminator-value": "#Microsoft.Media.StreamingEndpointOptimizedOutput",
+    "StreamingEndpointOptimizedFormat": {
+      "x-ms-discriminator-value": "#Microsoft.Media.StreamingEndpointOptimizedFormat",
       "allOf": [
         {
-          "$ref": "#/definitions/Format"
+          "$ref": "#/definitions/MultiBitrateMp4Format"
         }
       ],
       "properties": {},
       "type": "object",
-      "description": "A streaming endpoint optimized output."
+      "description": "A multi bitrate MP4 format that is optimized for use by streaming endpoint in Azure Media Services."
     },
     "TransportStreamFormat": {
       "x-ms-discriminator-value": "#Microsoft.Media.TransportStreamFormat",
@@ -1335,7 +1325,7 @@
       ],
       "properties": {},
       "type": "object",
-      "description": "MPEG-2 transport stream output."
+      "description": "ISO/IEC 13818-1, MPEG-2 Transport Stream output."
     },
     "TransformOutput": {
       "properties": {
@@ -1555,6 +1545,9 @@
         }
       },
       "type": "object",
+      "required": [
+        "assetName"
+      ],
       "description": "Represents an Asset for input into a Job."
     },
     "JobInputHttp": {
@@ -2004,10 +1997,12 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/Transform"
-          }
+          },
+          "description": "A collection of Transform items."
         },
         "@odata.nextLink": {
-          "type": "string"
+          "type": "string",
+          "description": "A link to the next page of the collection (when the collection contains too many results to return in one response)."
         }
       },
       "type": "object"
@@ -2018,10 +2013,12 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/Job"
-          }
+          },
+          "description": "A collection of Job items."
         },
         "@odata.nextLink": {
-          "type": "string"
+          "type": "string",
+          "description": "A link to the next page of the collection (when the collection contains too many results to return in one response)."
         }
       },
       "type": "object"
@@ -2041,7 +2038,7 @@
             }
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2109,7 +2106,7 @@
             "description": "NotFound"
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2160,7 +2157,7 @@
             }
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2213,7 +2210,7 @@
             "description": "NoContent"
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2258,7 +2255,7 @@
             }
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2313,7 +2310,7 @@
             }
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2388,7 +2385,7 @@
             "description": "NotFound"
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2440,7 +2437,7 @@
             }
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2500,7 +2497,7 @@
             "description": "NoContent"
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }
@@ -2551,7 +2548,7 @@
             "description": "OK"
           },
           "default": {
-            "description": "Detailed Error Information",
+            "description": "Detailed error information.",
             "schema": {
               "$ref": "#/definitions/ApiError"
             }

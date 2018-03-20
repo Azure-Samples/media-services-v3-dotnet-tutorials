@@ -28,7 +28,7 @@
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/ExampleTransform/jobs/job1",
         "type": "Microsoft.Media/mediaservices/transforms/jobs",
         "properties": {
-          "created": "2018-02-12T18:51:27.1035503Z",
+          "created": "2018-02-20T21:56:36.8423706Z",
           "state": "Queued",
           "description": null,
           "input": {
@@ -43,7 +43,7 @@
               }
             ]
           },
-          "lastModified": "2018-02-12T18:51:27.1035503Z",
+          "lastModified": "2018-02-20T21:56:36.8423706Z",
           "outputs": [
             {
               "@odata.type": "#Microsoft.Media.JobOutputAsset",

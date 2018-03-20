@@ -16,9 +16,9 @@
         "location": null,
         "tags": null,
         "properties": {
-          "created": "2018-02-12T18:51:22.5722211-05:00",
+          "created": "2018-02-20T21:56:36.4695413-05:00",
           "description": "A sample transform using the standard encoder with a built in preset.",
-          "lastModified": "2018-02-12T18:51:22.5722211-05:00",
+          "lastModified": "2018-02-20T21:56:36.4695413-05:00",
           "outputs": [
             {
               "onError": "StopProcessingJob",

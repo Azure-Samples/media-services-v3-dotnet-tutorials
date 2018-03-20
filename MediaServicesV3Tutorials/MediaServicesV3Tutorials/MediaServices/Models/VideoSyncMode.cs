@@ -35,7 +35,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         public static readonly VideoSyncMode Passthrough = "Passthrough";
 
         /// <summary>
-        /// Frames will be duplicated and dropped to achieve exactly the
+        /// Frames will be duplicated and/or dropped to achieve exactly the
         /// requested constant frame rate
         /// </summary>
         public static readonly VideoSyncMode Cfr = "Cfr";
@@ -48,8 +48,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 
         /// <summary>
         /// As pass through but destroys all timestamps, making the muxer
-        /// generate fresh timestamps based on frame-rate does not work for our
-        /// version of ffmpeg!!!
+        /// generate fresh timestamps based on frame-rate
         /// </summary>
         public static readonly VideoSyncMode Drop = "Drop";
 

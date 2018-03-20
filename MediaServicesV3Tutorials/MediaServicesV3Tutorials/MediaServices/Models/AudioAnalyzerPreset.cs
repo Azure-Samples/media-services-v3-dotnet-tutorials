@@ -8,28 +8,28 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// A video indexer preset that analyzes the audio and video.
+    /// An audio analyzer preset that analyzes and transcribes the audio.
     /// </summary>
-    [Newtonsoft.Json.JsonObject("#Microsoft.Media.VideoIndexerPreset")]
-    public partial class VideoIndexerPreset : AudioIndexerPreset
+    [Newtonsoft.Json.JsonObject("#Microsoft.Media.AudioAnalyzerPreset")]
+    public partial class AudioAnalyzerPreset : Preset
     {
         /// <summary>
-        /// Initializes a new instance of the VideoIndexerPreset class.
+        /// Initializes a new instance of the AudioAnalyzerPreset class.
         /// </summary>
-        public VideoIndexerPreset()
+        public AudioAnalyzerPreset()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the VideoIndexerPreset class.
+        /// Initializes a new instance of the AudioAnalyzerPreset class.
         /// </summary>
         /// <param name="audioLanguage">Gets or sets the audio language for the
         /// video. Typically in the format of "language code-country/region"
         /// (e.g: en-US)</param>
-        public VideoIndexerPreset(string audioLanguage = default(string))
-            : base(audioLanguage)
+        public AudioAnalyzerPreset(string audioLanguage = default(string))
         {
+            AudioLanguage = audioLanguage;
             CustomInit();
         }
 
@@ -37,6 +37,13 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the audio language for the video. Typically in the
+        /// format of "language code-country/region" (e.g: en-US)
+        /// </summary>
+        [JsonProperty(PropertyName = "audioLanguage")]
+        public string AudioLanguage { get; set; }
 
     }
 }

@@ -15,26 +15,20 @@ namespace UploadEncodeAndStreamFiles
 {
     class Program
     {
-
-        const String inputMP4FileName = @"Input\ignite.mp4";
+        const String transformName = "TransformWithAdaptiveStreamingPreset";
+        const String inputMP4FileName = @"ignite.mp4";
         const String outputFolder = @"Output";
         static void Main(string[] args)
         {
             ConfigWrapper config = new ConfigWrapper();
 
             IAzureMediaServicesClient client = CreateMediaServicesClient(config);
-
-            //foreach(var a in client.Assets.List())
-            //{
-            //    Console.WriteLine(a.Name);
-            //    client.Assets.Delete(a.Name);
-            //}
+                      
+            // Ensure that you have customized transforms for the VideoAnalyzer.  This is really a one time setup operation.
+            Transform transform = EnsureTransformExists(client, config.Region, transformName);
 
 
-            //return;
-            String transformName = "MyTransformWithAdaptiveStreamingPreset";
-
-            String jobName = "job-" + Guid.NewGuid().ToString();
+            String jobName = Guid.NewGuid().ToString() + "-job";
             
             string inputAssetName = Guid.NewGuid().ToString() + "-input";
             string outputAssetName = Guid.NewGuid().ToString() + "-output";
@@ -44,8 +38,6 @@ namespace UploadEncodeAndStreamFiles
             JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
             client.Assets.CreateOrUpdate(outputAssetName, new Asset());
-
-            Transform transform = EnsureTransformExists(client, config.Region, transformName);
 
             Job job = SubmitJob(client, transformName, jobName, jobInput, outputAssetName);
 
@@ -70,7 +62,6 @@ namespace UploadEncodeAndStreamFiles
         /// <param name="config">In In the example, we set all the connection parameters in the app.config file. ConfigWrapper gets the values.
         /// </param>
         /// <returns></returns>
-
         private static IAzureMediaServicesClient CreateMediaServicesClient(ConfigWrapper config)
         {
             ArmClientCredentials credentials = new ArmClientCredentials(config);
@@ -84,7 +75,7 @@ namespace UploadEncodeAndStreamFiles
         }
 
         /// <summary>
-        /// Crearte and upload the asset.
+        /// Create and upload the asset.
         /// </summary>
         /// <param name="client"></param>
         /// <param name="assetName"></param>

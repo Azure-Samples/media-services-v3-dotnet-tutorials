@@ -61,28 +61,6 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// </summary>
         public static readonly EncoderNamedPreset H264MultipleBitrate720p = "H264MultipleBitrate720p";
 
-        /// <summary>
-        /// Auto-generate a bitrate ladder (bitrate-resolution pairs) based on
-        /// the input resolution and bitrate. The auto-generated preset will
-        /// never exceed the input resolution and bitrate. For example, if the
-        /// input is 720p at 3Mbps, output will remain 720p at best, and will
-        /// start at rates lower than 3Mbps.  This preset does not encode
-        /// audio. It should therefore be paired an output that uses SaasProxy
-        /// in order to produce a complete streaming set.
-        /// </summary>
-        public static readonly EncoderNamedPreset SaasMultipleBitrate = "SaasMultipleBitrate";
-
-        /// <summary>
-        /// Produce a streaming set with only a single video bitrate with audio
-        /// that is optimized for fast turnaround time.
-        /// </summary>
-        public static readonly EncoderNamedPreset SaasProxy = "SaasProxy";
-
-        /// <summary>
-        /// Produces a Thumbnail
-        /// </summary>
-        public static readonly EncoderNamedPreset SaaSThumbnail = "SaaSThumbnail";
-
 
         /// <summary>
         /// Underlying value of enum EncoderNamedPreset

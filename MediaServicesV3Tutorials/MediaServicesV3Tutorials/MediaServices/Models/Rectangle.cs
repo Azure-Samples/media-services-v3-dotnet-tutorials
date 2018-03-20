@@ -24,13 +24,17 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// Initializes a new instance of the Rectangle class.
         /// </summary>
         /// <param name="left">Gets or sets number of pixels from the
-        /// left-margin</param>
+        /// left-margin. This can be absolute pixel value e.g 100 or relative
+        /// to the size of the video e.g: 50%.</param>
         /// <param name="top">Gets or sets number of pixels from the
-        /// top-margin</param>
-        /// <param name="width">Gets or sets width of the region in
-        /// pixels</param>
-        /// <param name="height">Gets or sets height of the region in
-        /// pixels</param>
+        /// top-margin. This can be absolute pixel value e.g 100 or relative to
+        /// the size of the video e.g: 50%.</param>
+        /// <param name="width">Gets or sets width of the region in pixels.
+        /// This can be absolute pixel value e.g 100 or relative to the size of
+        /// the video e.g: 50%.</param>
+        /// <param name="height">Gets or sets height of the region in pixels.
+        /// This can be absolute pixel value e.g 100 or relative to the size of
+        /// the video e.g: 50%.</param>
         public Rectangle(string left = default(string), string top = default(string), string width = default(string), string height = default(string))
         {
             Left = left;
@@ -46,25 +50,31 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets number of pixels from the left-margin
+        /// Gets or sets number of pixels from the left-margin. This can be
+        /// absolute pixel value e.g 100 or relative to the size of the video
+        /// e.g: 50%.
         /// </summary>
         [JsonProperty(PropertyName = "left")]
         public string Left { get; set; }
 
         /// <summary>
-        /// Gets or sets number of pixels from the top-margin
+        /// Gets or sets number of pixels from the top-margin. This can be
+        /// absolute pixel value e.g 100 or relative to the size of the video
+        /// e.g: 50%.
         /// </summary>
         [JsonProperty(PropertyName = "top")]
         public string Top { get; set; }
 
         /// <summary>
-        /// Gets or sets width of the region in pixels
+        /// Gets or sets width of the region in pixels. This can be absolute
+        /// pixel value e.g 100 or relative to the size of the video e.g: 50%.
         /// </summary>
         [JsonProperty(PropertyName = "width")]
         public string Width { get; set; }
 
         /// <summary>
-        /// Gets or sets height of the region in pixels
+        /// Gets or sets height of the region in pixels. This can be absolute
+        /// pixel value e.g 100 or relative to the size of the video e.g: 50%.
         /// </summary>
         [JsonProperty(PropertyName = "height")]
         public string Height { get; set; }

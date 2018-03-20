@@ -30,8 +30,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <param name="presetName">Gets or sets the built in preset to use.
         /// Possible values include: 'AdaptiveStreaming',
         /// 'ContentAdaptiveMultipleBitrateMP4', 'AACGoodQualityAudio',
-        /// 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p',
-        /// 'SaasMultipleBitrate', 'SaasProxy', 'SaaSThumbnail'</param>
+        /// 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p'</param>
         public BuiltInStandardEncoderPreset(EncoderNamedPreset presetName)
         {
             PresetName = presetName;
@@ -47,8 +46,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// Gets or sets the built in preset to use. Possible values include:
         /// 'AdaptiveStreaming', 'ContentAdaptiveMultipleBitrateMP4',
         /// 'AACGoodQualityAudio', 'H264MultipleBitrate1080p',
-        /// 'H264MultipleBitrate720p', 'SaasMultipleBitrate', 'SaasProxy',
-        /// 'SaaSThumbnail'
+        /// 'H264MultipleBitrate720p'
         /// </summary>
         [JsonProperty(PropertyName = "presetName")]
         public EncoderNamedPreset PresetName { get; set; }
