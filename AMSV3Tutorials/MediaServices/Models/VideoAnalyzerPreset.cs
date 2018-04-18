@@ -24,9 +24,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the VideoAnalyzerPreset class.
         /// </summary>
-        /// <param name="audioLanguage">Gets or sets the audio language for the
-        /// video. Typically in the format of "language code-country/region"
-        /// (e.g: en-US)</param>
+        /// <param name="audioLanguage">Specifies the language for the audio
+        /// payload in the input. Typically in the format of "language
+        /// code-country/region" (e.g: "en-US").</param>
         /// <param name="audioInsightsOnly">Gets or sets whether to get
         /// insights for audio only.</param>
         public VideoAnalyzerPreset(string audioLanguage = default(string), bool? audioInsightsOnly = default(bool?))

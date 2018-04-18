@@ -24,6 +24,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Lists the Transforms in the account.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='odataQuery'>
         /// OData parameters to apply to the operation.
         /// </param>
@@ -42,13 +48,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<IPage<Transform>>> ListWithHttpMessagesAsync(ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<Transform>>> ListWithHttpMessagesAsync(string resourceGroupName, string accountName, ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get Transform
         /// </summary>
         /// <remarks>
         /// Gets a Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -67,17 +79,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Transform>> GetWithHttpMessagesAsync(string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Transform>> GetWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Create or Update Transform
         /// </summary>
         /// <remarks>
         /// Creates or updates a new Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
         /// <param name='parameters'>
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -94,13 +113,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Transform>> CreateOrUpdateWithHttpMessagesAsync(string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Transform>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Delete Transform
         /// </summary>
         /// <remarks>
         /// Deletes a Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -116,17 +141,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Update Transform
         /// </summary>
         /// <remarks>
         /// Updates a Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
         /// <param name='parameters'>
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -143,7 +175,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Transform>> UpdateWithHttpMessagesAsync(string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Transform>> UpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// List Transforms
         /// </summary>

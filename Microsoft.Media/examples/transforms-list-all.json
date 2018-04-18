@@ -1,6 +1,6 @@
 {
   "parameters": {
-    "api-version": "2018-02-01-privatepreview",
+    "api-version": "2018-03-30-preview",
     "subscriptionId": "00000000-0000-0000-0000-000000000000",
     "resourceGroupName": "contosoresources",
     "accountName": "contosomedia"
@@ -13,19 +13,17 @@
             "name": "SampleEncode",
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/SampleEncode",
             "type": "Microsoft.Media/mediaservices/transforms",
-            "location": null,
-            "tags": null,
             "properties": {
-              "created": "2018-02-20T21:56:36.0469015-05:00",
+              "created": "2018-03-20T13:33:29.4642953-04:00",
               "description": "A sample transform using the standard encoder with a built in preset.",
-              "lastModified": "2018-02-20T21:56:36.0469015-05:00",
+              "lastModified": "2018-03-20T13:33:29.4642953-04:00",
               "outputs": [
                 {
                   "onError": "StopProcessingJob",
                   "relativePriority": "Normal",
                   "preset": {
                     "@odata.type": "#Microsoft.Media.BuiltInStandardEncoderPreset",
-                    "presetName": "ContentAdaptiveMultipleBitrateMP4"
+                    "presetName": "AdaptiveStreaming"
                   }
                 }
               ]
@@ -35,19 +33,17 @@
             "name": "SampleEncodeAndVideoIndex",
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/SampleEncodeAndVideoIndex",
             "type": "Microsoft.Media/mediaservices/transforms",
-            "location": null,
-            "tags": null,
             "properties": {
-              "created": "2018-02-20T21:56:36.0519014-05:00",
+              "created": "2018-03-20T13:33:29.4682947-04:00",
               "description": "A sample transform using the standard encoder with a built in preset and the video indexer.",
-              "lastModified": "2018-02-20T21:56:36.0519014-05:00",
+              "lastModified": "2018-03-20T13:33:29.4682947-04:00",
               "outputs": [
                 {
                   "onError": "StopProcessingJob",
                   "relativePriority": "Normal",
                   "preset": {
                     "@odata.type": "#Microsoft.Media.BuiltInStandardEncoderPreset",
-                    "presetName": "ContentAdaptiveMultipleBitrateMP4"
+                    "presetName": "AdaptiveStreaming"
                   }
                 },
                 {

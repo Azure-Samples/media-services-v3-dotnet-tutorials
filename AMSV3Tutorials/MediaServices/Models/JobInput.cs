@@ -23,9 +23,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the JobInput class.
         /// </summary>
-        /// <param name="label">Label of the JobInput.  Used to match JobInputs
-        /// to TransformInputs.  If no Label is given then the JobInputs are
-        /// matched by index.</param>
+        /// <param name="label">Customer provided label of the
+        /// JobInput.</param>
         public JobInput(string label = default(string))
         {
             Label = label;
@@ -38,9 +37,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets label of the JobInput.  Used to match JobInputs to
-        /// TransformInputs.  If no Label is given then the JobInputs are
-        /// matched by index.
+        /// Gets or sets customer provided label of the JobInput.
         /// </summary>
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }

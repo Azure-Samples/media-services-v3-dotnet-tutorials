@@ -15,42 +15,38 @@ namespace AnalyzeVideos
 {
     class Program
     {
-        const String inputMP4FileName = @"ignite.mp4";
-        const String outputFolder = @"Output";
-        const String VideoAnalyzerTransformName = "VideoAnalyzerTransform";
+        private static readonly string VideoAnalyzerTransformName = "MyVideoAnalyzerTransformName";
+        private static readonly string inputMP4FileName = @"ignite.mp4";
+        private static readonly string outputFolder = @"Output";
+
         static void Main(string[] args)
         {
             ConfigWrapper config = new ConfigWrapper();
 
             IAzureMediaServicesClient client = CreateMediaServicesClient(config);
 
-            // Ensure that you have customized transforms for the VideoAnalyzer.  This is really a one time setup operation.
-            Transform videoAnalyzerTransform = EnsureTransformExists(client, config.Region, VideoAnalyzerTransformName, new VideoAnalyzerPreset());
+            Transform videoAnalyzerTransform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, new VideoAnalyzerPreset());
 
-            String jobName = Guid.NewGuid().ToString() + "-job";
+            string jobName = "job-" + Guid.NewGuid().ToString();
+            string outputAssetName = "output" + Guid.NewGuid().ToString();
+            string inputAssetName = "input-" + Guid.NewGuid().ToString();
 
-            string inputAssetName = Guid.NewGuid().ToString() + "-input";
-            string outputAssetName = Guid.NewGuid().ToString() + "-output";
+            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, inputMP4FileName);
+            JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
-            CreateInputAsset(client, inputAssetName, inputMP4FileName);
-            JobInput input = new JobInputAsset(assetName: inputAssetName);
+            Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
 
-            CreateOutputAsset(client, outputAssetName);
+            Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName, jobInput, outputAssetName);
 
-            Job job = SubmitJob(client, VideoAnalyzerTransformName, jobName, input, outputAssetName);
-
-            DateTime startedTime = DateTime.Now;
-
-            job = WaitForJobToFinish(client, VideoAnalyzerTransformName, jobName);
-
-            TimeSpan elapsed = DateTime.Now - startedTime;
+            job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName);
 
             if (job.State == JobState.Finished)
             {
                 Console.WriteLine("Job finished.");
                 if (!Directory.Exists(outputFolder))
                     Directory.CreateDirectory(outputFolder);
-                DownloadResults(client, outputAssetName, outputFolder);
+
+                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, outputFolder);
             }
         }
 
@@ -61,14 +57,12 @@ namespace AnalyzeVideos
             return new AzureMediaServicesClient(config.ArmEndpoint, credentials)
             {
                 SubscriptionId = config.SubscriptionId,
-                ResourceGroupName = config.ResourceGroup,
-                AccountName = config.AccountName
             };
         }
 
-        private static Transform EnsureTransformExists(IAzureMediaServicesClient client, string location, string transformName, Preset preset)
+        private static Transform EnsureTransformExists(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, Preset preset)
         {
-            Transform transform = client.Transforms.Get(transformName);
+            Transform transform = client.Transforms.Get(resourceGroupName, accountName, transformName);
 
             if (transform == null)
             {
@@ -77,51 +71,49 @@ namespace AnalyzeVideos
                     new TransformOutput(preset),
                 };
 
-                transform = new Transform(outputs, location: location);
+                transform = new Transform(outputs);
 
-                transform = client.Transforms.CreateOrUpdate(transformName, transform);
+                transform = client.Transforms.CreateOrUpdate(resourceGroupName, accountName, transformName, transform);
             }
 
             return transform;
         }
-        private static Asset CreateInputAsset(IAzureMediaServicesClient client, string assetName, string fileToUpload)
-        {
-            Asset asset = client.Assets.CreateOrUpdate(assetName, new Asset());
 
-            ListContainerSasInput input = new ListContainerSasInput()
+        private static Asset CreateInputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName, string fileToUpload)
+        {
+            Asset asset = client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, new Asset());
+
+            var response = client.Assets.ListContainerSas(resourceGroupName, accountName, assetName, new ListContainerSasInput()
             {
                 Permissions = AssetContainerPermission.ReadWrite,
-                ExpiryTime = DateTimeOffset.Now.AddHours(1)
-            };
+                ExpiryTime = DateTimeOffset.Now.AddHours(4)
+            });
 
-            var response = client.Assets.ListContainerSasAsync(assetName, input).Result;
-
-            string uploadSasUrl = response.AssetContainerSasUrls.First();
-
-            string filename = Path.GetFileName(fileToUpload);
-            var sasUri = new Uri(uploadSasUrl);
+            var sasUri = new Uri(response.AssetContainerSasUrls.First());
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
-            var blob = container.GetBlockBlobReference(filename);
+            var blob = container.GetBlockBlobReference(Path.GetFileName(fileToUpload));
             blob.UploadFromFile(fileToUpload);
 
             return asset;
         }
 
-        private static Asset CreateOutputAsset(IAzureMediaServicesClient client, string assetName)
+        private static Asset CreateOutputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName)
         {
             Asset input = new Asset();
 
-            return client.Assets.CreateOrUpdate(assetName, input);
+            return client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, input);
         }
 
-        private static Job SubmitJob(IAzureMediaServicesClient client, string transformName, string jobName, JobInput jobInput, string outputAssetName)
+        private static Job SubmitJob(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, string jobName, JobInput jobInput, string outputAssetName)
         {
             JobOutput[] jobOutputs =
             {
-                new JobOutputAsset(outputAssetName), 
+                new JobOutputAsset(outputAssetName),
             };
 
-            Job job = client.Jobs.CreateOrUpdate(
+            Job job = client.Jobs.Create(
+                resourceGroupName,
+                accountName,
                 transformName,
                 jobName,
                 new Job
@@ -133,54 +125,49 @@ namespace AnalyzeVideos
             return job;
         }
 
-
-        private static Job WaitForJobToFinish(IAzureMediaServicesClient client, string transformName, string jobName)
+        private static Job WaitForJobToFinish(IAzureMediaServicesClient client,
+            string resourceGroupName,
+            string accountName,
+            string transformName,
+            string jobName)
         {
-            const int SleepInterval = 60 * 1000;
+            int SleepInterval = 60 * 1000;
 
             Job job = null;
-            bool exit = false;
 
-            do
+            while (true)
             {
-                job = client.Jobs.Get(transformName, jobName);
+                job = client.Jobs.Get(resourceGroupName, accountName, transformName, jobName);
 
                 if (job.State == JobState.Finished || job.State == JobState.Error || job.State == JobState.Canceled)
                 {
-                    exit = true;
+                    break;
                 }
-                else
+
+                Console.WriteLine($"Job is {job.State}.");
+                for (int i = 0; i < job.Outputs.Count; i++)
                 {
-                    Console.WriteLine($"Job is {job.State}.");
-
-                    for (int i = 0; i < job.Outputs.Count; i++)
+                    JobOutput output = job.Outputs[i];
+                    Console.Write($"\tJobOutput[{i}] is {output.State}.");
+                    if (output.State == JobState.Processing)
                     {
-                        JobOutput output = job.Outputs[i];
-
-                        Console.Write($"\tJobOutput[{i}] is {output.State}.");
-
-                        if (output.State == JobState.Processing)
-                        {
-                            Console.Write($"  Progress: {output.Progress}");
-                        }
-
-                        Console.WriteLine();
+                        Console.Write($"  Progress: {output.Progress}");
                     }
-
-                    System.Threading.Thread.Sleep(SleepInterval);
+                    Console.WriteLine();
                 }
+                System.Threading.Thread.Sleep(SleepInterval);
             }
-            while (!exit);
 
             return job;
         }
-
-
-
-        private static void DownloadResults(IAzureMediaServicesClient client, string assetName, string resultsFolder)
+        private static void DownloadResults(IAzureMediaServicesClient client,
+          string resourceGroup,
+          string accountName,
+          string assetName,
+          string resultsFolder)
         {
             ListContainerSasInput parameters = new ListContainerSasInput(permissions: AssetContainerPermission.Read, expiryTime: DateTimeOffset.UtcNow.AddHours(1));
-            AssetContainerSas assetContainerSas = client.Assets.ListContainerSas(assetName, parameters);
+            AssetContainerSas assetContainerSas = client.Assets.ListContainerSas(resourceGroup, accountName, assetName, parameters);
 
             Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
             CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
@@ -202,6 +189,22 @@ namespace AnalyzeVideos
             }
 
             Console.WriteLine("Download complete.");
+        }
+
+        static void CleanUp(IAzureMediaServicesClient client,
+                string resourceGroupName,
+                string accountName, 
+                string transformName)
+        {
+            foreach (var job in client.Jobs.List(resourceGroupName, accountName, transformName))
+            {
+                client.Jobs.Delete(resourceGroupName, accountName, transformName, job.Name);
+            }
+
+            foreach (var asset in client.Assets.List(resourceGroupName, accountName))
+            {
+                client.Assets.Delete(resourceGroupName, accountName, asset.Name);
+            }
         }
 
     }

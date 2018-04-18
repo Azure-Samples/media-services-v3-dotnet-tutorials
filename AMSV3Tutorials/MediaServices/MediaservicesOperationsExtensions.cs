@@ -19,31 +19,37 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// List Media Services accounts
             /// </summary>
             /// <remarks>
-            /// List Media Services accounts in a resource group.
+            /// List Media Services accounts in the resource group
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            public static MediaServiceCollection List(this IMediaservicesOperations operations)
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            public static IPage<MediaService> List(this IMediaservicesOperations operations, string resourceGroupName)
             {
-                return operations.ListAsync().GetAwaiter().GetResult();
+                return operations.ListAsync(resourceGroupName).GetAwaiter().GetResult();
             }
 
             /// <summary>
             /// List Media Services accounts
             /// </summary>
             /// <remarks>
-            /// List Media Services accounts in a resource group.
+            /// List Media Services accounts in the resource group
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MediaServiceCollection> ListAsync(this IMediaservicesOperations operations, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IPage<MediaService>> ListAsync(this IMediaservicesOperations operations, string resourceGroupName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListWithHttpMessagesAsync(resourceGroupName, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -58,12 +64,15 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
-            public static MediaService Get(this IMediaservicesOperations operations, string accountName)
+            public static MediaService Get(this IMediaservicesOperations operations, string resourceGroupName, string accountName)
             {
-                return operations.GetAsync(accountName).GetAwaiter().GetResult();
+                return operations.GetAsync(resourceGroupName, accountName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -75,15 +84,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MediaService> GetAsync(this IMediaservicesOperations operations, string accountName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MediaService> GetAsync(this IMediaservicesOperations operations, string resourceGroupName, string accountName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.GetWithHttpMessagesAsync(accountName, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetWithHttpMessagesAsync(resourceGroupName, accountName, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -98,15 +110,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
-            public static MediaService CreateOrUpdate(this IMediaservicesOperations operations, string accountName, MediaService parameters)
+            public static MediaService CreateOrUpdate(this IMediaservicesOperations operations, string resourceGroupName, string accountName, MediaService parameters)
             {
-                return operations.CreateOrUpdateAsync(accountName, parameters).GetAwaiter().GetResult();
+                return operations.CreateOrUpdateAsync(resourceGroupName, accountName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -118,18 +133,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MediaService> CreateOrUpdateAsync(this IMediaservicesOperations operations, string accountName, MediaService parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MediaService> CreateOrUpdateAsync(this IMediaservicesOperations operations, string resourceGroupName, string accountName, MediaService parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(accountName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName, accountName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -144,12 +162,15 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
-            public static void Delete(this IMediaservicesOperations operations, string accountName)
+            public static void Delete(this IMediaservicesOperations operations, string resourceGroupName, string accountName)
             {
-                operations.DeleteAsync(accountName).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, accountName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -161,15 +182,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAsync(this IMediaservicesOperations operations, string accountName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IMediaservicesOperations operations, string resourceGroupName, string accountName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.DeleteWithHttpMessagesAsync(accountName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, accountName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -181,15 +205,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
-            public static MediaService Update(this IMediaservicesOperations operations, string accountName, MediaService parameters)
+            public static MediaService Update(this IMediaservicesOperations operations, string resourceGroupName, string accountName, MediaService parameters)
             {
-                return operations.UpdateAsync(accountName, parameters).GetAwaiter().GetResult();
+                return operations.UpdateAsync(resourceGroupName, accountName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -201,18 +228,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<MediaService> UpdateAsync(this IMediaservicesOperations operations, string accountName, MediaService parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<MediaService> UpdateAsync(this IMediaservicesOperations operations, string resourceGroupName, string accountName, MediaService parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.UpdateWithHttpMessagesAsync(accountName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.UpdateWithHttpMessagesAsync(resourceGroupName, accountName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -228,15 +258,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
-            public static void SyncStorageKeys(this IMediaservicesOperations operations, string accountName, SyncStorageKeysInput parameters)
+            public static void SyncStorageKeys(this IMediaservicesOperations operations, string resourceGroupName, string accountName, SyncStorageKeysInput parameters)
             {
-                operations.SyncStorageKeysAsync(accountName, parameters).GetAwaiter().GetResult();
+                operations.SyncStorageKeysAsync(resourceGroupName, accountName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -249,18 +282,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
             /// <param name='accountName'>
             /// The Media Services account name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task SyncStorageKeysAsync(this IMediaservicesOperations operations, string accountName, SyncStorageKeysInput parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task SyncStorageKeysAsync(this IMediaservicesOperations operations, string resourceGroupName, string accountName, SyncStorageKeysInput parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.SyncStorageKeysWithHttpMessagesAsync(accountName, parameters, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.SyncStorageKeysWithHttpMessagesAsync(resourceGroupName, accountName, parameters, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -272,7 +308,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            public static SubscriptionMediaServiceCollection ListBySubscription(this IMediaservicesOperations operations)
+            public static IPage<SubscriptionMediaService> ListBySubscription(this IMediaservicesOperations operations)
             {
                 return operations.ListBySubscriptionAsync().GetAwaiter().GetResult();
             }
@@ -289,7 +325,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<SubscriptionMediaServiceCollection> ListBySubscriptionAsync(this IMediaservicesOperations operations, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IPage<SubscriptionMediaService>> ListBySubscriptionAsync(this IMediaservicesOperations operations, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ListBySubscriptionWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
                 {
@@ -332,6 +368,86 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             public static async Task<SubscriptionMediaService> GetBySubscriptionAsync(this IMediaservicesOperations operations, string accountName, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetBySubscriptionWithHttpMessagesAsync(accountName, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// List Media Services accounts
+            /// </summary>
+            /// <remarks>
+            /// List Media Services accounts in the resource group
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<MediaService> ListNext(this IMediaservicesOperations operations, string nextPageLink)
+            {
+                return operations.ListNextAsync(nextPageLink).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// List Media Services accounts
+            /// </summary>
+            /// <remarks>
+            /// List Media Services accounts in the resource group
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<IPage<MediaService>> ListNextAsync(this IMediaservicesOperations operations, string nextPageLink, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ListNextWithHttpMessagesAsync(nextPageLink, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// List Media Services accounts
+            /// </summary>
+            /// <remarks>
+            /// List Media Services accounts in the subscription.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<SubscriptionMediaService> ListBySubscriptionNext(this IMediaservicesOperations operations, string nextPageLink)
+            {
+                return operations.ListBySubscriptionNextAsync(nextPageLink).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// List Media Services accounts
+            /// </summary>
+            /// <remarks>
+            /// List Media Services accounts in the subscription.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<IPage<SubscriptionMediaService>> ListBySubscriptionNextAsync(this IMediaservicesOperations operations, string nextPageLink, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ListBySubscriptionNextWithHttpMessagesAsync(nextPageLink, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

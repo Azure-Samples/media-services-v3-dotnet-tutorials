@@ -15,7 +15,8 @@ namespace UploadEncodeAndStreamFiles
 {
     class Program
     {
-        const String transformName = "TransformWithAdaptiveStreamingPreset";
+        private static readonly string adaptiveStreamingTransformName = "MyTransformWithAdaptiveStreamingPreset";
+        private static readonly string PredefinedClearStreamingOnly = "Predefined_ClearStreamingOnly";
         const String inputMP4FileName = @"ignite.mp4";
         const String outputFolder = @"Output";
         static void Main(string[] args)
@@ -24,44 +25,41 @@ namespace UploadEncodeAndStreamFiles
 
             IAzureMediaServicesClient client = CreateMediaServicesClient(config);
                       
-            // Ensure that you have customized transforms for the VideoAnalyzer.  This is really a one time setup operation.
-            Transform transform = EnsureTransformExists(client, config.Region, transformName);
+            Transform transform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, adaptiveStreamingTransformName);
 
+            string jobName = "job-" + Guid.NewGuid().ToString();
+            string locatorName = "locator-" + Guid.NewGuid().ToString();
+            string outputAssetName = "output" + Guid.NewGuid().ToString();
+            string inputAssetName = "input-" + Guid.NewGuid().ToString();
 
-            String jobName = Guid.NewGuid().ToString() + "-job";
-            
-            string inputAssetName = Guid.NewGuid().ToString() + "-input";
-            string outputAssetName = Guid.NewGuid().ToString() + "-output";
-
-            CreateInputAsset(client, inputAssetName, inputMP4FileName);
+            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, inputMP4FileName);
 
             JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
-            client.Assets.CreateOrUpdate(outputAssetName, new Asset());
+            Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
 
-            Job job = SubmitJob(client, transformName, jobName, jobInput, outputAssetName);
+            Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, adaptiveStreamingTransformName, jobName, jobInput, outputAssetName);
 
-            job = WaitForJobToFinish(client, transformName, jobName);
+            job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, adaptiveStreamingTransformName, jobName);
+
 
             if (job.State == JobState.Finished)
             {
                 Console.WriteLine("Job finished.");
                 if (!Directory.Exists(outputFolder))
                     Directory.CreateDirectory(outputFolder);
-                DownloadResults(client, outputAssetName, outputFolder);
+                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, outputFolder);
+
+                StreamingLocator locator = CreateStreamingLocator(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName);
+
+                IList<string> urls = GetStreamingURLs(client, config.ResourceGroup, config.AccountName, locator.Name);
+                foreach (var url in urls)
+                {
+                    Console.WriteLine(url);
+                }
             }
         }
 
-        /// <summary>
-        /// To program against the Media Services API using .NET, 
-        /// you need to create an AzureMediaServicesClient object. 
-        /// To create the object, you need to supply credentials needed for the client to connect to Azure using Azure AD. 
-        /// You first need to get a token and then create a ClientCredential object from the returned token. 
-        /// In this sample, the ArmClientCredential object is used to get the token.  
-        /// </summary>
-        /// <param name="config">In In the example, we set all the connection parameters in the app.config file. ConfigWrapper gets the values.
-        /// </param>
-        /// <returns></returns>
         private static IAzureMediaServicesClient CreateMediaServicesClient(ConfigWrapper config)
         {
             ArmClientCredentials credentials = new ArmClientCredentials(config);
@@ -69,54 +67,33 @@ namespace UploadEncodeAndStreamFiles
             return new AzureMediaServicesClient(config.ArmEndpoint, credentials)
             {
                 SubscriptionId = config.SubscriptionId,
-                ResourceGroupName = config.ResourceGroup,
-                AccountName = config.AccountName
             };
         }
 
-        /// <summary>
-        /// Create and upload the asset.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="assetName"></param>
-        /// <param name="fileToUpload"></param>
-        /// <returns></returns>
-        private static Asset CreateInputAsset(IAzureMediaServicesClient client, string assetName, string fileToUpload)
+        private static Asset CreateInputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName, string fileToUpload)
         {
-            Asset asset = client.Assets.CreateOrUpdate(assetName, new Asset());
+            Asset asset = client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, new Asset());
 
-            ListContainerSasInput sasInput = new ListContainerSasInput()
+            var response = client.Assets.ListContainerSas(resourceGroupName, accountName, assetName, new ListContainerSasInput()
             {
                 Permissions = AssetContainerPermission.ReadWrite,
-                ExpiryTime = DateTimeOffset.Now.AddHours(1)
-            };
+                ExpiryTime = DateTimeOffset.Now.AddHours(4)
+            });
 
-            var response = client.Assets.ListContainerSasAsync(assetName, sasInput).Result;
-
-            string uploadSasUrl = response.AssetContainerSasUrls.First();
-
-            string filename = Path.GetFileName(fileToUpload);
-            var sasUri = new Uri(uploadSasUrl);
+            var sasUri = new Uri(response.AssetContainerSasUrls.First());
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
-            var blob = container.GetBlockBlobReference(filename);
+            var blob = container.GetBlockBlobReference(Path.GetFileName(fileToUpload));
             blob.UploadFromFile(fileToUpload);
 
             return asset;
         }
 
-        /// <summary>
-        /// When encoding or processing content in Media Services, it is a common pattern to set up the encoding settings as a recipe. 
-        /// You would then submit a job to apply that recipe to a video. By submitting new jobs for each video, you are applying that recipe to all the videos in your library. 
-        /// One example of a recipe would be to encode the video in order to stream it to a variety of iOS and Android devices. A recipe in Media Services is called as a Transform.
-        /// When creating a Transform, you should first check if one already exists.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="location"></param>
-        /// <param name="transformName"></param>
-        /// <returns></returns>
-        private static Transform EnsureTransformExists(IAzureMediaServicesClient client, string location, string transformName)
+        private static Transform EnsureTransformExists(IAzureMediaServicesClient client,
+            string resourceGroupName,
+            string accountName,
+            string transformName)
         {
-            Transform transform = client.Transforms.Get(transformName);
+            Transform transform = client.Transforms.Get(resourceGroupName, accountName, transformName);
 
             if (transform == null)
             {
@@ -124,8 +101,6 @@ namespace UploadEncodeAndStreamFiles
                 {
                     new TransformOutput
                     {
-                        OnError = OnErrorType.ContinueJob,
-                        RelativePriority = Priority.Normal,
                         Preset = new BuiltInStandardEncoderPreset()
                         {
                             PresetName = EncoderNamedPreset.AdaptiveStreaming
@@ -133,31 +108,23 @@ namespace UploadEncodeAndStreamFiles
                     }
                 };
 
-                transform = new Transform(output, location: location);
-                transform = client.Transforms.CreateOrUpdate(transformName, transform);
+                transform = new Transform(output);
+                transform = client.Transforms.CreateOrUpdate(resourceGroupName, accountName, transformName, transform);
             }
 
             return transform;
         }
 
-        /// <summary>
-        /// A Job is the actual request to Media Services to apply your Transform to a given input video or audio content. 
-        /// The Job specifies information like the location of the input video, and the location for the output. 
-        /// In this example, the input video is coming from the specified HTTPS URL. You can also specify an Azure Blob SAS URL, or S3 tokenized URL. 
-        /// Media Services also allows you to ingest from any existing content in Azure Storage or directly from your machine using the Storage APIs and an Asset.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="transformName"></param>
-        /// <param name="jobName"></param>
-        /// <returns></returns>
-        private static Job SubmitJob(IAzureMediaServicesClient client, string transformName, string jobName, JobInput jobInput, string outputAssetName)
+        private static Job SubmitJob(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, string jobName, JobInput jobInput, string outputAssetName)
         {
             JobOutput[] jobOutputs =
             {
                 new JobOutputAsset(outputAssetName),
             };
 
-            Job job = client.Jobs.CreateOrUpdate(
+            Job job = client.Jobs.Create(
+                resourceGroupName,
+                accountName,
                 transformName,
                 jobName,
                 new Job
@@ -169,53 +136,98 @@ namespace UploadEncodeAndStreamFiles
             return job;
         }
 
-
-        /// <summary>
-        /// The job takes some time to complete and when it does you want to be notified. 
-        /// There are different options to get notified about the job completion. The simplest option (that is shown here) is to use polling. 
-        /// Polling is not a recommended best practice for production applications. Developers should instead use Event Grid.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="transformName"></param>
-        /// <param name="jobName"></param>
-        /// <returns></returns>
-        private static Job WaitForJobToFinish(IAzureMediaServicesClient client, string transformName, string jobName)
+        private static Job WaitForJobToFinish(IAzureMediaServicesClient client,
+            string resourceGroupName,
+            string accountName,
+            string transformName,
+            string jobName)
         {
-            const double TimeoutSeconds = 10 * 60;
-            const int SleepInterval = 15 * 1000;
+            int SleepInterval = 60 * 1000;
 
             Job job = null;
-            bool exit = false;
-            DateTime timeout = DateTime.Now.AddSeconds(TimeoutSeconds);
 
-            do
+            while (true)
             {
-                job = client.Jobs.Get(transformName, jobName);
+                job = client.Jobs.Get(resourceGroupName, accountName, transformName, jobName);
 
                 if (job.State == JobState.Finished || job.State == JobState.Error || job.State == JobState.Canceled)
                 {
-                    exit = true;
-                }
-                else if (DateTime.Now >= timeout)
-                {
-                    Console.WriteLine($"Job {job.Name} timed out.");
-                }
-                else
-                {
-                    System.Threading.Thread.Sleep(SleepInterval);
+                    break;
                 }
 
-                Console.WriteLine(job.State);
+                Console.WriteLine($"Job is {job.State}.");
+                for (int i = 0; i < job.Outputs.Count; i++)
+                {
+                    JobOutput output = job.Outputs[i];
+                    Console.Write($"\tJobOutput[{i}] is {output.State}.");
+                    if (output.State == JobState.Processing)
+                    {
+                        Console.Write($"  Progress: {output.Progress}");
+                    }
+                    Console.WriteLine();
+                }
+                System.Threading.Thread.Sleep(SleepInterval);
             }
-            while (!exit);
 
             return job;
         }
 
-        private static void DownloadResults(IAzureMediaServicesClient client, string assetName, string resultsFolder)
+
+        private static StreamingLocator CreateStreamingLocator(IAzureMediaServicesClient client,
+                                                                string resourceGroup,
+                                                                string accountName,
+                                                                string assetName,
+                                                                string locatorName)
+        {
+            StreamingLocator locator =
+                client.StreamingLocators.Create(resourceGroup,
+                accountName,
+                locatorName,
+                new StreamingLocator()
+                {
+                    AssetName = assetName,
+                    StreamingPolicyName = PredefinedClearStreamingOnly,
+                });
+
+            return locator;
+        }
+
+        static IList<string> GetStreamingURLs(
+            IAzureMediaServicesClient client,
+            string resourceGroupName,
+            string accountName,
+            String locatorName)
+        {
+            IList<string> streamingURLs = new List<string>();
+
+            string streamingUrlPrefx = "";
+
+            StreamingEndpoint streamingEndpoint = client.StreamingEndpoints.Get(resourceGroupName, accountName, "default");
+
+            if (streamingEndpoint != null)
+            {
+                streamingUrlPrefx = streamingEndpoint.HostName;
+
+                if (streamingEndpoint.ResourceState != StreamingEndpointResourceState.Running)
+                    client.StreamingEndpoints.Start(resourceGroupName, accountName, "default");
+            }
+
+            foreach (var path in client.StreamingLocators.ListPaths(resourceGroupName, accountName, locatorName).StreamingPaths)
+            {
+                streamingURLs.Add("http://" + streamingUrlPrefx + path.Paths[0].ToString());
+            }
+
+            return streamingURLs;
+        }
+
+        private static void DownloadResults(IAzureMediaServicesClient client,
+          string resourceGroup,
+          string accountName,
+          string assetName,
+          string resultsFolder)
         {
             ListContainerSasInput parameters = new ListContainerSasInput(permissions: AssetContainerPermission.Read, expiryTime: DateTimeOffset.UtcNow.AddHours(1));
-            AssetContainerSas assetContainerSas = client.Assets.ListContainerSas(assetName, parameters);
+            AssetContainerSas assetContainerSas = client.Assets.ListContainerSas(resourceGroup, accountName, assetName, parameters);
 
             Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
             CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
@@ -238,5 +250,23 @@ namespace UploadEncodeAndStreamFiles
 
             Console.WriteLine("Download complete.");
         }
+
+        static void CleanUp(IAzureMediaServicesClient client,
+                string resourceGroupName,
+                string accountName,
+                string transformName)
+        {
+            foreach (var job in client.Jobs.List(resourceGroupName, accountName, transformName))
+            {
+                client.Jobs.Delete(resourceGroupName, accountName, transformName, job.Name);
+            }
+
+            foreach (var asset in client.Assets.List(resourceGroupName, accountName))
+            {
+                client.Assets.Delete(resourceGroupName, accountName, asset.Name);
+            }
+        }
+
+
     }
 }

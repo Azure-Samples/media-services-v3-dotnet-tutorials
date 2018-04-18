@@ -5,13 +5,15 @@
 namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 {
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// MP4 output.
+    /// Describes the properties for an output ISO MP4 file.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.Mp4Format")]
-    public partial class Mp4Format : Format
+    public partial class Mp4Format : MultiBitrateFormat
     {
         /// <summary>
         /// Initializes a new instance of the Mp4Format class.
@@ -24,11 +26,20 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Mp4Format class.
         /// </summary>
-        /// <param name="filenamePattern">Gets or sets the pattern of the
-        /// filename to use excluding the extension. REVIEW: List "macros" that
-        /// can be used and give examples.</param>
-        public Mp4Format(string filenamePattern = default(string))
-            : base(filenamePattern)
+        /// <param name="filenamePattern">Describes the pattern of the file
+        /// names for the generated output files. The following macros are
+        /// supported in the file name: {Basename} - The base name of the input
+        /// video {Extension} - The appropriate extension for this format.
+        /// {Label} - The label assigned to the codec/layer. {Index} - A unique
+        /// index for thumbnails. Only applicable to thumbnails. {Bitrate} -
+        /// The audio/video bitrate. Not applicable to thumbnails. {Codec} -
+        /// The type of the audio/video codec. Any unsubstituted macros will be
+        /// collapsed and removed from the filename.</param>
+        /// <param name="outputFiles">Describes a list of output files to
+        /// produce.  Each entry in the list is a set of labels to be muxed
+        /// together .</param>
+        public Mp4Format(string filenamePattern = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
+            : base(filenamePattern, outputFiles)
         {
             CustomInit();
         }

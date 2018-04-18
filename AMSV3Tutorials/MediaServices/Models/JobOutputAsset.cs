@@ -25,8 +25,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the JobOutputAsset class.
         /// </summary>
-        /// <param name="assetName">Path to the asset such as
-        /// "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}".</param>
+        /// <param name="assetName">The name of the output Asset.</param>
         /// <param name="error">If the JobOutput is in the error state, it
         /// contains the details of the error.</param>
         /// <param name="state">State of the JobOutput. Possible values
@@ -48,8 +47,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets path to the asset such as
-        /// "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}".
+        /// Gets or sets the name of the output Asset.
         /// </summary>
         [JsonProperty(PropertyName = "assetName")]
         public string AssetName { get; set; }

@@ -8,8 +8,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Preset to use Media Encoder Standard (MES) with a built in named
-    /// preset.
+    /// Describes a built-in preset for encoding the input video with the
+    /// Standard Encoder.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.BuiltInStandardEncoderPreset")]
     public partial class BuiltInStandardEncoderPreset : Preset
@@ -27,10 +27,10 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// Initializes a new instance of the BuiltInStandardEncoderPreset
         /// class.
         /// </summary>
-        /// <param name="presetName">Gets or sets the built in preset to use.
-        /// Possible values include: 'AdaptiveStreaming',
-        /// 'ContentAdaptiveMultipleBitrateMP4', 'AACGoodQualityAudio',
-        /// 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p'</param>
+        /// <param name="presetName">Describes the built-in prese to be used
+        /// for encoding videos. Possible values include: 'AdaptiveStreaming',
+        /// 'AACGoodQualityAudio', 'H264MultipleBitrate1080p',
+        /// 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'</param>
         public BuiltInStandardEncoderPreset(EncoderNamedPreset presetName)
         {
             PresetName = presetName;
@@ -43,10 +43,10 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the built in preset to use. Possible values include:
-        /// 'AdaptiveStreaming', 'ContentAdaptiveMultipleBitrateMP4',
+        /// Gets or sets describes the built-in prese to be used for encoding
+        /// videos. Possible values include: 'AdaptiveStreaming',
         /// 'AACGoodQualityAudio', 'H264MultipleBitrate1080p',
-        /// 'H264MultipleBitrate720p'
+        /// 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'
         /// </summary>
         [JsonProperty(PropertyName = "presetName")]
         public EncoderNamedPreset PresetName { get; set; }

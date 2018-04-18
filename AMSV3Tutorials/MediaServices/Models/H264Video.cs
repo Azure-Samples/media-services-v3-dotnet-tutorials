@@ -10,7 +10,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// An object to represent H264 video encoding.
+    /// Describes all the properties for encoding a video with the H264 codec.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.H264Video")]
     public partial class H264Video : Video
@@ -26,28 +26,29 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the H264Video class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
-        /// <param name="preserveResolutionAfterRotation">Gets or sets a value
-        /// indicating whether to disable resolution change rotation.</param>
-        /// <param name="keyFrameInterval">Gets or sets the distance between
-        /// two key frames.</param>
-        /// <param name="stretchMode">Gets or sets the Resolution Mode.
-        /// Possible values include: 'None', 'AutoSize', 'AutoFit'</param>
-        /// <param name="syncMode">Gets or sets the Video Sync Mode. Possible
-        /// values include: 'Auto', 'Passthrough', 'Cfr', 'Vfr', 'Drop'</param>
-        /// <param name="sceneChangeDetection">Gets or sets a value indicating
-        /// whether to use scene change detection during encoding</param>
-        /// <param name="rateControlMode">Gets or sets the video rate control
-        /// mode. Possible values include: 'ABR', 'CBR'</param>
-        /// <param name="complexity">Gets or sets the encoder complexity mode
-        /// used for all layers. Possible values include: 'Speed', 'Balanced',
-        /// 'Quality'</param>
-        /// <param name="layers">Gets the layers for the video.</param>
-        public H264Video(string label = default(string), bool? preserveResolutionAfterRotation = default(bool?), System.TimeSpan? keyFrameInterval = default(System.TimeSpan?), StretchMode? stretchMode = default(StretchMode?), VideoSyncMode? syncMode = default(VideoSyncMode?), bool? sceneChangeDetection = default(bool?), H264RateControlMode? rateControlMode = default(H264RateControlMode?), H264Complexity? complexity = default(H264Complexity?), IList<H264Layer> layers = default(IList<H264Layer>))
-            : base(label, preserveResolutionAfterRotation, keyFrameInterval, stretchMode, syncMode)
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
+        /// <param name="keyFrameInterval">Describes the distance between one
+        /// key frame and the next, thereby defining a GOP or group of
+        /// pictures. The value should be a non-zero integer in the range [1,
+        /// .., 30], specified in ISO 8601 format. The default is 2
+        /// seconds.</param>
+        /// <param name="stretchMode">Describes the resizing mode - how the
+        /// input video will be resized to fit the desired output
+        /// resolution(s). Default is AutoSize. Possible values include:
+        /// 'None', 'AutoSize', 'AutoFit'</param>
+        /// <param name="sceneChangeDetection">Determines whether or not the
+        /// encoder should insert key frames at scene changes. If not
+        /// specified, the default is false.</param>
+        /// <param name="complexity">Tells the encoder how to choose its
+        /// low-level settings. The default is Balanced. Possible values
+        /// include: 'Speed', 'Balanced', 'Quality'</param>
+        /// <param name="layers">Describes a collection of output H264 layers
+        /// to be produced by the encoder.</param>
+        public H264Video(string label = default(string), System.TimeSpan? keyFrameInterval = default(System.TimeSpan?), StretchMode? stretchMode = default(StretchMode?), bool? sceneChangeDetection = default(bool?), H264Complexity? complexity = default(H264Complexity?), IList<H264Layer> layers = default(IList<H264Layer>))
+            : base(label, keyFrameInterval, stretchMode)
         {
             SceneChangeDetection = sceneChangeDetection;
-            RateControlMode = rateControlMode;
             Complexity = complexity;
             Layers = layers;
             CustomInit();
@@ -59,28 +60,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use scene change
-        /// detection during encoding
+        /// Gets or sets determines whether or not the encoder should insert
+        /// key frames at scene changes. If not specified, the default is
+        /// false.
         /// </summary>
         [JsonProperty(PropertyName = "sceneChangeDetection")]
         public bool? SceneChangeDetection { get; set; }
 
         /// <summary>
-        /// Gets or sets the video rate control mode. Possible values include:
-        /// 'ABR', 'CBR'
-        /// </summary>
-        [JsonProperty(PropertyName = "rateControlMode")]
-        public H264RateControlMode? RateControlMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the encoder complexity mode used for all layers.
-        /// Possible values include: 'Speed', 'Balanced', 'Quality'
+        /// Gets or sets tells the encoder how to choose its low-level
+        /// settings. The default is Balanced. Possible values include:
+        /// 'Speed', 'Balanced', 'Quality'
         /// </summary>
         [JsonProperty(PropertyName = "complexity")]
         public H264Complexity? Complexity { get; set; }
 
         /// <summary>
-        /// Gets the layers for the video.
+        /// Gets or sets describes a collection of output H264 layers to be
+        /// produced by the encoder.
         /// </summary>
         [JsonProperty(PropertyName = "layers")]
         public IList<H264Layer> Layers { get; set; }

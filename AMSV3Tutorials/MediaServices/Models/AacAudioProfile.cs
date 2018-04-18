@@ -22,17 +22,20 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         }
 
         /// <summary>
-        /// AAC Low complexity.
+        /// Specifies that the output audio is to be encoded into AAC-LC or AAC
+        /// Low Complexity profile.
         /// </summary>
         public static readonly AacAudioProfile AacLc = "AacLc";
 
         /// <summary>
-        /// HE AAC V1.
+        /// Specifies that the output audio is to be encoded into HE-AAC v1
+        /// profile.
         /// </summary>
         public static readonly AacAudioProfile HeAacV1 = "HeAacV1";
 
         /// <summary>
-        /// HE AAC v2.
+        /// Specifies that the output audio is to be encoded into HE-AAC v2
+        /// profile.
         /// </summary>
         public static readonly AacAudioProfile HeAacV2 = "HeAacV2";
 

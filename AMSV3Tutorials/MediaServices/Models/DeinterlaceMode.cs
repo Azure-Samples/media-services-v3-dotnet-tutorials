@@ -22,13 +22,14 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         }
 
         /// <summary>
-        /// Disable deinterlace no matter whether the input is interlaced or
+        /// Disable deinterlacing no matter whether the input is interlaced or
         /// not.
         /// </summary>
         public static readonly DeinterlaceMode Off = "Off";
 
         /// <summary>
-        /// Automatic pixel adaptive.
+        /// Apply automatic pixel adaptive de-interlacing on each frame in the
+        /// input video.
         /// </summary>
         public static readonly DeinterlaceMode AutoPixelAdaptive = "AutoPixelAdaptive";
 

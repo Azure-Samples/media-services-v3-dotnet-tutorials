@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Operation display properties.
+    /// Operation details.
     /// </summary>
     public partial class OperationDisplay
     {

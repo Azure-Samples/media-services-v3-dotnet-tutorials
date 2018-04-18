@@ -25,7 +25,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// The operations group for this extension method.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             public static EntityNameAvailabilityCheckOutput CheckNameAvailability(this IProvidersOperations operations, CheckNameAvailabilityInput parameters)
             {
@@ -42,7 +42,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// The operations group for this extension method.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.

@@ -5,7 +5,6 @@
 namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 {
     using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
     using Microsoft.Rest.Serialization;
     using Newtonsoft.Json;
     using System.Collections;
@@ -16,7 +15,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     /// A Media Transform that can be applied to an input by creating Jobs.
     /// </summary>
     [JsonTransformation]
-    public partial class Transform : IResource
+    public partial class Transform : ProxyResource
     {
         /// <summary>
         /// Initializes a new instance of the Transform class.
@@ -30,24 +29,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// Initializes a new instance of the Transform class.
         /// </summary>
         /// <param name="outputs">The outputs for the Transform.</param>
-        /// <param name="name">The resource name.</param>
-        /// <param name="id">The resource ID.</param>
-        /// <param name="type">The resource type.</param>
-        /// <param name="location">The resource location.</param>
-        /// <param name="tags">Optional resource tags.</param>
+        /// <param name="id">Fully qualified resource ID for the
+        /// resource.</param>
+        /// <param name="name">The name of the resource.</param>
+        /// <param name="type">The type of the resource.</param>
         /// <param name="created">The date and time when the Transform was
         /// created.</param>
         /// <param name="description">Customer supplied description of the
         /// transform.</param>
         /// <param name="lastModified">The date and time when the Transform was
         /// last updated.</param>
-        public Transform(IList<TransformOutput> outputs, string name = default(string), string id = default(string), string type = default(string), string location = default(string), object tags = default(object), System.DateTimeOffset created = default(System.DateTimeOffset), string description = default(string), System.DateTimeOffset lastModified = default(System.DateTimeOffset))
+        public Transform(IList<TransformOutput> outputs, string id = default(string), string name = default(string), string type = default(string), System.DateTimeOffset created = default(System.DateTimeOffset), string description = default(string), System.DateTimeOffset lastModified = default(System.DateTimeOffset))
+            : base(id, name, type)
         {
-            Name = name;
-            Id = id;
-            Type = type;
-            Location = location;
-            Tags = tags;
             Created = created;
             Description = description;
             LastModified = lastModified;
@@ -59,36 +53,6 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets the resource name.
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the resource ID.
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; private set; }
-
-        /// <summary>
-        /// Gets the resource type.
-        /// </summary>
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the resource location.
-        /// </summary>
-        [JsonProperty(PropertyName = "location")]
-        public string Location { get; set; }
-
-        /// <summary>
-        /// Gets or sets optional resource tags.
-        /// </summary>
-        [JsonProperty(PropertyName = "tags")]
-        public object Tags { get; set; }
 
         /// <summary>
         /// Gets the date and time when the Transform was created.

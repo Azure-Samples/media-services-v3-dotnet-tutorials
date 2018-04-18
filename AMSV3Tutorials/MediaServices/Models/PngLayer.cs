@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// This represents a layer in the PngImage class.
+    /// Describes the settings to produce a PNG image from the input video.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.PngLayer")]
     public partial class PngLayer : Layer
@@ -24,15 +24,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the PngLayer class.
         /// </summary>
-        /// <param name="width">Gets or sets width of video in pixels for this
-        /// layer.</param>
-        /// <param name="height">Gets or sets height of video in pixels for
-        /// this layer.</param>
-        /// <param name="condition">Gets or sets the predicate to be evaluated
-        /// before encoding this layer.</param>
-        /// <param name="label">Gets or sets the label for this layer.</param>
-        public PngLayer(string width = default(string), string height = default(string), string condition = default(string), string label = default(string))
-            : base(width, height, condition, label)
+        /// <param name="width">Describes the width of the output video for
+        /// this layer. The value can be absolute (in pixels) or relative (in
+        /// percentage). For example 50% means the output video has half as
+        /// many pixels in width as the input.</param>
+        /// <param name="height">Describes the height of the output video for
+        /// this layer. The value can be absolute (in pixels) or relative (in
+        /// percentage). For example 50% means the output video has half as
+        /// many pixels in height as the input.</param>
+        /// <param name="label">Describes the alphanumeric label for this
+        /// layer, which can be used in multiplexing different video and audio
+        /// layers, or in naming the output file.</param>
+        public PngLayer(string width = default(string), string height = default(string), string label = default(string))
+            : base(width, height, label)
         {
             CustomInit();
         }

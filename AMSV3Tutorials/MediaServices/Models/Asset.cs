@@ -5,7 +5,6 @@
 namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 {
     using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
     using Microsoft.Rest.Serialization;
     using Newtonsoft.Json;
     using System.Linq;
@@ -14,7 +13,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     /// An Asset.
     /// </summary>
     [JsonTransformation]
-    public partial class Asset : IResource
+    public partial class Asset : ProxyResource
     {
         /// <summary>
         /// Initializes a new instance of the Asset class.
@@ -27,9 +26,10 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Asset class.
         /// </summary>
-        /// <param name="name">The resource name.</param>
-        /// <param name="id">The resource ID.</param>
-        /// <param name="type">The resource type.</param>
+        /// <param name="id">Fully qualified resource ID for the
+        /// resource.</param>
+        /// <param name="name">The name of the resource.</param>
+        /// <param name="type">The type of the resource.</param>
         /// <param name="assetId">The Asset ID.</param>
         /// <param name="created">The creation date of the Asset.</param>
         /// <param name="lastModified">The last modified date of the
@@ -47,11 +47,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// 'StaticEnvelopeEncryption'</param>
         /// <param name="storageEncryptionKey">The Base64 encoded key for the
         /// Asset storage encryption.</param>
-        public Asset(string name = default(string), string id = default(string), string type = default(string), System.Guid assetId = default(System.Guid), System.DateTimeOffset created = default(System.DateTimeOffset), System.DateTimeOffset lastModified = default(System.DateTimeOffset), string alternateId = default(string), string description = default(string), string container = default(string), string storageAccountId = default(string), AssetStorageEncryptionFormat? storageEncryptionFormat = default(AssetStorageEncryptionFormat?), string storageEncryptionKey = default(string))
+        public Asset(string id = default(string), string name = default(string), string type = default(string), System.Guid assetId = default(System.Guid), System.DateTimeOffset created = default(System.DateTimeOffset), System.DateTimeOffset lastModified = default(System.DateTimeOffset), string alternateId = default(string), string description = default(string), string container = default(string), string storageAccountId = default(string), AssetStorageEncryptionFormat? storageEncryptionFormat = default(AssetStorageEncryptionFormat?), string storageEncryptionKey = default(string))
+            : base(id, name, type)
         {
-            Name = name;
-            Id = id;
-            Type = type;
             AssetId = assetId;
             Created = created;
             LastModified = lastModified;
@@ -68,24 +66,6 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets the resource name.
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the resource ID.
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; private set; }
-
-        /// <summary>
-        /// Gets the resource type.
-        /// </summary>
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; private set; }
 
         /// <summary>
         /// Gets the Asset ID.

@@ -26,12 +26,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
             /// </param>
-            public static IPage<Asset> List(this IAssetsOperations operations, ODataQuery<Asset> odataQuery = default(ODataQuery<Asset>))
+            public static IPage<Asset> List(this IAssetsOperations operations, string resourceGroupName, string accountName, ODataQuery<Asset> odataQuery = default(ODataQuery<Asset>))
             {
-                return operations.ListAsync(odataQuery).GetAwaiter().GetResult();
+                return operations.ListAsync(resourceGroupName, accountName, odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -44,15 +50,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IPage<Asset>> ListAsync(this IAssetsOperations operations, ODataQuery<Asset> odataQuery = default(ODataQuery<Asset>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IPage<Asset>> ListAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, ODataQuery<Asset> odataQuery = default(ODataQuery<Asset>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListWithHttpMessagesAsync(odataQuery, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListWithHttpMessagesAsync(resourceGroupName, accountName, odataQuery, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -67,12 +79,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
-            public static Asset Get(this IAssetsOperations operations, string assetName)
+            public static Asset Get(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName)
             {
-                return operations.GetAsync(assetName).GetAwaiter().GetResult();
+                return operations.GetAsync(resourceGroupName, accountName, assetName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -84,15 +102,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Asset> GetAsync(this IAssetsOperations operations, string assetName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Asset> GetAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.GetWithHttpMessagesAsync(assetName, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetWithHttpMessagesAsync(resourceGroupName, accountName, assetName, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -107,15 +131,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
-            public static Asset CreateOrUpdate(this IAssetsOperations operations, string assetName, Asset parameters)
+            public static Asset CreateOrUpdate(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, Asset parameters)
             {
-                return operations.CreateOrUpdateAsync(assetName, parameters).GetAwaiter().GetResult();
+                return operations.CreateOrUpdateAsync(resourceGroupName, accountName, assetName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -127,18 +157,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Asset> CreateOrUpdateAsync(this IAssetsOperations operations, string assetName, Asset parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Asset> CreateOrUpdateAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, Asset parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(assetName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName, accountName, assetName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -153,12 +189,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
-            public static void Delete(this IAssetsOperations operations, string assetName)
+            public static void Delete(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName)
             {
-                operations.DeleteAsync(assetName).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, accountName, assetName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -170,15 +212,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAsync(this IAssetsOperations operations, string assetName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.DeleteWithHttpMessagesAsync(assetName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, accountName, assetName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -190,15 +238,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
-            public static Asset Update(this IAssetsOperations operations, string assetName, Asset parameters)
+            public static Asset Update(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, Asset parameters)
             {
-                return operations.UpdateAsync(assetName, parameters).GetAwaiter().GetResult();
+                return operations.UpdateAsync(resourceGroupName, accountName, assetName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -210,18 +264,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Asset> UpdateAsync(this IAssetsOperations operations, string assetName, Asset parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Asset> UpdateAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, Asset parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.UpdateWithHttpMessagesAsync(assetName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.UpdateWithHttpMessagesAsync(resourceGroupName, accountName, assetName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -236,15 +296,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
-            public static AssetContainerSas ListContainerSas(this IAssetsOperations operations, string assetName, ListContainerSasInput parameters)
+            public static AssetContainerSas ListContainerSas(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, ListContainerSasInput parameters)
             {
-                return operations.ListContainerSasAsync(assetName, parameters).GetAwaiter().GetResult();
+                return operations.ListContainerSasAsync(resourceGroupName, accountName, assetName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -256,18 +322,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='parameters'>
-            /// The request parameters.
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<AssetContainerSas> ListContainerSasAsync(this IAssetsOperations operations, string assetName, ListContainerSasInput parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<AssetContainerSas> ListContainerSasAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, ListContainerSasInput parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListContainerSasWithHttpMessagesAsync(assetName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListContainerSasWithHttpMessagesAsync(resourceGroupName, accountName, assetName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -283,12 +355,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
-            public static AssetStorageEncryptionKey GetEncryptionKey(this IAssetsOperations operations, string assetName)
+            public static AssetStorageEncryptionKey GetEncryptionKey(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName)
             {
-                return operations.GetEncryptionKeyAsync(assetName).GetAwaiter().GetResult();
+                return operations.GetEncryptionKeyAsync(resourceGroupName, accountName, assetName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -301,15 +379,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='assetName'>
             /// The Asset name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<AssetStorageEncryptionKey> GetEncryptionKeyAsync(this IAssetsOperations operations, string assetName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<AssetStorageEncryptionKey> GetEncryptionKeyAsync(this IAssetsOperations operations, string resourceGroupName, string accountName, string assetName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.GetEncryptionKeyWithHttpMessagesAsync(assetName, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetEncryptionKeyWithHttpMessagesAsync(resourceGroupName, accountName, assetName, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

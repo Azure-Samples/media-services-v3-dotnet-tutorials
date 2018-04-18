@@ -8,7 +8,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// video copy codec.
+    /// A special codec flag, which tells the encoder to simply copy the input
+    /// video bitstream.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.CopyVideo")]
     public partial class CopyVideo : Codec
@@ -24,7 +25,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the CopyVideo class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
         public CopyVideo(string label = default(string))
             : base(label)
         {

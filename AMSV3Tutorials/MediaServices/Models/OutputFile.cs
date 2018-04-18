@@ -10,7 +10,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Represent an output file.
+    /// Represents an output file produced.
     /// </summary>
     public partial class OutputFile
     {
@@ -25,7 +25,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the OutputFile class.
         /// </summary>
-        /// <param name="trackLabels">Gets the track labels.</param>
+        /// <param name="trackLabels">Describes the list of track labels that
+        /// would be muxed together to produce the file.</param>
         public OutputFile(IList<string> trackLabels = default(IList<string>))
         {
             TrackLabels = trackLabels;
@@ -38,7 +39,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets the track labels.
+        /// Gets or sets describes the list of track labels that would be muxed
+        /// together to produce the file.
         /// </summary>
         [JsonProperty(PropertyName = "trackLabels")]
         public IList<string> TrackLabels { get; set; }

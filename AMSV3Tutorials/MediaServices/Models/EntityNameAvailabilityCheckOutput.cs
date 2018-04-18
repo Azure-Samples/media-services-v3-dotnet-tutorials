@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// The response from a check name availability request.
+    /// The response from the check name availability request.
     /// </summary>
     public partial class EntityNameAvailabilityCheckOutput
     {

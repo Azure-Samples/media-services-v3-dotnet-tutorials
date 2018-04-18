@@ -2,7 +2,7 @@
   "parameters": {
     "subscriptionId": "00000000-0000-0000-0000-000000000000",
     "resourceGroupName": "contoso",
-    "api-version": "2018-02-01-privatepreview"
+    "api-version": "2018-03-30-preview"
   },
   "responses": {
     "200": {
@@ -105,6 +105,114 @@
               "resource": "Asset",
               "operation": "Get Asset Encryption Key",
               "description": "Get Asset Encryption Key"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingPolicies/read",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Policy",
+              "operation": "Read Streaming Policy",
+              "description": "Read any Streaming Policy"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingPolicies/write",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Policy",
+              "operation": "Create or Update Streaming Policy",
+              "description": "Create or Update any Streaming Policy"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingPolicies/delete",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Policy",
+              "operation": "Delete Streaming Policy",
+              "description": "Delete any Streaming Policy"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingLocators/read",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Locator",
+              "operation": "Read Streaming Locator",
+              "description": "Read any Streaming Locator"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingLocators/write",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Locator",
+              "operation": "Create or Update Streaming Locator",
+              "description": "Create or Update any Streaming Locator"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingLocators/delete",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Locator",
+              "operation": "Delete Streaming Locator",
+              "description": "Delete any Streaming Locator"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingLocators/listContentKeys/action",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Locator",
+              "operation": "List Content Keys",
+              "description": "List Content Keys"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/streamingLocators/listPaths/action",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Streaming Locator",
+              "operation": "List Paths",
+              "description": "List Paths"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/contentKeyPolicies/read",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Content Key Policy",
+              "operation": "Read Content Key Policy",
+              "description": "Read any Content Key Policy"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/contentKeyPolicies/write",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Content Key Policy",
+              "operation": "Create or Update Content Key Policy",
+              "description": "Create or Update any Content Key Policy"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/contentKeyPolicies/delete",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Content Key Policy",
+              "operation": "Delete Content Key Policy",
+              "description": "Delete any Content Key Policy"
+            }
+          },
+          {
+            "name": "Microsoft.Media/mediaservices/contentKeyPolicies/getPolicyPropertiesWithSecrets/action",
+            "display": {
+              "provider": "Microsoft Media Services",
+              "resource": "Content Key Policy",
+              "operation": "Get Policy Properties With Secrets",
+              "description": "Get Policy Properties With Secrets"
             }
           },
           {

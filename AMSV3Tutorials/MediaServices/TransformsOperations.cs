@@ -51,6 +51,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Lists the Transforms in the account.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='odataQuery'>
         /// OData parameters to apply to the operation.
         /// </param>
@@ -75,19 +81,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<Transform>>> ListWithHttpMessagesAsync(ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<Transform>>> ListWithHttpMessagesAsync(string resourceGroupName, string accountName, ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (Client.ApiVersion == null)
             {
@@ -101,6 +107,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("odataQuery", odataQuery);
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
             }
@@ -108,8 +116,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             List<string> _queryParameters = new List<string>();
             if (odataQuery != null)
             {
@@ -249,6 +257,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Gets a Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -273,19 +287,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<Transform>> GetWithHttpMessagesAsync(string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<Transform>> GetWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -302,6 +316,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "Get", tracingParameters);
@@ -310,8 +326,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             List<string> _queryParameters = new List<string>();
             if (Client.ApiVersion != null)
@@ -444,10 +460,17 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Creates or updates a new Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
         /// <param name='parameters'>
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -470,19 +493,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<Transform>> CreateOrUpdateWithHttpMessagesAsync(string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<Transform>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -507,6 +530,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("parameters", parameters);
                 tracingParameters.Add("cancellationToken", cancellationToken);
@@ -516,8 +541,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             List<string> _queryParameters = new List<string>();
             if (Client.ApiVersion != null)
@@ -674,6 +699,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Deletes a Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -695,19 +726,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -724,6 +755,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "Delete", tracingParameters);
@@ -732,8 +765,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             List<string> _queryParameters = new List<string>();
             if (Client.ApiVersion != null)
@@ -848,10 +881,17 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Updates a Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
         /// <param name='parameters'>
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -874,19 +914,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<Transform>> UpdateWithHttpMessagesAsync(string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<Transform>> UpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, Transform parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -907,6 +947,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("parameters", parameters);
                 tracingParameters.Add("cancellationToken", cancellationToken);
@@ -916,8 +958,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             List<string> _queryParameters = new List<string>();
             if (Client.ApiVersion != null)

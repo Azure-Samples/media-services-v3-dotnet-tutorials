@@ -8,7 +8,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// An object to represent an audio copy codec.
+    /// A special codec flag, which tells the encoder to simply copy the input
+    /// audio bitstream.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.CopyAudio")]
     public partial class CopyAudio : Codec
@@ -24,7 +25,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the CopyAudio class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
         public CopyAudio(string label = default(string))
             : base(label)
         {

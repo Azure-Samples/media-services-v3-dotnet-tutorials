@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// A base class for all the codecs.
+    /// Describes the basic properties of all codecs.
     /// </summary>
     public partial class Codec
     {
@@ -23,7 +23,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Codec class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
         public Codec(string label = default(string))
         {
             Label = label;
@@ -36,7 +37,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the codec label.
+        /// Gets or sets describes the optional label for the codec.
         /// </summary>
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }

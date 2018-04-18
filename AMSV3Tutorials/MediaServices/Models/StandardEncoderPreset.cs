@@ -10,7 +10,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Preset for Media Encoder Standard.
+    /// Describes all the settings to be used when encoding the input video
+    /// with the Standard Encoder.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.StandardEncoderPreset")]
     public partial class StandardEncoderPreset : Preset
@@ -26,15 +27,15 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the StandardEncoderPreset class.
         /// </summary>
-        /// <param name="streams">Gets the Stream definitions for this
-        /// source.</param>
-        /// <param name="filters">Gets or sets the filters for the
-        /// preset.</param>
-        /// <param name="codecs">Gets the list of codecs to use.</param>
-        /// <param name="formats">Gets the list of outputs.</param>
-        public StandardEncoderPreset(IList<StreamSelection> streams = default(IList<StreamSelection>), Filters filters = default(Filters), IList<Codec> codecs = default(IList<Codec>), IList<Format> formats = default(IList<Format>))
+        /// <param name="filters">Describes the default set of filters to be
+        /// applied to all the input media (except overlays). Describes
+        /// operations like rotation, deinterlacing and overlays.</param>
+        /// <param name="codecs">Describes the list of codecs to be used when
+        /// encoding the input video.</param>
+        /// <param name="formats">Describes the list of outputs to be produced
+        /// by the encoder.</param>
+        public StandardEncoderPreset(Filters filters = default(Filters), IList<Codec> codecs = default(IList<Codec>), IList<Format> formats = default(IList<Format>))
         {
-            Streams = streams;
             Filters = filters;
             Codecs = codecs;
             Formats = formats;
@@ -47,25 +48,23 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets the Stream definitions for this source.
-        /// </summary>
-        [JsonProperty(PropertyName = "streams")]
-        public IList<StreamSelection> Streams { get; set; }
-
-        /// <summary>
-        /// Gets or sets the filters for the preset.
+        /// Gets or sets describes the default set of filters to be applied to
+        /// all the input media (except overlays). Describes operations like
+        /// rotation, deinterlacing and overlays.
         /// </summary>
         [JsonProperty(PropertyName = "filters")]
         public Filters Filters { get; set; }
 
         /// <summary>
-        /// Gets the list of codecs to use.
+        /// Gets or sets describes the list of codecs to be used when encoding
+        /// the input video.
         /// </summary>
         [JsonProperty(PropertyName = "codecs")]
         public IList<Codec> Codecs { get; set; }
 
         /// <summary>
-        /// Gets the list of outputs.
+        /// Gets or sets describes the list of outputs to be produced by the
+        /// encoder.
         /// </summary>
         [JsonProperty(PropertyName = "formats")]
         public IList<Format> Formats { get; set; }

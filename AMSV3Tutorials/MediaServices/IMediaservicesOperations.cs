@@ -21,8 +21,11 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// List Media Services accounts
         /// </summary>
         /// <remarks>
-        /// List Media Services accounts in a resource group.
+        /// List Media Services accounts in the resource group
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -38,13 +41,16 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<MediaServiceCollection>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<MediaService>>> ListWithHttpMessagesAsync(string resourceGroupName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get a Media Services account
         /// </summary>
         /// <remarks>
         /// Get the details of a Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
         /// <param name='accountName'>
         /// The Media Services account name.
         /// </param>
@@ -63,18 +69,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<MediaService>> GetWithHttpMessagesAsync(string accountName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<MediaService>> GetWithHttpMessagesAsync(string resourceGroupName, string accountName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Create or update a Media Services account
         /// </summary>
         /// <remarks>
         /// Creates or updates a Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
         /// <param name='accountName'>
         /// The Media Services account name.
         /// </param>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -91,13 +100,16 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<MediaService>> CreateOrUpdateWithHttpMessagesAsync(string accountName, MediaService parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<MediaService>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, MediaService parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Delete a Media Services account.
         /// </summary>
         /// <remarks>
         /// Deletes a Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
         /// <param name='accountName'>
         /// The Media Services account name.
         /// </param>
@@ -113,18 +125,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string accountName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string accountName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Update a Media Services account
         /// </summary>
         /// <remarks>
         /// Updates an existing Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
         /// <param name='accountName'>
         /// The Media Services account name.
         /// </param>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -141,7 +156,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<MediaService>> UpdateWithHttpMessagesAsync(string accountName, MediaService parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<MediaService>> UpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, MediaService parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Synchronizes Storage Account Keys
         /// </summary>
@@ -149,11 +164,14 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// Synchronizes storage account keys for a storage account associated
         /// with the Media Service account.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
         /// <param name='accountName'>
         /// The Media Services account name.
         /// </param>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -167,7 +185,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> SyncStorageKeysWithHttpMessagesAsync(string accountName, SyncStorageKeysInput parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> SyncStorageKeysWithHttpMessagesAsync(string resourceGroupName, string accountName, SyncStorageKeysInput parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// List Media Services accounts
         /// </summary>
@@ -189,7 +207,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<SubscriptionMediaServiceCollection>> ListBySubscriptionWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<SubscriptionMediaService>>> ListBySubscriptionWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get a Media Services account
         /// </summary>
@@ -215,5 +233,55 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// Thrown when a required parameter is null
         /// </exception>
         Task<AzureOperationResponse<SubscriptionMediaService>> GetBySubscriptionWithHttpMessagesAsync(string accountName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// List Media Services accounts
+        /// </summary>
+        /// <remarks>
+        /// List Media Services accounts in the resource group
+        /// </remarks>
+        /// <param name='nextPageLink'>
+        /// The NextLink from the previous successful call to List operation.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="ApiErrorException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse<IPage<MediaService>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// List Media Services accounts
+        /// </summary>
+        /// <remarks>
+        /// List Media Services accounts in the subscription.
+        /// </remarks>
+        /// <param name='nextPageLink'>
+        /// The NextLink from the previous successful call to List operation.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="ApiErrorException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse<IPage<SubscriptionMediaService>>> ListBySubscriptionNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

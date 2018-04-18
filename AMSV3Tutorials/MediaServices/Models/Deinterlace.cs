@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// A class to define de-interlacing settings.
+    /// Describes the de-interlacing settings.
     /// </summary>
     public partial class Deinterlace
     {
@@ -23,10 +23,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Deinterlace class.
         /// </summary>
-        /// <param name="parity">Gets or sets the parity to use. Possible
-        /// values include: 'Auto', 'TopFieldFirst', 'BottomFieldFirst'</param>
-        /// <param name="mode">Gets or sets the deinterlace Mode. Possible
-        /// values include: 'Off', 'AutoPixelAdaptive'</param>
+        /// <param name="parity">Describes the field parity for de-interlacing,
+        /// defaults to Auto. Possible values include: 'Auto', 'TopFieldFirst',
+        /// 'BottomFieldFirst'</param>
+        /// <param name="mode">Describes the deinterlacing mode, defaults to
+        /// AutoPixelAdaptive. Possible values include: 'Off',
+        /// 'AutoPixelAdaptive'</param>
         public Deinterlace(DeinterlaceParity? parity = default(DeinterlaceParity?), DeinterlaceMode? mode = default(DeinterlaceMode?))
         {
             Parity = parity;
@@ -40,14 +42,16 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the parity to use. Possible values include: 'Auto',
-        /// 'TopFieldFirst', 'BottomFieldFirst'
+        /// Gets or sets describes the field parity for de-interlacing,
+        /// defaults to Auto. Possible values include: 'Auto', 'TopFieldFirst',
+        /// 'BottomFieldFirst'
         /// </summary>
         [JsonProperty(PropertyName = "parity")]
         public DeinterlaceParity? Parity { get; set; }
 
         /// <summary>
-        /// Gets or sets the deinterlace Mode. Possible values include: 'Off',
+        /// Gets or sets describes the deinterlacing mode, defaults to
+        /// AutoPixelAdaptive. Possible values include: 'Off',
         /// 'AutoPixelAdaptive'
         /// </summary>
         [JsonProperty(PropertyName = "mode")]

@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Object to represent a video layer.
+    /// Describes the basic properties for an output video layer.
     /// </summary>
     public partial class Layer
     {
@@ -23,18 +23,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Layer class.
         /// </summary>
-        /// <param name="width">Gets or sets width of video in pixels for this
-        /// layer.</param>
-        /// <param name="height">Gets or sets height of video in pixels for
-        /// this layer.</param>
-        /// <param name="condition">Gets or sets the predicate to be evaluated
-        /// before encoding this layer.</param>
-        /// <param name="label">Gets or sets the label for this layer.</param>
-        public Layer(string width = default(string), string height = default(string), string condition = default(string), string label = default(string))
+        /// <param name="width">Describes the width of the output video for
+        /// this layer. The value can be absolute (in pixels) or relative (in
+        /// percentage). For example 50% means the output video has half as
+        /// many pixels in width as the input.</param>
+        /// <param name="height">Describes the height of the output video for
+        /// this layer. The value can be absolute (in pixels) or relative (in
+        /// percentage). For example 50% means the output video has half as
+        /// many pixels in height as the input.</param>
+        /// <param name="label">Describes the alphanumeric label for this
+        /// layer, which can be used in multiplexing different video and audio
+        /// layers, or in naming the output file.</param>
+        public Layer(string width = default(string), string height = default(string), string label = default(string))
         {
             Width = width;
             Height = height;
-            Condition = condition;
             Label = label;
             CustomInit();
         }
@@ -45,26 +48,27 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets width of video in pixels for this layer.
+        /// Gets or sets describes the width of the output video for this
+        /// layer. The value can be absolute (in pixels) or relative (in
+        /// percentage). For example 50% means the output video has half as
+        /// many pixels in width as the input.
         /// </summary>
         [JsonProperty(PropertyName = "width")]
         public string Width { get; set; }
 
         /// <summary>
-        /// Gets or sets height of video in pixels for this layer.
+        /// Gets or sets describes the height of the output video for this
+        /// layer. The value can be absolute (in pixels) or relative (in
+        /// percentage). For example 50% means the output video has half as
+        /// many pixels in height as the input.
         /// </summary>
         [JsonProperty(PropertyName = "height")]
         public string Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the predicate to be evaluated before encoding this
-        /// layer.
-        /// </summary>
-        [JsonProperty(PropertyName = "condition")]
-        public string Condition { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label for this layer.
+        /// Gets or sets describes the alphanumeric label for this layer, which
+        /// can be used in multiplexing different video and audio layers, or in
+        /// naming the output file.
         /// </summary>
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }

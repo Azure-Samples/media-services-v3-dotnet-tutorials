@@ -15,7 +15,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     /// A Media Services account.
     /// </summary>
     [JsonTransformation]
-    public partial class SubscriptionMediaService
+    public partial class SubscriptionMediaService : TrackedResource
     {
         /// <summary>
         /// Initializes a new instance of the SubscriptionMediaService class.
@@ -28,21 +28,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the SubscriptionMediaService class.
         /// </summary>
+        /// <param name="id">Fully qualified resource ID for the
+        /// resource.</param>
+        /// <param name="name">The name of the resource.</param>
+        /// <param name="type">The type of the resource.</param>
+        /// <param name="tags">Resource tags.</param>
+        /// <param name="location">The Azure Region of the resource.</param>
         /// <param name="mediaServiceId">The Media Services account ID.</param>
-        /// <param name="name">The resource name.</param>
-        /// <param name="id">The resource ID.</param>
-        /// <param name="type">The resource type.</param>
-        /// <param name="location">The resource location.</param>
-        /// <param name="tags">Optional resource tags.</param>
         /// <param name="storageAccounts">The storage accounts for this
         /// resource.</param>
-        public SubscriptionMediaService(System.Guid mediaServiceId, string name = default(string), string id = default(string), string type = default(string), string location = default(string), object tags = default(object), IList<StorageAccount> storageAccounts = default(IList<StorageAccount>))
+        public SubscriptionMediaService(string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), string location = default(string), System.Guid mediaServiceId = default(System.Guid), IList<StorageAccount> storageAccounts = default(IList<StorageAccount>))
+            : base(id, name, type, tags, location)
         {
-            Name = name;
-            Id = id;
-            Type = type;
-            Location = location;
-            Tags = tags;
             MediaServiceId = mediaServiceId;
             StorageAccounts = storageAccounts;
             CustomInit();
@@ -54,40 +51,10 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets the resource name.
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the resource ID.
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; private set; }
-
-        /// <summary>
-        /// Gets the resource type.
-        /// </summary>
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the resource location.
-        /// </summary>
-        [JsonProperty(PropertyName = "location")]
-        public string Location { get; set; }
-
-        /// <summary>
-        /// Gets or sets optional resource tags.
-        /// </summary>
-        [JsonProperty(PropertyName = "tags")]
-        public object Tags { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Media Services account ID.
+        /// Gets the Media Services account ID.
         /// </summary>
         [JsonProperty(PropertyName = "properties.mediaServiceId")]
-        public System.Guid MediaServiceId { get; set; }
+        public System.Guid MediaServiceId { get; private set; }
 
         /// <summary>
         /// Gets or sets the storage accounts for this resource.
@@ -95,24 +62,5 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         [JsonProperty(PropertyName = "properties.storageAccounts")]
         public IList<StorageAccount> StorageAccounts { get; set; }
 
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (StorageAccounts != null)
-            {
-                foreach (var element in StorageAccounts)
-                {
-                    if (element != null)
-                    {
-                        element.Validate();
-                    }
-                }
-            }
-        }
     }
 }

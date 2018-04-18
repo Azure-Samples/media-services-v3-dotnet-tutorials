@@ -27,11 +27,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the JobInputAsset class.
         /// </summary>
-        /// <param name="assetName">Path to the asset such as
-        /// "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}".</param>
-        /// <param name="label">Label of the JobInput.  Used to match JobInputs
-        /// to TransformInputs.  If no Label is given then the JobInputs are
-        /// matched by index.</param>
+        /// <param name="assetName">The name of input Asset.</param>
+        /// <param name="label">Customer provided label of the
+        /// JobInput.</param>
         /// <param name="files">List of files.  Required for JobInputAzureBlob.
         /// It optionally can be used for JobInputAsset to tell the service to
         /// only use the files specified from the Asset.</param>
@@ -48,8 +46,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets path to the asset such as
-        /// "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}".
+        /// Gets or sets the name of input Asset.
         /// </summary>
         [JsonProperty(PropertyName = "assetName")]
         public string AssetName { get; set; }

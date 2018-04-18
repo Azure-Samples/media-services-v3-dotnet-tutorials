@@ -8,7 +8,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// An audio analyzer preset that analyzes and transcribes the audio.
+    /// The Audio Analyzer preset applies a pre-defined set of AI-based
+    /// analysis operations, including speech transcription, on the input.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.AudioAnalyzerPreset")]
     public partial class AudioAnalyzerPreset : Preset
@@ -24,9 +25,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the AudioAnalyzerPreset class.
         /// </summary>
-        /// <param name="audioLanguage">Gets or sets the audio language for the
-        /// video. Typically in the format of "language code-country/region"
-        /// (e.g: en-US)</param>
+        /// <param name="audioLanguage">Specifies the language for the audio
+        /// payload in the input. Typically in the format of "language
+        /// code-country/region" (e.g: "en-US").</param>
         public AudioAnalyzerPreset(string audioLanguage = default(string))
         {
             AudioLanguage = audioLanguage;
@@ -39,8 +40,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the audio language for the video. Typically in the
-        /// format of "language code-country/region" (e.g: en-US)
+        /// Gets or sets specifies the language for the audio payload in the
+        /// input. Typically in the format of "language code-country/region"
+        /// (e.g: "en-US").
         /// </summary>
         [JsonProperty(PropertyName = "audioLanguage")]
         public string AudioLanguage { get; set; }

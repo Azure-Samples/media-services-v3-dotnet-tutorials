@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Default base class for all Audio codecs.
+    /// Defines the common properties for all audio codecs.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.Audio")]
     public partial class Audio : Codec
@@ -24,7 +24,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Audio class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
         /// <param name="channels">Gets or sets number of channels in the
         /// Audio.</param>
         /// <param name="samplingRate">Gets or sets the sampling rate to use

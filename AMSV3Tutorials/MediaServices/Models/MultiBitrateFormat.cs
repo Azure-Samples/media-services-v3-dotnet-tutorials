@@ -10,7 +10,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// GOP aligned multi bitrate output.
+    /// Describes the properties for producing a collection of GOP aligned
+    /// multi bitrate files.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.MultiBitrateFormat")]
     public partial class MultiBitrateFormat : Format
@@ -26,17 +27,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the MultiBitrateFormat class.
         /// </summary>
-        /// <param name="filenamePattern">Gets or sets the pattern of the
-        /// filename to use excluding the extension. REVIEW: List "macros" that
-        /// can be used and give examples.</param>
-        /// <param name="manifestFilename">Gets or sets the pattern of the
-        /// manifest file name to use excluding the extension. REVIEW: List
-        /// "macros" that can be used and give examples.</param>
-        /// <param name="outputFiles">Gets the list of output files.</param>
-        public MultiBitrateFormat(string filenamePattern = default(string), string manifestFilename = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
+        /// <param name="filenamePattern">Describes the pattern of the file
+        /// names for the generated output files. The following macros are
+        /// supported in the file name: {Basename} - The base name of the input
+        /// video {Extension} - The appropriate extension for this format.
+        /// {Label} - The label assigned to the codec/layer. {Index} - A unique
+        /// index for thumbnails. Only applicable to thumbnails. {Bitrate} -
+        /// The audio/video bitrate. Not applicable to thumbnails. {Codec} -
+        /// The type of the audio/video codec. Any unsubstituted macros will be
+        /// collapsed and removed from the filename.</param>
+        /// <param name="outputFiles">Describes a list of output files to
+        /// produce.  Each entry in the list is a set of labels to be muxed
+        /// together .</param>
+        public MultiBitrateFormat(string filenamePattern = default(string), IList<OutputFile> outputFiles = default(IList<OutputFile>))
             : base(filenamePattern)
         {
-            ManifestFilename = manifestFilename;
             OutputFiles = outputFiles;
             CustomInit();
         }
@@ -47,15 +52,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the pattern of the manifest file name to use excluding
-        /// the extension. REVIEW: List "macros" that can be used and give
-        /// examples.
-        /// </summary>
-        [JsonProperty(PropertyName = "manifestFilename")]
-        public string ManifestFilename { get; set; }
-
-        /// <summary>
-        /// Gets the list of output files.
+        /// Gets or sets describes a list of output files to produce.  Each
+        /// entry in the list is a set of labels to be muxed together .
         /// </summary>
         [JsonProperty(PropertyName = "outputFiles")]
         public IList<OutputFile> OutputFiles { get; set; }

@@ -26,9 +26,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the JobInputs class.
         /// </summary>
-        /// <param name="label">Label of the JobInput.  Used to match JobInputs
-        /// to TransformInputs.  If no Label is given then the JobInputs are
-        /// matched by index.</param>
+        /// <param name="label">Customer provided label of the
+        /// JobInput.</param>
         /// <param name="inputs">List of Job inputs.</param>
         public JobInputs(string label = default(string), IList<JobInput> inputs = default(IList<JobInput>))
             : base(label)

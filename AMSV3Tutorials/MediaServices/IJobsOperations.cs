@@ -24,6 +24,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Lists all of the Jobs for the Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -45,13 +51,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<IPage<Job>>> ListWithHttpMessagesAsync(string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<Job>>> ListWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get Job
         /// </summary>
         /// <remarks>
         /// Gets a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -73,13 +85,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Job>> GetWithHttpMessagesAsync(string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Job>> GetWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Create Job
         /// </summary>
         /// <remarks>
         /// Creates a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -87,6 +105,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// The Job name.
         /// </param>
         /// <param name='parameters'>
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -103,13 +122,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Job>> CreateOrUpdateWithHttpMessagesAsync(string transformName, string jobName, Job parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Job>> CreateWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Job parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Delete Job
         /// </summary>
         /// <remarks>
         /// Deletes a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -128,13 +153,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Cancel Job
         /// </summary>
         /// <remarks>
         /// Cancel a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -153,7 +184,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> CancelJobWithHttpMessagesAsync(string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> CancelJobWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// List Jobs
         /// </summary>

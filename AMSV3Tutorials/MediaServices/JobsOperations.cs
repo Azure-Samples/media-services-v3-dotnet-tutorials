@@ -51,6 +51,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Lists all of the Jobs for the Transform.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -78,19 +84,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<IPage<Job>>> ListWithHttpMessagesAsync(string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<IPage<Job>>> ListWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -108,6 +114,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("odataQuery", odataQuery);
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
@@ -116,8 +124,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             List<string> _queryParameters = new List<string>();
             if (odataQuery != null)
@@ -258,6 +266,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Gets a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -285,19 +299,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<Job>> GetWithHttpMessagesAsync(string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<Job>> GetWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -318,6 +332,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("jobName", jobName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
@@ -327,8 +343,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             _url = _url.Replace("{jobName}", System.Uri.EscapeDataString(jobName));
             List<string> _queryParameters = new List<string>();
@@ -462,6 +478,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Creates a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -469,6 +491,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// The Job name.
         /// </param>
         /// <param name='parameters'>
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -491,19 +514,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse<Job>> CreateOrUpdateWithHttpMessagesAsync(string transformName, string jobName, Job parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse<Job>> CreateWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Job parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -532,18 +555,20 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("jobName", jobName);
                 tracingParameters.Add("parameters", parameters);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                ServiceClientTracing.Enter(_invocationId, this, "CreateOrUpdate", tracingParameters);
+                ServiceClientTracing.Enter(_invocationId, this, "Create", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             _url = _url.Replace("{jobName}", System.Uri.EscapeDataString(jobName));
             List<string> _queryParameters = new List<string>();
@@ -683,6 +708,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Deletes a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -707,19 +738,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -740,6 +771,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("jobName", jobName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
@@ -749,8 +782,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             _url = _url.Replace("{jobName}", System.Uri.EscapeDataString(jobName));
             List<string> _queryParameters = new List<string>();
@@ -866,6 +899,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <remarks>
         /// Cancel a Job.
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='transformName'>
         /// The Transform name.
         /// </param>
@@ -890,19 +929,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<AzureOperationResponse> CancelJobWithHttpMessagesAsync(string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AzureOperationResponse> CancelJobWithHttpMessagesAsync(string resourceGroupName, string accountName, string transformName, string jobName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Client.SubscriptionId == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.SubscriptionId");
             }
-            if (Client.ResourceGroupName == null)
+            if (resourceGroupName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.ResourceGroupName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "resourceGroupName");
             }
-            if (Client.AccountName == null)
+            if (accountName == null)
             {
-                throw new ValidationException(ValidationRules.CannotBeNull, "this.Client.AccountName");
+                throw new ValidationException(ValidationRules.CannotBeNull, "accountName");
             }
             if (transformName == null)
             {
@@ -923,6 +962,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("resourceGroupName", resourceGroupName);
+                tracingParameters.Add("accountName", accountName);
                 tracingParameters.Add("transformName", transformName);
                 tracingParameters.Add("jobName", jobName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
@@ -932,8 +973,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             var _baseUrl = Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}/cancelJob").ToString();
             _url = _url.Replace("{subscriptionId}", System.Uri.EscapeDataString(Client.SubscriptionId));
-            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(Client.ResourceGroupName));
-            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(Client.AccountName));
+            _url = _url.Replace("{resourceGroupName}", System.Uri.EscapeDataString(resourceGroupName));
+            _url = _url.Replace("{accountName}", System.Uri.EscapeDataString(accountName));
             _url = _url.Replace("{transformName}", System.Uri.EscapeDataString(transformName));
             _url = _url.Replace("{jobName}", System.Uri.EscapeDataString(jobName));
             List<string> _queryParameters = new List<string>();

@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// An object to indicate audio overlay.
+    /// Describes the properties of an audio overlay.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.AudioOverlay")]
     public partial class AudioOverlay : Overlay
@@ -24,25 +24,33 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the AudioOverlay class.
         /// </summary>
-        /// <param name="inputLabel">Gets or sets the label of the Input used
-        /// for the Overlay.   The Input must specify exactly one file to
-        /// use.</param>
+        /// <param name="inputLabel">Gets or sets the label of the Input which
+        /// is to be used as an Overlay. The Input must specify exactly one
+        /// file.</param>
         /// <param name="inputLoop">Gets or sets a value indicating whether the
-        /// overlay is looped to match the duration of the input media.</param>
-        /// <param name="start">Gets or sets the duration in the video at which
-        /// the overlay starts. This is relative to the clip start if one is
-        /// specified in a job. Default is from the beginning of the
-        /// video.</param>
-        /// <param name="end">Gets or sets the duration in the video at which
-        /// the overlay ends.  This is relative to the clip start if specified
-        /// in a job. Default is till the end of the video if InputLoop is
-        /// true. else the duration of the overlay.</param>
-        /// <param name="fadeInDuration">Gets or sets the duration for how long
-        /// the fade in happens. Default is no fade in.</param>
-        /// <param name="fadeOutDuration">Gets or sets the duration for how
-        /// long the fade out happens. Default is no fade out.</param>
+        /// overlay media is looped to match the duration of the input video.
+        /// The default is true. For example, you may have a 5 second animation
+        /// that needs to be overlaid onto an hour-long video - you would set
+        /// inputLoop to true in this case.</param>
+        /// <param name="start">Gets or sets the start position, with reference
+        /// to the input video, at which the overlay starts. The value should
+        /// be in ISO 8601 format. The default is zero, which means the overlay
+        /// starts from the beginning of the input video.</param>
+        /// <param name="end">Gets or sets the position in the input video at
+        /// which the overlay ends. The value should be in ISO 8601 format. The
+        /// default behavior is that overlay will be applied until the end of
+        /// the input video if InputLoop is true. Else, if inputLoop is false,
+        /// then overlay will last as long as the duration of the overlay
+        /// media.</param>
+        /// <param name="fadeInDuration">Gets or sets the duration over which
+        /// the overlay fades in onto the input video. The value should be in
+        /// ISO 8601 format. The default is to have no fade in</param>
+        /// <param name="fadeOutDuration">Gets or sets the duration over which
+        /// the overlay fades out of the input video. The value should be in
+        /// ISO 8601 format. The default is to have no fade out."</param>
         /// <param name="audioGainLevel">Gets or sets the gain level of audio
-        /// in the overlay. Defaults to a value of 1.0.</param>
+        /// in the overlay. The value should be in the range [0, ..., 1.0].
+        /// Defaults to a value of 1.0.</param>
         public AudioOverlay(string inputLabel = default(string), bool? inputLoop = default(bool?), System.TimeSpan? start = default(System.TimeSpan?), System.TimeSpan? end = default(System.TimeSpan?), System.TimeSpan? fadeInDuration = default(System.TimeSpan?), System.TimeSpan? fadeOutDuration = default(System.TimeSpan?), double? audioGainLevel = default(double?))
             : base(inputLabel, inputLoop, start, end, fadeInDuration, fadeOutDuration, audioGainLevel)
         {

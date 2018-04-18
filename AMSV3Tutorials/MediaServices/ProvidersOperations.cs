@@ -51,7 +51,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// Checks whether the Media Service resource name is available.
         /// </remarks>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.

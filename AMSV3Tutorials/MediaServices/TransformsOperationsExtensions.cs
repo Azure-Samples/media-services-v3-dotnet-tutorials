@@ -25,12 +25,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
             /// </param>
-            public static IPage<Transform> List(this ITransformsOperations operations, ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>))
+            public static IPage<Transform> List(this ITransformsOperations operations, string resourceGroupName, string accountName, ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>))
             {
-                return operations.ListAsync(odataQuery).GetAwaiter().GetResult();
+                return operations.ListAsync(resourceGroupName, accountName, odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -42,15 +48,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IPage<Transform>> ListAsync(this ITransformsOperations operations, ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IPage<Transform>> ListAsync(this ITransformsOperations operations, string resourceGroupName, string accountName, ODataQuery<Transform> odataQuery = default(ODataQuery<Transform>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListWithHttpMessagesAsync(odataQuery, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListWithHttpMessagesAsync(resourceGroupName, accountName, odataQuery, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -65,12 +77,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
-            public static Transform Get(this ITransformsOperations operations, string transformName)
+            public static Transform Get(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName)
             {
-                return operations.GetAsync(transformName).GetAwaiter().GetResult();
+                return operations.GetAsync(resourceGroupName, accountName, transformName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -82,15 +100,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Transform> GetAsync(this ITransformsOperations operations, string transformName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Transform> GetAsync(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.GetWithHttpMessagesAsync(transformName, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetWithHttpMessagesAsync(resourceGroupName, accountName, transformName, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -105,14 +129,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='parameters'>
+            /// The request parameters
             /// </param>
-            public static Transform CreateOrUpdate(this ITransformsOperations operations, string transformName, Transform parameters)
+            public static Transform CreateOrUpdate(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName, Transform parameters)
             {
-                return operations.CreateOrUpdateAsync(transformName, parameters).GetAwaiter().GetResult();
+                return operations.CreateOrUpdateAsync(resourceGroupName, accountName, transformName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -124,17 +155,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='parameters'>
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Transform> CreateOrUpdateAsync(this ITransformsOperations operations, string transformName, Transform parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Transform> CreateOrUpdateAsync(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName, Transform parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(transformName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(resourceGroupName, accountName, transformName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -149,12 +187,18 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
-            public static void Delete(this ITransformsOperations operations, string transformName)
+            public static void Delete(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName)
             {
-                operations.DeleteAsync(transformName).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, accountName, transformName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -166,15 +210,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAsync(this ITransformsOperations operations, string transformName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.DeleteWithHttpMessagesAsync(transformName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, accountName, transformName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -186,14 +236,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='parameters'>
+            /// The request parameters
             /// </param>
-            public static Transform Update(this ITransformsOperations operations, string transformName, Transform parameters)
+            public static Transform Update(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName, Transform parameters)
             {
-                return operations.UpdateAsync(transformName, parameters).GetAwaiter().GetResult();
+                return operations.UpdateAsync(resourceGroupName, accountName, transformName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -205,17 +262,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='parameters'>
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Transform> UpdateAsync(this ITransformsOperations operations, string transformName, Transform parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Transform> UpdateAsync(this ITransformsOperations operations, string resourceGroupName, string accountName, string transformName, Transform parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.UpdateWithHttpMessagesAsync(transformName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.UpdateWithHttpMessagesAsync(resourceGroupName, accountName, transformName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

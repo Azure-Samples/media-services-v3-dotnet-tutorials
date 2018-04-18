@@ -2,7 +2,8 @@
   "parameters": {
     "subscriptionId": "00000000-0000-0000-0000-000000000000",
     "resourceGroupName": "contoso",
-    "api-version": "2018-02-01-privatepreview",
+    "accountName": "contososports",
+    "api-version": "2018-03-30-preview",
     "parameters": {
       "name": "contososports",
       "type": "MediaServices"

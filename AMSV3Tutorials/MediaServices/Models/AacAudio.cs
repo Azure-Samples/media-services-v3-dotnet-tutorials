@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// An object to represent AAC audio encoding settings.
+    /// Describes Advanced Audio Codec or AAC audio encoding settings.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.AacAudio")]
     public partial class AacAudio : Audio
@@ -24,15 +24,17 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the AacAudio class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
         /// <param name="channels">Gets or sets number of channels in the
         /// Audio.</param>
         /// <param name="samplingRate">Gets or sets the sampling rate to use
         /// for encoding.</param>
         /// <param name="bitrate">Gets or sets the bitrate of the encoded
         /// audio.</param>
-        /// <param name="profile">Gets or sets the audio profile. Possible
-        /// values include: 'AacLc', 'HeAacV1', 'HeAacV2'</param>
+        /// <param name="profile">Gets or sets the encoding profile to be used
+        /// when encoding audio with AAC. Possible values include: 'AacLc',
+        /// 'HeAacV1', 'HeAacV2'</param>
         public AacAudio(string label = default(string), int? channels = default(int?), int? samplingRate = default(int?), int? bitrate = default(int?), AacAudioProfile? profile = default(AacAudioProfile?))
             : base(label, channels, samplingRate, bitrate)
         {
@@ -46,8 +48,8 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the audio profile. Possible values include: 'AacLc',
-        /// 'HeAacV1', 'HeAacV2'
+        /// Gets or sets the encoding profile to be used when encoding audio
+        /// with AAC. Possible values include: 'AacLc', 'HeAacV1', 'HeAacV2'
         /// </summary>
         [JsonProperty(PropertyName = "profile")]
         public AacAudioProfile? Profile { get; set; }

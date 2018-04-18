@@ -22,17 +22,20 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         }
 
         /// <summary>
-        /// the setting optimized for speed
+        /// Tells the encoder to use settings that are optimized for how fast
+        /// the encoding completes.
         /// </summary>
         public static readonly H264Complexity Speed = "Speed";
 
         /// <summary>
-        /// Balanced setting between speed and quality
+        /// Tells the encoder to use settings that achieve a balance between
+        /// speed and quality.
         /// </summary>
         public static readonly H264Complexity Balanced = "Balanced";
 
         /// <summary>
-        /// the setting optimized for quality
+        /// Tells the encoder to use settings that are optimized for to produce
+        /// a better quality output, at the expense of a slower encode time.
         /// </summary>
         public static readonly H264Complexity Quality = "Quality";
 

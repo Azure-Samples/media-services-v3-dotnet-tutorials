@@ -10,7 +10,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// The Asset container SAS.
+    /// The Asset Storage container SAS URLs.
     /// </summary>
     public partial class AssetContainerSas
     {

@@ -5,10 +5,13 @@
 namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 {
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// A class to encapsulate all the filters for a source.
+    /// Describes all the filtering operations that are to be applied to the
+    /// input video before encoding.
     /// </summary>
     public partial class Filters
     {
@@ -23,37 +26,23 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Filters class.
         /// </summary>
-        /// <param name="pad">Gets or sets a value indicating whether to pad
-        /// the source to align jagged-edge audio and video.</param>
-        /// <param name="deinterlace">Gets or sets the default de-interlacing
+        /// <param name="deinterlace">Describes the de-interlacing
         /// settings.</param>
-        /// <param name="rotation">Gets or sets the rotation if any to be
-        /// applied to the video. Possible values include: 'Auto', 'None',
-        /// 'Rotate0', 'Rotate90', 'Rotate180', 'Rotate270'</param>
-        /// <param name="adjustLoudness">Gets or sets the loudness correction
-        /// mode. Possible values include: 'None', 'Auto', 'Manual'</param>
-        /// <param name="loudnessInDB">Gets or sets the Loudness specified in
-        /// decibels (Applicable for the case of AdjustLoudness.Manual</param>
-        /// <param name="flip">Gets or sets whether the video needs to be
-        /// flipped. Possible values include: 'None', 'Horizontal',
-        /// 'Vertical'</param>
-        /// <param name="crop">Gets or sets the co-ordinates of the video to be
-        /// cropped.</param>
-        /// <param name="videoOverlay">Gets or sets the details of the video
-        /// overlay to apply if any.</param>
-        /// <param name="audioOverlay">Gets or sets the details of the audio
-        /// overlay to apply if any.</param>
-        public Filters(bool? pad = default(bool?), Deinterlace deinterlace = default(Deinterlace), Rotation? rotation = default(Rotation?), LoudnessAdjustment? adjustLoudness = default(LoudnessAdjustment?), double? loudnessInDB = default(double?), Flip? flip = default(Flip?), Rectangle crop = default(Rectangle), VideoOverlay videoOverlay = default(VideoOverlay), AudioOverlay audioOverlay = default(AudioOverlay))
+        /// <param name="rotation">Describes the rotation, if any, to be
+        /// applied to the input video, before it is encoded. Possible values
+        /// include: 'Auto', 'None', 'Rotate0', 'Rotate90', 'Rotate180',
+        /// 'Rotate270'</param>
+        /// <param name="crop">Describes the parameters for the rectangular
+        /// window with which to crop the input video.</param>
+        /// <param name="overlays">Describes the properties of overlays to be
+        /// applied to the input video. These could be audio, image or video
+        /// overlays.</param>
+        public Filters(Deinterlace deinterlace = default(Deinterlace), Rotation? rotation = default(Rotation?), Rectangle crop = default(Rectangle), IList<Overlay> overlays = default(IList<Overlay>))
         {
-            Pad = pad;
             Deinterlace = deinterlace;
             Rotation = rotation;
-            AdjustLoudness = adjustLoudness;
-            LoudnessInDB = loudnessInDB;
-            Flip = flip;
             Crop = crop;
-            VideoOverlay = videoOverlay;
-            AudioOverlay = audioOverlay;
+            Overlays = overlays;
             CustomInit();
         }
 
@@ -63,64 +52,32 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets a value indicating whether to pad the source to align
-        /// jagged-edge audio and video.
-        /// </summary>
-        [JsonProperty(PropertyName = "pad")]
-        public bool? Pad { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default de-interlacing settings.
+        /// Gets or sets describes the de-interlacing settings.
         /// </summary>
         [JsonProperty(PropertyName = "deinterlace")]
         public Deinterlace Deinterlace { get; set; }
 
         /// <summary>
-        /// Gets or sets the rotation if any to be applied to the video.
-        /// Possible values include: 'Auto', 'None', 'Rotate0', 'Rotate90',
-        /// 'Rotate180', 'Rotate270'
+        /// Gets or sets describes the rotation, if any, to be applied to the
+        /// input video, before it is encoded. Possible values include: 'Auto',
+        /// 'None', 'Rotate0', 'Rotate90', 'Rotate180', 'Rotate270'
         /// </summary>
         [JsonProperty(PropertyName = "rotation")]
         public Rotation? Rotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the loudness correction mode. Possible values include:
-        /// 'None', 'Auto', 'Manual'
-        /// </summary>
-        [JsonProperty(PropertyName = "adjustLoudness")]
-        public LoudnessAdjustment? AdjustLoudness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Loudness specified in decibels (Applicable for the
-        /// case of AdjustLoudness.Manual
-        /// </summary>
-        [JsonProperty(PropertyName = "loudnessInDB")]
-        public double? LoudnessInDB { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the video needs to be flipped. Possible values
-        /// include: 'None', 'Horizontal', 'Vertical'
-        /// </summary>
-        [JsonProperty(PropertyName = "flip")]
-        public Flip? Flip { get; set; }
-
-        /// <summary>
-        /// Gets or sets the co-ordinates of the video to be cropped.
+        /// Gets or sets describes the parameters for the rectangular window
+        /// with which to crop the input video.
         /// </summary>
         [JsonProperty(PropertyName = "crop")]
         public Rectangle Crop { get; set; }
 
         /// <summary>
-        /// Gets or sets the details of the video overlay to apply if any.
+        /// Gets or sets describes the properties of overlays to be applied to
+        /// the input video. These could be audio, image or video overlays.
         /// </summary>
-        [JsonProperty(PropertyName = "videoOverlay")]
-        public VideoOverlay VideoOverlay { get; set; }
-
-        /// <summary>
-        /// Gets or sets the details of the audio overlay to apply if any.
-        /// </summary>
-        [JsonProperty(PropertyName = "audioOverlay")]
-        public AudioOverlay AudioOverlay { get; set; }
+        [JsonProperty(PropertyName = "overlays")]
+        public IList<Overlay> Overlays { get; set; }
 
     }
 }

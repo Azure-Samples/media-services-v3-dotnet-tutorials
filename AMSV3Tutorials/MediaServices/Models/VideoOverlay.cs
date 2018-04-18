@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// A video overlay.
+    /// Describes the properties of a video overlay.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.VideoOverlay")]
     public partial class VideoOverlay : Overlay
@@ -24,40 +24,44 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the VideoOverlay class.
         /// </summary>
-        /// <param name="inputLabel">Gets or sets the label of the Input used
-        /// for the Overlay.   The Input must specify exactly one file to
-        /// use.</param>
+        /// <param name="inputLabel">Gets or sets the label of the Input which
+        /// is to be used as an Overlay. The Input must specify exactly one
+        /// file.</param>
         /// <param name="inputLoop">Gets or sets a value indicating whether the
-        /// overlay is looped to match the duration of the input media.</param>
-        /// <param name="start">Gets or sets the duration in the video at which
-        /// the overlay starts. This is relative to the clip start if one is
-        /// specified in a job. Default is from the beginning of the
-        /// video.</param>
-        /// <param name="end">Gets or sets the duration in the video at which
-        /// the overlay ends.  This is relative to the clip start if specified
-        /// in a job. Default is till the end of the video if InputLoop is
-        /// true. else the duration of the overlay.</param>
-        /// <param name="fadeInDuration">Gets or sets the duration for how long
-        /// the fade in happens. Default is no fade in.</param>
-        /// <param name="fadeOutDuration">Gets or sets the duration for how
-        /// long the fade out happens. Default is no fade out.</param>
+        /// overlay media is looped to match the duration of the input video.
+        /// The default is true. For example, you may have a 5 second animation
+        /// that needs to be overlaid onto an hour-long video - you would set
+        /// inputLoop to true in this case.</param>
+        /// <param name="start">Gets or sets the start position, with reference
+        /// to the input video, at which the overlay starts. The value should
+        /// be in ISO 8601 format. The default is zero, which means the overlay
+        /// starts from the beginning of the input video.</param>
+        /// <param name="end">Gets or sets the position in the input video at
+        /// which the overlay ends. The value should be in ISO 8601 format. The
+        /// default behavior is that overlay will be applied until the end of
+        /// the input video if InputLoop is true. Else, if inputLoop is false,
+        /// then overlay will last as long as the duration of the overlay
+        /// media.</param>
+        /// <param name="fadeInDuration">Gets or sets the duration over which
+        /// the overlay fades in onto the input video. The value should be in
+        /// ISO 8601 format. The default is to have no fade in</param>
+        /// <param name="fadeOutDuration">Gets or sets the duration over which
+        /// the overlay fades out of the input video. The value should be in
+        /// ISO 8601 format. The default is to have no fade out."</param>
         /// <param name="audioGainLevel">Gets or sets the gain level of audio
-        /// in the overlay. Defaults to a value of 1.0.</param>
-        /// <param name="position">Gets or sets the area in the video where the
-        /// overlay is applied.</param>
-        /// <param name="opacity">Gets or sets the opacity of the
-        /// overlay.</param>
-        /// <param name="preserveAspectRatio">Gets or sets a value indicating
-        /// whether the aspect ratio of the overlay needs to be preserved or
-        /// not.  Defaults to true.</param>
-        /// <param name="cropRectangle">Gets or sets the optional rectangle to
-        /// crop the video overlay.</param>
-        public VideoOverlay(string inputLabel = default(string), bool? inputLoop = default(bool?), System.TimeSpan? start = default(System.TimeSpan?), System.TimeSpan? end = default(System.TimeSpan?), System.TimeSpan? fadeInDuration = default(System.TimeSpan?), System.TimeSpan? fadeOutDuration = default(System.TimeSpan?), double? audioGainLevel = default(double?), Rectangle position = default(Rectangle), double? opacity = default(double?), bool? preserveAspectRatio = default(bool?), Rectangle cropRectangle = default(Rectangle))
+        /// in the overlay. The value should be in the range [0, ..., 1.0].
+        /// Defaults to a value of 1.0.</param>
+        /// <param name="position">Describes the area in the input video where
+        /// the overlay is applied.</param>
+        /// <param name="opacity">Describes the opacity of the overlay. This is
+        /// a value in the range [0 - 1.0]. Default is 1.0</param>
+        /// <param name="cropRectangle">Describes the an optional rectangular
+        /// window used to crop the overlay image or video.</param>
+        public VideoOverlay(string inputLabel = default(string), bool? inputLoop = default(bool?), System.TimeSpan? start = default(System.TimeSpan?), System.TimeSpan? end = default(System.TimeSpan?), System.TimeSpan? fadeInDuration = default(System.TimeSpan?), System.TimeSpan? fadeOutDuration = default(System.TimeSpan?), double? audioGainLevel = default(double?), Rectangle position = default(Rectangle), double? opacity = default(double?), Rectangle cropRectangle = default(Rectangle))
             : base(inputLabel, inputLoop, start, end, fadeInDuration, fadeOutDuration, audioGainLevel)
         {
             Position = position;
             Opacity = opacity;
-            PreserveAspectRatio = preserveAspectRatio;
             CropRectangle = cropRectangle;
             CustomInit();
         }
@@ -68,26 +72,22 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the area in the video where the overlay is applied.
+        /// Gets or sets describes the area in the input video where the
+        /// overlay is applied.
         /// </summary>
         [JsonProperty(PropertyName = "position")]
         public Rectangle Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the opacity of the overlay.
+        /// Gets or sets describes the opacity of the overlay. This is a value
+        /// in the range [0 - 1.0]. Default is 1.0
         /// </summary>
         [JsonProperty(PropertyName = "opacity")]
         public double? Opacity { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the aspect ratio of the
-        /// overlay needs to be preserved or not.  Defaults to true.
-        /// </summary>
-        [JsonProperty(PropertyName = "preserveAspectRatio")]
-        public bool? PreserveAspectRatio { get; set; }
-
-        /// <summary>
-        /// Gets or sets the optional rectangle to crop the video overlay.
+        /// Gets or sets describes the an optional rectangular window used to
+        /// crop the overlay image or video.
         /// </summary>
         [JsonProperty(PropertyName = "cropRectangle")]
         public Rectangle CropRectangle { get; set; }

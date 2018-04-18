@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// The Asset storage encryption key.
+    /// The Asset Storage encryption key.
     /// </summary>
     public partial class AssetStorageEncryptionKey
     {

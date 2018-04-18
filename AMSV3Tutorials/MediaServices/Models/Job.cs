@@ -5,7 +5,6 @@
 namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 {
     using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
     using Microsoft.Rest.Serialization;
     using Newtonsoft.Json;
     using System.Collections;
@@ -16,7 +15,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     /// A Job resource type.
     /// </summary>
     [JsonTransformation]
-    public partial class Job : IResource
+    public partial class Job : ProxyResource
     {
         /// <summary>
         /// Initializes a new instance of the Job class.
@@ -31,9 +30,10 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// </summary>
         /// <param name="input">The inputs for the Job.</param>
         /// <param name="outputs">The outputs for the Job.</param>
-        /// <param name="name">The resource name.</param>
-        /// <param name="id">The resource ID.</param>
-        /// <param name="type">The resource type.</param>
+        /// <param name="id">Fully qualified resource ID for the
+        /// resource.</param>
+        /// <param name="name">The name of the resource.</param>
+        /// <param name="type">The type of the resource.</param>
         /// <param name="created">The date and time when the Job was
         /// created.</param>
         /// <param name="state">The current state of the job. Possible values
@@ -48,11 +48,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// priority jobs if there is resource contention. If not set, the
         /// default is normal. Possible values include: 'Low', 'Normal',
         /// 'High'</param>
-        public Job(JobInput input, IList<JobOutput> outputs, string name = default(string), string id = default(string), string type = default(string), System.DateTimeOffset created = default(System.DateTimeOffset), JobState state = default(JobState), string description = default(string), System.DateTimeOffset lastModified = default(System.DateTimeOffset), Priority? priority = default(Priority?))
+        public Job(JobInput input, IList<JobOutput> outputs, string id = default(string), string name = default(string), string type = default(string), System.DateTimeOffset created = default(System.DateTimeOffset), JobState state = default(JobState), string description = default(string), System.DateTimeOffset lastModified = default(System.DateTimeOffset), Priority? priority = default(Priority?))
+            : base(id, name, type)
         {
-            Name = name;
-            Id = id;
-            Type = type;
             Created = created;
             State = state;
             Description = description;
@@ -67,24 +65,6 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
-
-        /// <summary>
-        /// Gets the resource name.
-        /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the resource ID.
-        /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; private set; }
-
-        /// <summary>
-        /// Gets the resource type.
-        /// </summary>
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; private set; }
 
         /// <summary>
         /// Gets the date and time when the Job was created.

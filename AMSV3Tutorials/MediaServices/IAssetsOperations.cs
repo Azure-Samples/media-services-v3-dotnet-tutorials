@@ -25,6 +25,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// List Assets in the Media Services account with optional filtering
         /// and ordering
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='odataQuery'>
         /// OData parameters to apply to the operation.
         /// </param>
@@ -43,13 +49,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<IPage<Asset>>> ListWithHttpMessagesAsync(ODataQuery<Asset> odataQuery = default(ODataQuery<Asset>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<IPage<Asset>>> ListWithHttpMessagesAsync(string resourceGroupName, string accountName, ODataQuery<Asset> odataQuery = default(ODataQuery<Asset>), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get an Asset
         /// </summary>
         /// <remarks>
         /// Get the details of an Asset in the Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='assetName'>
         /// The Asset name.
         /// </param>
@@ -68,18 +80,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Asset>> GetWithHttpMessagesAsync(string assetName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Asset>> GetWithHttpMessagesAsync(string resourceGroupName, string accountName, string assetName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Create or update an Asset
         /// </summary>
         /// <remarks>
         /// Creates or updates an Asset in the Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='assetName'>
         /// The Asset name.
         /// </param>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -96,13 +114,19 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Asset>> CreateOrUpdateWithHttpMessagesAsync(string assetName, Asset parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Asset>> CreateOrUpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, string assetName, Asset parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Delete an Asset.
         /// </summary>
         /// <remarks>
         /// Deletes an Asset in the Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='assetName'>
         /// The Asset name.
         /// </param>
@@ -118,18 +142,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string assetName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse> DeleteWithHttpMessagesAsync(string resourceGroupName, string accountName, string assetName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Update an Asset
         /// </summary>
         /// <remarks>
         /// Updates an existing Asset in the Media Services account
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='assetName'>
         /// The Asset name.
         /// </param>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -146,7 +176,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<Asset>> UpdateWithHttpMessagesAsync(string assetName, Asset parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<Asset>> UpdateWithHttpMessagesAsync(string resourceGroupName, string accountName, string assetName, Asset parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// List the Asset URLs
         /// </summary>
@@ -154,11 +184,17 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// Lists the Asset SAS URLs used for uploading and downloading Asset
         /// content
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='assetName'>
         /// The Asset name.
         /// </param>
         /// <param name='parameters'>
-        /// The request parameters.
+        /// The request parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -175,7 +211,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<AssetContainerSas>> ListContainerSasWithHttpMessagesAsync(string assetName, ListContainerSasInput parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<AssetContainerSas>> ListContainerSasWithHttpMessagesAsync(string resourceGroupName, string accountName, string assetName, ListContainerSasInput parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Gets the Asset storage key
         /// </summary>
@@ -183,6 +219,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// Gets the Asset storage encryption keys used to decrypt content
         /// created by version 2 of the Media Services API
         /// </remarks>
+        /// <param name='resourceGroupName'>
+        /// The name of the resource group within the Azure subscription.
+        /// </param>
+        /// <param name='accountName'>
+        /// The Media Services account name.
+        /// </param>
         /// <param name='assetName'>
         /// The Asset name.
         /// </param>
@@ -201,7 +243,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<AssetStorageEncryptionKey>> GetEncryptionKeyWithHttpMessagesAsync(string assetName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<AssetStorageEncryptionKey>> GetEncryptionKeyWithHttpMessagesAsync(string resourceGroupName, string accountName, string assetName, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// List Assets
         /// </summary>

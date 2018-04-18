@@ -25,15 +25,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='odataQuery'>
             /// OData parameters to apply to the operation.
             /// </param>
-            public static IPage<Job> List(this IJobsOperations operations, string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>))
+            public static IPage<Job> List(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>))
             {
-                return operations.ListAsync(transformName, odataQuery).GetAwaiter().GetResult();
+                return operations.ListAsync(resourceGroupName, accountName, transformName, odataQuery).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -45,6 +51,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
@@ -54,9 +66,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<IPage<Job>> ListAsync(this IJobsOperations operations, string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<IPage<Job>> ListAsync(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, ODataQuery<Job> odataQuery = default(ODataQuery<Job>), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListWithHttpMessagesAsync(transformName, odataQuery, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListWithHttpMessagesAsync(resourceGroupName, accountName, transformName, odataQuery, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -71,15 +83,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='jobName'>
             /// The Job name.
             /// </param>
-            public static Job Get(this IJobsOperations operations, string transformName, string jobName)
+            public static Job Get(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName)
             {
-                return operations.GetAsync(transformName, jobName).GetAwaiter().GetResult();
+                return operations.GetAsync(resourceGroupName, accountName, transformName, jobName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -91,6 +109,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
@@ -100,9 +124,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Job> GetAsync(this IJobsOperations operations, string transformName, string jobName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Job> GetAsync(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.GetWithHttpMessagesAsync(transformName, jobName, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetWithHttpMessagesAsync(resourceGroupName, accountName, transformName, jobName, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -117,6 +141,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
@@ -124,10 +154,11 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// The Job name.
             /// </param>
             /// <param name='parameters'>
+            /// The request parameters
             /// </param>
-            public static Job CreateOrUpdate(this IJobsOperations operations, string transformName, string jobName, Job parameters)
+            public static Job Create(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName, Job parameters)
             {
-                return operations.CreateOrUpdateAsync(transformName, jobName, parameters).GetAwaiter().GetResult();
+                return operations.CreateAsync(resourceGroupName, accountName, transformName, jobName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -139,6 +170,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
@@ -146,13 +183,14 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// The Job name.
             /// </param>
             /// <param name='parameters'>
+            /// The request parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<Job> CreateOrUpdateAsync(this IJobsOperations operations, string transformName, string jobName, Job parameters, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Job> CreateAsync(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName, Job parameters, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateOrUpdateWithHttpMessagesAsync(transformName, jobName, parameters, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CreateWithHttpMessagesAsync(resourceGroupName, accountName, transformName, jobName, parameters, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -167,15 +205,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='jobName'>
             /// The Job name.
             /// </param>
-            public static void Delete(this IJobsOperations operations, string transformName, string jobName)
+            public static void Delete(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName)
             {
-                operations.DeleteAsync(transformName, jobName).GetAwaiter().GetResult();
+                operations.DeleteAsync(resourceGroupName, accountName, transformName, jobName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -187,6 +231,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
@@ -196,9 +246,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task DeleteAsync(this IJobsOperations operations, string transformName, string jobName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.DeleteWithHttpMessagesAsync(transformName, jobName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.DeleteWithHttpMessagesAsync(resourceGroupName, accountName, transformName, jobName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -210,15 +260,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
             /// <param name='jobName'>
             /// The Job name.
             /// </param>
-            public static void CancelJob(this IJobsOperations operations, string transformName, string jobName)
+            public static void CancelJob(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName)
             {
-                operations.CancelJobAsync(transformName, jobName).GetAwaiter().GetResult();
+                operations.CancelJobAsync(resourceGroupName, accountName, transformName, jobName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -230,6 +286,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='resourceGroupName'>
+            /// The name of the resource group within the Azure subscription.
+            /// </param>
+            /// <param name='accountName'>
+            /// The Media Services account name.
+            /// </param>
             /// <param name='transformName'>
             /// The Transform name.
             /// </param>
@@ -239,9 +301,9 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task CancelJobAsync(this IJobsOperations operations, string transformName, string jobName, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task CancelJobAsync(this IJobsOperations operations, string resourceGroupName, string accountName, string transformName, string jobName, CancellationToken cancellationToken = default(CancellationToken))
             {
-                (await operations.CancelJobWithHttpMessagesAsync(transformName, jobName, null, cancellationToken).ConfigureAwait(false)).Dispose();
+                (await operations.CancelJobWithHttpMessagesAsync(resourceGroupName, accountName, transformName, jobName, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>

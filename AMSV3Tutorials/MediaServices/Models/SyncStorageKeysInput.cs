@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Input to the sync storage keys request.
+    /// The input to the sync storage keys request.
     /// </summary>
     public partial class SyncStorageKeysInput
     {

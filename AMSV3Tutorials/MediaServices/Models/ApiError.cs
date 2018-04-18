@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// The error properties.
+    /// The API error.
     /// </summary>
     public partial class ApiError
     {
@@ -23,7 +23,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the ApiError class.
         /// </summary>
-        /// <param name="error">The error properties.</param>
+        /// <param name="error">ApiError</param>
         public ApiError(ODataError error = default(ODataError))
         {
             Error = error;
@@ -36,8 +36,11 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the error properties.
+        /// Gets or sets apiError
         /// </summary>
+        /// <remarks>
+        /// The error properties.
+        /// </remarks>
         [JsonProperty(PropertyName = "error")]
         public ODataError Error { get; set; }
 

@@ -25,23 +25,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// Auto-generate a bitrate ladder (bitrate-resolution pairs) based on
         /// the input resolution and bitrate. The auto-generated preset will
         /// never exceed the input resolution and bitrate. For example, if the
-        /// input is 720p at 3Mbps, output will remain 720p at best, and will
-        /// start at rates lower than 3Mbps. The output will will have video
+        /// input is 720p at 3 Mbps, output will remain 720p at best, and will
+        /// start at rates lower than 3 Mbps. The output will will have video
         /// and audio in separate files, which is optimal for adaptive
         /// streaming.
         /// </summary>
         public static readonly EncoderNamedPreset AdaptiveStreaming = "AdaptiveStreaming";
-
-        /// <summary>
-        /// Auto-generate a bitrate ladder (bitrate-resolution pairs) based on
-        /// the input resolution and bitrate. The auto-generated preset will
-        /// never exceed the input resolution and bitrate. For example, if the
-        /// input is 720p at 3Mbps, output will remain 720p at best, and will
-        /// start at rates lower than 3Mbps. The output contains MP4 files with
-        /// audio and video interleaved, so that any one MP4 file can be used
-        /// for delivery via progressive download, if desired.
-        /// </summary>
-        public static readonly EncoderNamedPreset ContentAdaptiveMultipleBitrateMP4 = "ContentAdaptiveMultipleBitrateMP4";
 
         /// <summary>
         /// Produces a single MP4 file containing only stereo audio encoded at
@@ -51,15 +40,24 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
 
         /// <summary>
         /// Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps
-        /// to 400 kbps, and stereo AAC audio.
+        /// to 400 kbps, and stereo AAC audio. Resolution starts at 1080p and
+        /// goes down to 360p.
         /// </summary>
         public static readonly EncoderNamedPreset H264MultipleBitrate1080p = "H264MultipleBitrate1080p";
 
         /// <summary>
         /// Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 kbps
-        /// to 400 kbps, and stereo AAC audio.
+        /// to 400 kbps, and stereo AAC audio. Resolution starts at 720p and
+        /// goes down to 360p.
         /// </summary>
         public static readonly EncoderNamedPreset H264MultipleBitrate720p = "H264MultipleBitrate720p";
+
+        /// <summary>
+        /// Produces a set of 5 GOP-aligned MP4 files, ranging from 1600kbps to
+        /// 400 kbps, and stereo AAC audio. Resolution starts at 480p and goes
+        /// down to 360p.
+        /// </summary>
+        public static readonly EncoderNamedPreset H264MultipleBitrateSD = "H264MultipleBitrateSD";
 
 
         /// <summary>

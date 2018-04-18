@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Storage account properties.
+    /// The storage account details.
     /// </summary>
     public partial class StorageAccount
     {

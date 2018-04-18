@@ -8,7 +8,7 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
     using System.Linq;
 
     /// <summary>
-    /// Base class for all video codecs.
+    /// Describes the basic properties for encoding a video.
     /// </summary>
     [Newtonsoft.Json.JsonObject("#Microsoft.Media.Video")]
     public partial class Video : Codec
@@ -24,22 +24,22 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         /// <summary>
         /// Initializes a new instance of the Video class.
         /// </summary>
-        /// <param name="label">Gets or sets the codec label.</param>
-        /// <param name="preserveResolutionAfterRotation">Gets or sets a value
-        /// indicating whether to disable resolution change rotation.</param>
-        /// <param name="keyFrameInterval">Gets or sets the distance between
-        /// two key frames.</param>
-        /// <param name="stretchMode">Gets or sets the Resolution Mode.
-        /// Possible values include: 'None', 'AutoSize', 'AutoFit'</param>
-        /// <param name="syncMode">Gets or sets the Video Sync Mode. Possible
-        /// values include: 'Auto', 'Passthrough', 'Cfr', 'Vfr', 'Drop'</param>
-        public Video(string label = default(string), bool? preserveResolutionAfterRotation = default(bool?), System.TimeSpan? keyFrameInterval = default(System.TimeSpan?), StretchMode? stretchMode = default(StretchMode?), VideoSyncMode? syncMode = default(VideoSyncMode?))
+        /// <param name="label">Describes the optional label for the
+        /// codec.</param>
+        /// <param name="keyFrameInterval">Describes the distance between one
+        /// key frame and the next, thereby defining a GOP or group of
+        /// pictures. The value should be a non-zero integer in the range [1,
+        /// .., 30], specified in ISO 8601 format. The default is 2
+        /// seconds.</param>
+        /// <param name="stretchMode">Describes the resizing mode - how the
+        /// input video will be resized to fit the desired output
+        /// resolution(s). Default is AutoSize. Possible values include:
+        /// 'None', 'AutoSize', 'AutoFit'</param>
+        public Video(string label = default(string), System.TimeSpan? keyFrameInterval = default(System.TimeSpan?), StretchMode? stretchMode = default(StretchMode?))
             : base(label)
         {
-            PreserveResolutionAfterRotation = preserveResolutionAfterRotation;
             KeyFrameInterval = keyFrameInterval;
             StretchMode = stretchMode;
-            SyncMode = syncMode;
             CustomInit();
         }
 
@@ -49,31 +49,21 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets a value indicating whether to disable resolution
-        /// change rotation.
-        /// </summary>
-        [JsonProperty(PropertyName = "preserveResolutionAfterRotation")]
-        public bool? PreserveResolutionAfterRotation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the distance between two key frames.
+        /// Gets or sets describes the distance between one key frame and the
+        /// next, thereby defining a GOP or group of pictures. The value should
+        /// be a non-zero integer in the range [1, .., 30], specified in ISO
+        /// 8601 format. The default is 2 seconds.
         /// </summary>
         [JsonProperty(PropertyName = "keyFrameInterval")]
         public System.TimeSpan? KeyFrameInterval { get; set; }
 
         /// <summary>
-        /// Gets or sets the Resolution Mode. Possible values include: 'None',
-        /// 'AutoSize', 'AutoFit'
+        /// Gets or sets describes the resizing mode - how the input video will
+        /// be resized to fit the desired output resolution(s). Default is
+        /// AutoSize. Possible values include: 'None', 'AutoSize', 'AutoFit'
         /// </summary>
         [JsonProperty(PropertyName = "stretchMode")]
         public StretchMode? StretchMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Video Sync Mode. Possible values include: 'Auto',
-        /// 'Passthrough', 'Cfr', 'Vfr', 'Drop'
-        /// </summary>
-        [JsonProperty(PropertyName = "syncMode")]
-        public VideoSyncMode? SyncMode { get; set; }
 
     }
 }

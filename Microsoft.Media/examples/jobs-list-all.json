@@ -1,6 +1,6 @@
 {
   "parameters": {
-    "api-version": "2018-02-01-privatepreview",
+    "api-version": "2018-03-30-preview",
     "subscriptionId": "00000000-0000-0000-0000-000000000000",
     "resourceGroupName": "contosoresources",
     "accountName": "contosomedia",
@@ -15,7 +15,7 @@
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/ExampleTransform/jobs/job1",
             "type": "Microsoft.Media/mediaservices/transforms/jobs",
             "properties": {
-              "created": "2018-02-20T21:56:36.7418283Z",
+              "created": "2018-03-05T23:52:19.9449439Z",
               "state": "Queued",
               "description": null,
               "input": {
@@ -30,7 +30,7 @@
                   }
                 ]
               },
-              "lastModified": "2018-02-20T21:56:36.7418283Z",
+              "lastModified": "2018-03-05T23:52:19.9449439Z",
               "outputs": [
                 {
                   "@odata.type": "#Microsoft.Media.JobOutputAsset",
@@ -48,7 +48,7 @@
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/ExampleTransform/jobs/job2",
             "type": "Microsoft.Media/mediaservices/transforms/jobs",
             "properties": {
-              "created": "2018-02-20T21:56:36.7438287Z",
+              "created": "2018-03-05T23:52:19.9459101Z",
               "state": "Processing",
               "description": null,
               "input": {
@@ -63,7 +63,7 @@
                   }
                 ]
               },
-              "lastModified": "2018-02-20T21:56:36.7438287Z",
+              "lastModified": "2018-03-05T23:52:19.9459101Z",
               "outputs": [
                 {
                   "@odata.type": "#Microsoft.Media.JobOutputAsset",
@@ -81,7 +81,7 @@
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosoresources/providers/Microsoft.Media/mediaservices/contosomedia/transforms/ExampleTransform/jobs/job3",
             "type": "Microsoft.Media/mediaservices/transforms/jobs",
             "properties": {
-              "created": "2018-02-20T21:56:36.7438287Z",
+              "created": "2018-03-05T23:52:19.9459101Z",
               "state": "Finished",
               "description": null,
               "input": {
@@ -96,7 +96,7 @@
                   }
                 ]
               },
-              "lastModified": "2018-02-20T21:56:36.7438287Z",
+              "lastModified": "2018-03-05T23:52:19.9459101Z",
               "outputs": [
                 {
                   "@odata.type": "#Microsoft.Media.JobOutputAsset",

@@ -27,12 +27,12 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         public static readonly DeinterlaceParity Auto = "Auto";
 
         /// <summary>
-        /// Top field first.
+        /// Apply top field first processing of input video.
         /// </summary>
         public static readonly DeinterlaceParity TopFieldFirst = "TopFieldFirst";
 
         /// <summary>
-        /// bottom field first.
+        /// Apply bottom field first processing of input video.
         /// </summary>
         public static readonly DeinterlaceParity BottomFieldFirst = "BottomFieldFirst";
 

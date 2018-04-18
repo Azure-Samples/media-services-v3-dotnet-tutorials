@@ -22,37 +22,33 @@ namespace Microsoft.Media.Encoding.Rest.ArmClient.Models
         }
 
         /// <summary>
-        /// The encoder auto decide the appropriate profile
+        /// Tells the encoder to automatically determine the appropriate H264
+        /// Profile.
         /// </summary>
         public static readonly H264VideoProfile Auto = "Auto";
 
         /// <summary>
-        /// Baseline H264 video profile
+        /// Baseline profile
         /// </summary>
         public static readonly H264VideoProfile Baseline = "Baseline";
 
         /// <summary>
-        /// Main H264 video profile
+        /// Main profile
         /// </summary>
         public static readonly H264VideoProfile Main = "Main";
 
         /// <summary>
-        /// High H264 video profile.
+        /// High profile.
         /// </summary>
         public static readonly H264VideoProfile High = "High";
 
         /// <summary>
-        /// High10 H264 video profile.
-        /// </summary>
-        public static readonly H264VideoProfile High10 = "High10";
-
-        /// <summary>
-        /// High 4 2 2 H264 video profile.
+        /// High 4:2:2 profile.
         /// </summary>
         public static readonly H264VideoProfile High422 = "High422";
 
         /// <summary>
-        /// High 4 4 4 H264 video profile.
+        /// High 4:4:4 Predictive profile.
         /// </summary>
         public static readonly H264VideoProfile High444 = "High444";
 
