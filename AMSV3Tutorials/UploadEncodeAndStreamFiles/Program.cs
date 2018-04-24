@@ -15,40 +15,41 @@ namespace UploadEncodeAndStreamFiles
 {
     class Program
     {
-        private static readonly string adaptiveStreamingTransformName = "MyTransformWithAdaptiveStreamingPreset";
-        private static readonly string PredefinedClearStreamingOnly = "Predefined_ClearStreamingOnly";
-        const String inputMP4FileName = @"ignite.mp4";
-        const String outputFolder = @"Output";
+        private const string AdaptiveStreamingTransformName = "MyTransformWithAdaptiveStreamingPreset";
+        private const string PredefinedClearStreamingOnly = "Predefined_ClearStreamingOnly";
+        private const string InputMP4FileName = @"ignite.mp4";
+        private const string OutputFolder = @"Output";
+
+
         static void Main(string[] args)
         {
             ConfigWrapper config = new ConfigWrapper();
 
             IAzureMediaServicesClient client = CreateMediaServicesClient(config);
                       
-            Transform transform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, adaptiveStreamingTransformName);
+            Transform transform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName);
 
             string jobName = "job-" + Guid.NewGuid().ToString();
             string locatorName = "locator-" + Guid.NewGuid().ToString();
             string outputAssetName = "output" + Guid.NewGuid().ToString();
             string inputAssetName = "input-" + Guid.NewGuid().ToString();
 
-            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, inputMP4FileName);
+            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, InputMP4FileName);
 
             JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
             Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
 
-            Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, adaptiveStreamingTransformName, jobName, jobInput, outputAssetName);
+            Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName, jobInput, outputAssetName);
 
-            job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, adaptiveStreamingTransformName, jobName);
-
+            job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName);
 
             if (job.State == JobState.Finished)
             {
                 Console.WriteLine("Job finished.");
-                if (!Directory.Exists(outputFolder))
-                    Directory.CreateDirectory(outputFolder);
-                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, outputFolder);
+                if (!Directory.Exists(OutputFolder))
+                    Directory.CreateDirectory(OutputFolder);
+                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolder);
 
                 StreamingLocator locator = CreateStreamingLocator(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName);
 
@@ -103,7 +104,8 @@ namespace UploadEncodeAndStreamFiles
                     {
                         Preset = new BuiltInStandardEncoderPreset()
                         {
-                            PresetName = EncoderNamedPreset.AdaptiveStreaming
+                            // TODO: change H264MultipleBitrate720p to AdaptiveStreaming
+                            PresetName = EncoderNamedPreset.H264MultipleBitrate720p
                         }
                     }
                 };

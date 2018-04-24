@@ -15,9 +15,9 @@ namespace AnalyzeVideos
 {
     class Program
     {
-        private static readonly string VideoAnalyzerTransformName = "MyVideoAnalyzerTransformName";
-        private static readonly string inputMP4FileName = @"ignite.mp4";
-        private static readonly string outputFolder = @"Output";
+        private const string VideoAnalyzerTransformName = "MyVideoAnalyzerTransformName37";
+        private const string InputMP4FileName = @"ignite.mp4";
+        private const string OutputFolder = @"Output";
 
         static void Main(string[] args)
         {
@@ -31,7 +31,7 @@ namespace AnalyzeVideos
             string outputAssetName = "output" + Guid.NewGuid().ToString();
             string inputAssetName = "input-" + Guid.NewGuid().ToString();
 
-            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, inputMP4FileName);
+            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, InputMP4FileName);
             JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
             Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
@@ -43,10 +43,10 @@ namespace AnalyzeVideos
             if (job.State == JobState.Finished)
             {
                 Console.WriteLine("Job finished.");
-                if (!Directory.Exists(outputFolder))
-                    Directory.CreateDirectory(outputFolder);
+                if (!Directory.Exists(OutputFolder))
+                    Directory.CreateDirectory(OutputFolder);
 
-                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, outputFolder);
+                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolder);
             }
         }
 
