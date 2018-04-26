@@ -24,8 +24,8 @@ namespace AnalyzeVideos
             ConfigWrapper config = new ConfigWrapper();
 
             IAzureMediaServicesClient client = CreateMediaServicesClient(config);
-
-            Transform videoAnalyzerTransform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, new VideoAnalyzerPreset());
+            
+            Transform videoAnalyzerTransform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, new VideoAnalyzerPreset("en-US"));
 
             string jobName = "job-" + Guid.NewGuid().ToString();
             string outputAssetName = "output" + Guid.NewGuid().ToString();
