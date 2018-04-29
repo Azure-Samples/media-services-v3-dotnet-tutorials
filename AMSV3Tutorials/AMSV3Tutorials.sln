@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaServices", "MediaServices\MediaServices.csproj", "{B6822ACE-6915-4126-BAF0-B08F9241A7FD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzeVideos", "AnalyzeVideos\AnalyzeVideos.csproj", "{0D918BCE-D418-4789-8177-C654591CFA2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadEncodeAndStreamFiles", "UploadEncodeAndStreamFiles\UploadEncodeAndStreamFiles.csproj", "{A2A96B40-CCD9-4F72-82B2-DDF3C2DC9924}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B6822ACE-6915-4126-BAF0-B08F9241A7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6822ACE-6915-4126-BAF0-B08F9241A7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6822ACE-6915-4126-BAF0-B08F9241A7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6822ACE-6915-4126-BAF0-B08F9241A7FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D918BCE-D418-4789-8177-C654591CFA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D918BCE-D418-4789-8177-C654591CFA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D918BCE-D418-4789-8177-C654591CFA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Media.Encoding.Rest.ArmClient;
-using Microsoft.Media.Encoding.Rest.ArmClient.Models;
+using Microsoft.Azure.Management.Media;
+using Microsoft.Azure.Management.Media.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
@@ -71,9 +71,8 @@ namespace AnalyzeVideos
                     new TransformOutput(preset),
                 };
 
-                transform = new Transform(outputs);
 
-                transform = client.Transforms.CreateOrUpdate(resourceGroupName, accountName, transformName, transform);
+                transform = client.Transforms.CreateOrUpdate(resourceGroupName, accountName, transformName, outputs);
             }
 
             return transform;
@@ -83,11 +82,13 @@ namespace AnalyzeVideos
         {
             Asset asset = client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, new Asset());
 
-            var response = client.Assets.ListContainerSas(resourceGroupName, accountName, assetName, new ListContainerSasInput()
-            {
-                Permissions = AssetContainerPermission.ReadWrite,
-                ExpiryTime = DateTimeOffset.Now.AddHours(4)
-            });
+            var response = client.Assets.ListContainerSas(
+                resourceGroupName,
+                accountName,
+                assetName,
+                permissions: AssetContainerPermission.ReadWrite, 
+                expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime()
+            );
 
             var sasUri = new Uri(response.AssetContainerSasUrls.First());
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
@@ -166,8 +167,13 @@ namespace AnalyzeVideos
           string assetName,
           string resultsFolder)
         {
-            ListContainerSasInput parameters = new ListContainerSasInput(permissions: AssetContainerPermission.Read, expiryTime: DateTimeOffset.UtcNow.AddHours(1));
-            AssetContainerSas assetContainerSas = client.Assets.ListContainerSas(resourceGroup, accountName, assetName, parameters);
+            AssetContainerSas assetContainerSas = client.Assets.ListContainerSas(
+                    resourceGroup,
+                    accountName,
+                    assetName,
+                    permissions: AssetContainerPermission.Read,
+                    expiryTime: DateTime.UtcNow.AddHours(1).ToUniversalTime()
+                    );
 
             Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
             CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
