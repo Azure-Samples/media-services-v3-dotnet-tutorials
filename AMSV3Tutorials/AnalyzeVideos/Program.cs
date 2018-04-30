@@ -23,31 +23,46 @@ namespace AnalyzeVideos
         {
             ConfigWrapper config = new ConfigWrapper();
 
-            IAzureMediaServicesClient client = CreateMediaServicesClient(config);
-            
-            Transform videoAnalyzerTransform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, new VideoAnalyzerPreset("en-US"));
+            try{
+                IAzureMediaServicesClient client = CreateMediaServicesClient(config);
+                
+                Transform videoAnalyzerTransform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, new VideoAnalyzerPreset("en-US"));
 
-            string jobName = "job-" + Guid.NewGuid().ToString();
-            string outputAssetName = "output" + Guid.NewGuid().ToString();
-            string inputAssetName = "input-" + Guid.NewGuid().ToString();
+                // Creating a unique suffix so that we don't have name collisions if you run the sample
+                // multiple times without cleaning up.
+                string uniqueness = Guid.NewGuid().ToString().Substring(0, 13);
 
-            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, InputMP4FileName);
-            JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
+                string jobName = "job-" + uniqueness;
+                string outputAssetName = "output-" + uniqueness;
+                string inputAssetName = "input-" +uniqueness;
 
-            Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
 
-            Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName, jobInput, outputAssetName);
+                CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, InputMP4FileName);
+                JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
-            job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName);
+                Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
 
-            if (job.State == JobState.Finished)
-            {
-                Console.WriteLine("Job finished.");
-                if (!Directory.Exists(OutputFolder))
-                    Directory.CreateDirectory(OutputFolder);
+                Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName, jobInput, outputAssetName);
 
-                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolder);
+                job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName);
+
+                if (job.State == JobState.Finished)
+                {
+                    Console.WriteLine("Job finished.");
+                    if (!Directory.Exists(OutputFolder))
+                        Directory.CreateDirectory(OutputFolder);
+
+                    DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolder);
+                }
             }
+            catch (ApiErrorException ex)
+            {
+                Console.WriteLine("{0}", ex.Message);
+
+                Console.WriteLine("Code: {0}", ex.Body.Error.Code);
+                Console.WriteLine("Message: {0}", ex.Body.Error.Message);
+            }
+                
         }
 
         private static IAzureMediaServicesClient CreateMediaServicesClient(ConfigWrapper config)

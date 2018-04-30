@@ -25,39 +25,52 @@ namespace UploadEncodeAndStreamFiles
         {
             ConfigWrapper config = new ConfigWrapper();
 
-            IAzureMediaServicesClient client = CreateMediaServicesClient(config);
-                      
-            Transform transform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName);
+            try{
+                IAzureMediaServicesClient client = CreateMediaServicesClient(config);
+                        
+                Transform transform = EnsureTransformExists(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName);
 
-            string jobName = "job-" + Guid.NewGuid().ToString();
-            string locatorName = "locator-" + Guid.NewGuid().ToString();
-            string outputAssetName = "output" + Guid.NewGuid().ToString();
-            string inputAssetName = "input-" + Guid.NewGuid().ToString();
+                // Creating a unique suffix so that we don't have name collisions if you run the sample
+                // multiple times without cleaning up.
+                string uniqueness = Guid.NewGuid().ToString().Substring(0, 13);
 
-            CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, InputMP4FileName);
+                string jobName = "job-" + uniqueness;
+                string locatorName = "locator-" + uniqueness;
+                string outputAssetName = "output-" + uniqueness;
+                string inputAssetName = "input-" + uniqueness;
 
-            JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
+                CreateInputAsset(client, config.ResourceGroup, config.AccountName, inputAssetName, InputMP4FileName);
 
-            Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
+                JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
-            Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName, jobInput, outputAssetName);
+                Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
 
-            job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName);
+                Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName, jobInput, outputAssetName);
 
-            if (job.State == JobState.Finished)
-            {
-                Console.WriteLine("Job finished.");
-                if (!Directory.Exists(OutputFolder))
-                    Directory.CreateDirectory(OutputFolder);
-                DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolder);
+                job = WaitForJobToFinish(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName);
 
-                StreamingLocator locator = CreateStreamingLocator(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName);
-
-                IList<string> urls = GetStreamingURLs(client, config.ResourceGroup, config.AccountName, locator.Name);
-                foreach (var url in urls)
+                if (job.State == JobState.Finished)
                 {
-                    Console.WriteLine(url);
+                    Console.WriteLine("Job finished.");
+                    if (!Directory.Exists(OutputFolder))
+                        Directory.CreateDirectory(OutputFolder);
+                    DownloadResults(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolder);
+
+                    StreamingLocator locator = CreateStreamingLocator(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName);
+
+                    IList<string> urls = GetStreamingURLs(client, config.ResourceGroup, config.AccountName, locator.Name);
+                    foreach (var url in urls)
+                    {
+                        Console.WriteLine(url);
+                    }
                 }
+            }
+            catch (ApiErrorException ex)
+            {
+                Console.WriteLine("{0}", ex.Message);
+
+                Console.WriteLine("Code: {0}", ex.Body.Error.Code);
+                Console.WriteLine("Message: {0}", ex.Body.Error.Message);
             }
         }
 
