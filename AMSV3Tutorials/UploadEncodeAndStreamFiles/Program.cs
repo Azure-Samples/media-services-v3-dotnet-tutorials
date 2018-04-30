@@ -106,8 +106,7 @@ namespace UploadEncodeAndStreamFiles
                     {
                         Preset = new BuiltInStandardEncoderPreset()
                         {
-                            // TODO: change H264MultipleBitrate720p to AdaptiveStreaming
-                            PresetName = EncoderNamedPreset.H264MultipleBitrate720p
+                            PresetName = EncoderNamedPreset.AdaptiveStreaming
                         }
                     }
                 };
