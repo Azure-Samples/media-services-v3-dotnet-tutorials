@@ -2,7 +2,8 @@
 
 The projects in this repository support the Azure Media Services v3 tutorials topics:
 
-* UploadEncodeAndStreamFiles.csproj - [Tutorial: Upload, encode, download, and stream videos](https://docs.microsoft.com/azure/media-services/latest/stream-files-tutorial)
+* UploadEncodeAndStreamFiles/UploadEncodeAndStreamFiles.csproj - [Tutorial: Upload, encode, download, and stream videos](https://docs.microsoft.com/azure/media-services/latest/stream-files-tutorial)
+* AnalyzeVideos/AnalyzeVideos.csproj - [Tutorial: Analyze videos with Media Services](https://docs.microsoft.com/azure/media-services/latest/analyze-videos-tutorial-with-api)
 
 ## Prerequisites
 
