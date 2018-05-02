@@ -15,7 +15,7 @@ namespace AnalyzeVideos
 {
     class Program
     {
-        private const string VideoAnalyzerTransformName = "MyVideoAnalyzerTransformName37";
+        private const string VideoAnalyzerTransformName = "MyVideoAnalyzerTransformName";
         private const string InputMP4FileName = @"ignite.mp4";
         private const string OutputFolder = @"Output";
 
