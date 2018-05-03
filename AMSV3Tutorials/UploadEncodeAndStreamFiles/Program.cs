@@ -16,7 +16,6 @@ namespace UploadEncodeAndStreamFiles
     class Program
     {
         private const string AdaptiveStreamingTransformName = "MyTransformWithAdaptiveStreamingPreset";
-        private const string PredefinedClearStreamingOnly = "Predefined_ClearStreamingOnly";
         private const string InputMP4FileName = @"ignite.mp4";
         private const string OutputFolder = @"Output";
 
@@ -201,7 +200,7 @@ namespace UploadEncodeAndStreamFiles
                 new StreamingLocator()
                 {
                     AssetName = assetName,
-                    StreamingPolicyName = PredefinedClearStreamingOnly,
+                    StreamingPolicyName = PredefinedStreamingPolicy.ClearStreamingOnly,
                 });
 
             return locator;
