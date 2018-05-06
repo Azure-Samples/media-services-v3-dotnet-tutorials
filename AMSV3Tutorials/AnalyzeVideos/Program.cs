@@ -77,10 +77,13 @@ namespace AnalyzeVideos
 
         private static Transform EnsureTransformExists(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, Preset preset)
         {
+            // Does a Transform already exist with the desired name? Assume that an existing Transform with the desired name
+            // also uses the same recipe or Preset for processing content.
             Transform transform = client.Transforms.Get(resourceGroupName, accountName, transformName);
 
             if (transform == null)
             {
+                // Start by defining the desired outputs.
                 TransformOutput[] outputs = new TransformOutput[]
                 {
                     new TransformOutput(preset),
@@ -115,9 +118,21 @@ namespace AnalyzeVideos
 
         private static Asset CreateOutputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName)
         {
-            Asset input = new Asset();
+            // Check if an Asset already exists
+            Asset outputAsset = client.Assets.Get(resourceGroupName, accountName, assetName);
+            Asset asset = new Asset();
+            string outputAssetName = assetName;
 
-            return client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, input);
+            if (outputAsset != null)
+            {
+                 // Name collision! In order to get the sample to work, let's just go ahead and create a unique asset name
+                 // Note that the returned Asset can have a different name than the one specified as an input parameter.
+                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
+                 string uniqueness = @"-" + Guid.NewGuid().ToString();
+                 outputAssetName += uniqueness;
+           }
+
+            return client.Assets.CreateOrUpdate(resourceGroupName, accountName, outputAssetName, asset);
         }
 
         private static Job SubmitJob(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, string jobName, JobInput jobInput, string outputAssetName)
