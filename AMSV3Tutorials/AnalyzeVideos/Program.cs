@@ -48,7 +48,7 @@ namespace AnalyzeVideos
                 JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
                 // Output from the encoding Job must be written to an Asset, so let's create one
-                Asset outputAsset = client.Assets.CreateOrUpdate(config.ResourceGroup, config.AccountName, outputAssetName, new Asset());
+                Asset outputAsset = CreateOutputAsset(client, config.ResourceGroup, config.AccountName, outputAssetName);
 
                 Job job = SubmitJob(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName, jobInput, outputAssetName);
 
@@ -85,7 +85,7 @@ namespace AnalyzeVideos
         /// </summary>
         /// <param name="config">The parm is of type ConfigWrapper. This class reads values from app.config.</param>
         /// <returns></returns>
-        #region CreateMediaServicesClient
+        // <CreateMediaServicesClient>
         private static IAzureMediaServicesClient CreateMediaServicesClient(ConfigWrapper config)
         {
             ArmClientCredentials credentials = new ArmClientCredentials(config);
@@ -95,8 +95,8 @@ namespace AnalyzeVideos
                 SubscriptionId = config.SubscriptionId,
             };
         }
-        #endregion
-            
+        // </CreateMediaServicesClient>
+
         /// <summary>
         /// If the specified transform exists, get that transform.
         /// If the it does not exist, creates a new transform with the specified output. 
@@ -107,7 +107,7 @@ namespace AnalyzeVideos
         /// <param name="accountName"> The Media Services account name.</param>
         /// <param name="transformName">The name of the transform.</param>
         /// <returns></returns>
-        #region EnsureTransformExists
+        // <EnsureTransformExists>
         private static Transform EnsureTransformExists(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, Preset preset)
         {
             // Does a Transform already exist with the desired name? Assume that an existing Transform with the desired name
@@ -128,8 +128,8 @@ namespace AnalyzeVideos
 
             return transform;
         }
-        #endregion
-            
+        // </EnsureTransformExists>
+
         /// <summary>
         /// Creates a new input Asset and uploads the specified local video file into it.
         /// </summary>
@@ -139,29 +139,59 @@ namespace AnalyzeVideos
         /// <param name="assetName">The asset name.</param>
         /// <param name="fileToUpload">The file you want to upload into the asset.</param>
         /// <returns></returns>
-        #region CreateInputAsset
-        private static Asset CreateInputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName, string fileToUpload)
+        // <CreateInputAsset>
+        private static Asset CreateInputAsset(IAzureMediaServicesClient client,
+                                                string resourceGroupName,
+                                                string accountName,
+                                                string assetName,
+                                                string fileToUpload)
         {
+            // In this example, we are assuming that the asset name is unique.
+            //
+            // If you might already have an asset with the desired name, use the **Assets.Get** method
+            // to get the existing asset. In Media Services v3, **Get** methods on entities returns null 
+            // if the entity doesn’t exist (a case-insensitive check on the name).
+
+            // Call Media Services API to create an Asset.
+            // This method creates a container in storage for the Asset.
+            // The files (blobs) associated with the asset will be stored in this container.
             Asset asset = client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, new Asset());
 
+            // Use Media Services API to get back a response that contains
+            // SAS URL for the Asset container into which to upload blobs.
+            // That is where you would specify read-write permissions 
+            // and the exparation time for the SAS URL.
             var response = client.Assets.ListContainerSas(
-                resourceGroupName,
-                accountName,
-                assetName,
-                permissions: AssetContainerPermission.ReadWrite, 
-                expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime()
-            );
+                  resourceGroupName,
+                  accountName,
+                  assetName,
+                  permissions: AssetContainerPermission.ReadWrite,
+                  expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime()
+              );
 
             var sasUri = new Uri(response.AssetContainerSasUrls.First());
+
+            // Use Storage API to get a reference to the Asset container
+            // that was created by calling Asset's CreateOrUpdate method.  
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
             var blob = container.GetBlockBlobReference(Path.GetFileName(fileToUpload));
+
+            // Use Strorage API to upload the file into the container in storage.
             blob.UploadFromFile(fileToUpload);
 
             return asset;
         }
-        #endregion
-            
-        #region CreateOutputAsset        
+        // </CreateInputAsset>
+
+        /// <summary>
+        /// Creates an ouput asset. The output from the encoding Job must be written to an Asset.
+        /// </summary>
+        /// <param name="client">The Media Services client.</param>
+        /// <param name="resourceGroupName">The name of the resource group within the Azure subscription.</param>
+        /// <param name="accountName"> The Media Services account name.</param>
+        /// <param name="assetName">The output asset name.</param>
+        /// <returns></returns>
+        // <CreateOutputAsset>       
         private static Asset CreateOutputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName)
         {
             // Check if an Asset already exists
@@ -180,8 +210,8 @@ namespace AnalyzeVideos
 
             return client.Assets.CreateOrUpdate(resourceGroupName, accountName, outputAssetName, asset);
         }
-        #endregion
-            
+        // </CreateOutputAsset>  
+
         /// <summary>
         /// Submits a request to Media Services to apply the specified Transform to a given input video.
         /// </summary>
@@ -192,7 +222,7 @@ namespace AnalyzeVideos
         /// <param name="jobName">The (unique) name of the job.</param>
         /// <param name="jobInput"></param>
         /// <param name="outputAssetName">The (unique) name of the  output asset that will store the result of the encoding job. </param>
-        #region SubmitJob
+        // <SubmitJob>
         private static Job SubmitJob(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, string jobName, JobInput jobInput, string outputAssetName)
         {
             JobOutput[] jobOutputs =
@@ -200,6 +230,11 @@ namespace AnalyzeVideos
                 new JobOutputAsset(outputAssetName),
             };
 
+            // In this example, we are assuming that the job name is unique.
+            //
+            // If you might already have a job with the desired name, use the **Jobs.Get** method
+            // to get the existing job. In Media Services v3, **Get** methods on entities returns null 
+            // if the entity doesn’t exist (a case-insensitive check on the name).
             Job job = client.Jobs.Create(
                 resourceGroupName,
                 accountName,
@@ -213,8 +248,8 @@ namespace AnalyzeVideos
 
             return job;
         }
-        #endregion
-            
+        // </SubmitJob>
+
         /// <summary>
         /// Polls Media Services for the status of the Job.
         /// </summary>
@@ -224,7 +259,7 @@ namespace AnalyzeVideos
         /// <param name="transformName">The name of the transform.</param>
         /// <param name="jobName">The name of the job you submitted.</param>
         /// <returns></returns>
-        #region WaitForJobToFinish
+        // <WaitForJobToFinish>
         private static Job WaitForJobToFinish(IAzureMediaServicesClient client,
             string resourceGroupName,
             string accountName,
@@ -260,8 +295,8 @@ namespace AnalyzeVideos
 
             return job;
         }
-        #endregion
-            
+        // </WaitForJobToFinish>
+
         /// <summary>
         ///  Downloads the results from the specified output asset, so you can see what you got.
         /// </summary>
@@ -270,7 +305,7 @@ namespace AnalyzeVideos
         /// <param name="accountName"> The Media Services account name.</param>
         /// <param name="assetName">The output asset.</param>
         /// <param name="resultsFolder">The name of the folder into which to download the results.</param>
-        #region DownloadResults
+        // <DownloadResults>
         private static void DownloadResults(IAzureMediaServicesClient client,
           string resourceGroup,
           string accountName,
@@ -306,8 +341,8 @@ namespace AnalyzeVideos
 
             Console.WriteLine("Download complete.");
         }
-        #endregion
-            
+        // </DownloadResults>
+
         /// <summary>
         /// Deletes the jobs and assets that were created.
         /// Generally, you should clean up everything except objects 
@@ -317,7 +352,7 @@ namespace AnalyzeVideos
         /// <param name="resourceGroupName"></param>
         /// <param name="accountName"></param>
         /// <param name="transformName"></param>
-        #region CleanUp
+        // <CleanUp>
         static void CleanUp(IAzureMediaServicesClient client,
             string resourceGroupName,
             string accountName,
@@ -333,6 +368,6 @@ namespace AnalyzeVideos
                 client.Assets.Delete(resourceGroupName, accountName, asset.Name);
             }
         }
-        #endregion
+        // </CleanUp>
     }
 }
