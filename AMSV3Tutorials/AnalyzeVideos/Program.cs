@@ -85,6 +85,7 @@ namespace AnalyzeVideos
         /// </summary>
         /// <param name="config">The parm is of type ConfigWrapper. This class reads values from app.config.</param>
         /// <returns></returns>
+        #region CreateMediaServicesClient
         private static IAzureMediaServicesClient CreateMediaServicesClient(ConfigWrapper config)
         {
             ArmClientCredentials credentials = new ArmClientCredentials(config);
@@ -94,7 +95,8 @@ namespace AnalyzeVideos
                 SubscriptionId = config.SubscriptionId,
             };
         }
-
+        #endregion
+            
         /// <summary>
         /// If the specified transform exists, get that transform.
         /// If the it does not exist, creates a new transform with the specified output. 
@@ -105,6 +107,7 @@ namespace AnalyzeVideos
         /// <param name="accountName"> The Media Services account name.</param>
         /// <param name="transformName">The name of the transform.</param>
         /// <returns></returns>
+        #region EnsureTransformExists
         private static Transform EnsureTransformExists(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, Preset preset)
         {
             // Does a Transform already exist with the desired name? Assume that an existing Transform with the desired name
@@ -125,7 +128,8 @@ namespace AnalyzeVideos
 
             return transform;
         }
-
+        #endregion
+            
         /// <summary>
         /// Creates a new input Asset and uploads the specified local video file into it.
         /// </summary>
@@ -135,6 +139,7 @@ namespace AnalyzeVideos
         /// <param name="assetName">The asset name.</param>
         /// <param name="fileToUpload">The file you want to upload into the asset.</param>
         /// <returns></returns>
+        #region CreateInputAsset
         private static Asset CreateInputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName, string fileToUpload)
         {
             Asset asset = client.Assets.CreateOrUpdate(resourceGroupName, accountName, assetName, new Asset());
@@ -154,7 +159,9 @@ namespace AnalyzeVideos
 
             return asset;
         }
-
+        #endregion
+            
+        #region CreateOutputAsset        
         private static Asset CreateOutputAsset(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName)
         {
             // Check if an Asset already exists
@@ -173,7 +180,8 @@ namespace AnalyzeVideos
 
             return client.Assets.CreateOrUpdate(resourceGroupName, accountName, outputAssetName, asset);
         }
-
+        #endregion
+            
         /// <summary>
         /// Submits a request to Media Services to apply the specified Transform to a given input video.
         /// </summary>
@@ -184,6 +192,7 @@ namespace AnalyzeVideos
         /// <param name="jobName">The (unique) name of the job.</param>
         /// <param name="jobInput"></param>
         /// <param name="outputAssetName">The (unique) name of the  output asset that will store the result of the encoding job. </param>
+        #region SubmitJob
         private static Job SubmitJob(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string transformName, string jobName, JobInput jobInput, string outputAssetName)
         {
             JobOutput[] jobOutputs =
@@ -204,7 +213,8 @@ namespace AnalyzeVideos
 
             return job;
         }
-
+        #endregion
+            
         /// <summary>
         /// Polls Media Services for the status of the Job.
         /// </summary>
@@ -214,6 +224,7 @@ namespace AnalyzeVideos
         /// <param name="transformName">The name of the transform.</param>
         /// <param name="jobName">The name of the job you submitted.</param>
         /// <returns></returns>
+        #region WaitForJobToFinish
         private static Job WaitForJobToFinish(IAzureMediaServicesClient client,
             string resourceGroupName,
             string accountName,
@@ -249,7 +260,8 @@ namespace AnalyzeVideos
 
             return job;
         }
-
+        #endregion
+            
         /// <summary>
         ///  Downloads the results from the specified output asset, so you can see what you got.
         /// </summary>
@@ -258,6 +270,7 @@ namespace AnalyzeVideos
         /// <param name="accountName"> The Media Services account name.</param>
         /// <param name="assetName">The output asset.</param>
         /// <param name="resultsFolder">The name of the folder into which to download the results.</param>
+        #region DownloadResults
         private static void DownloadResults(IAzureMediaServicesClient client,
           string resourceGroup,
           string accountName,
@@ -293,7 +306,8 @@ namespace AnalyzeVideos
 
             Console.WriteLine("Download complete.");
         }
-
+        #endregion
+            
         /// <summary>
         /// Deletes the jobs and assets that were created.
         /// Generally, you should clean up everything except objects 
@@ -303,6 +317,7 @@ namespace AnalyzeVideos
         /// <param name="resourceGroupName"></param>
         /// <param name="accountName"></param>
         /// <param name="transformName"></param>
+        #region CleanUp
         static void CleanUp(IAzureMediaServicesClient client,
             string resourceGroupName,
             string accountName,
@@ -318,5 +333,6 @@ namespace AnalyzeVideos
                 client.Assets.Delete(resourceGroupName, accountName, asset.Name);
             }
         }
+        #endregion
     }
 }
