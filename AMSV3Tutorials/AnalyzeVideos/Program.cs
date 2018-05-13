@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,7 +148,7 @@ namespace AnalyzeVideos
         {
             // In this example, we are assuming that the asset name is unique.
             //
-            // If you might already have an asset with the desired name, use the Assets.Get method
+            // If you already have an asset with the desired name, use the Assets.Get method
             // to get the existing asset. In Media Services v3, Get methods on entities returns null 
             // if the entity doesn't exist (a case-insensitive check on the name).
 
@@ -232,7 +232,7 @@ namespace AnalyzeVideos
 
             // In this example, we are assuming that the job name is unique.
             //
-            // If you might already have a job with the desired name, use the Jobs.Get method
+            // If you already have a job with the desired name, use the Jobs.Get method
             // to get the existing job. In Media Services v3, Get methods on entities returns null 
             // if the entity doesn't exist (a case-insensitive check on the name).
             Job job = client.Jobs.Create(
