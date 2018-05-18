@@ -4,7 +4,7 @@ platforms: dotnet
 author: Juliako
 ---
 
-# Azure Media Services v3 tutorials starter samples
+# Azure Media Services v3 tutorials 
 
 The projects in this repository support the Azure Media Services v3 tutorials topics:
 
