@@ -33,4 +33,4 @@ The following NuGet packages were added to the project:
 
 * Clean and rebuild the solution.
 * Set the desired project as the **Set as Startup project**.
-* Add appropriate values to App.config. For more information, see [Access APIs](https://docs.microsoft.com/azure/media-services/latest/access-api-cli-how-to).
+* Add appropriate values to the local configuration file. For more information, see [Access APIs](https://docs.microsoft.com/azure/media-services/latest/access-api-cli-how-to).

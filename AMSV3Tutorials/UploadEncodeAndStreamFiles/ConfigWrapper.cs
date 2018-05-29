@@ -1,62 +1,66 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Microsoft.Extensions.Configuration;
 
 namespace UploadEncodeAndStreamFiles
 {
     public class ConfigWrapper
     {
+        private readonly IConfiguration _config;
+
+        public ConfigWrapper(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public string SubscriptionId
         {
-            get { return ConfigurationManager.AppSettings["SubscriptionId"]; }
+            get { return _config["SubscriptionId"]; }
         }
 
         public string ResourceGroup
         {
-            get { return ConfigurationManager.AppSettings["ResourceGroup"]; }
+            get { return _config["ResourceGroup"]; }
         }
 
         public string AccountName
         {
-            get { return ConfigurationManager.AppSettings["AccountName"]; }
+            get { return _config["AccountName"]; }
         }
 
         public string AadTenantId
         {
-            get { return ConfigurationManager.AppSettings["AadTenantId"]; }
+            get { return _config["AadTenantId"]; }
         }
 
         public string AadClientId
         {
-            get { return ConfigurationManager.AppSettings["AadClientId"]; }
+            get { return _config["AadClientId"]; }
         }
 
         public string AadSecret
         {
-            get { return ConfigurationManager.AppSettings["AadSecret"]; }
+            get { return _config["AadSecret"]; }
         }
 
         public Uri ArmAadAudience
         {
-            get { return new Uri(ConfigurationManager.AppSettings["ArmAadAudience"]); }
+            get { return new Uri(_config["ArmAadAudience"]); }
         }
 
         public Uri AadEndpoint
         {
-            get { return new Uri(ConfigurationManager.AppSettings["AadEndpoint"]); }
+            get { return new Uri(_config["AadEndpoint"]); }
         }
 
         public Uri ArmEndpoint
         {
-            get { return new Uri(ConfigurationManager.AppSettings["ArmEndpoint"]); }
+            get { return new Uri(_config["ArmEndpoint"]); }
         }
 
         public string Region
         {
-            get { return ConfigurationManager.AppSettings["Region"]; }
+            get { return _config["Region"]; }
         }
     }
 }
