@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalyzeVideos", "AnalyzeVideos\AnalyzeVideos.csproj", "{0D918BCE-D418-4789-8177-C654591CFA2A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UploadEncodeAndStreamFiles", "UploadEncodeAndStreamFiles\UploadEncodeAndStreamFiles.csproj", "{34015BF0-256B-40E0-899B-62985C67FDE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptWithAES", "EncryptWithAES\EncryptWithAES.csproj", "{6753064C-0E56-4BB3-8344-88721880F940}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptWithDRM", "EncryptWithDRM\EncryptWithDRM.csproj", "{F708D2DA-FEAD-4398-BC24-F32C7955E4F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D918BCE-D418-4789-8177-C654591CFA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D918BCE-D418-4789-8177-C654591CFA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D918BCE-D418-4789-8177-C654591CFA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D918BCE-D418-4789-8177-C654591CFA2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34015BF0-256B-40E0-899B-62985C67FDE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34015BF0-256B-40E0-899B-62985C67FDE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34015BF0-256B-40E0-899B-62985C67FDE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34015BF0-256B-40E0-899B-62985C67FDE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6753064C-0E56-4BB3-8344-88721880F940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6753064C-0E56-4BB3-8344-88721880F940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6753064C-0E56-4BB3-8344-88721880F940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6753064C-0E56-4BB3-8344-88721880F940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F708D2DA-FEAD-4398-BC24-F32C7955E4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F708D2DA-FEAD-4398-BC24-F32C7955E4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F708D2DA-FEAD-4398-BC24-F32C7955E4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F708D2DA-FEAD-4398-BC24-F32C7955E4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BF1B4D8-BF86-4387-BD18-4760121795AD}
+	EndGlobalSection
+EndGlobal
