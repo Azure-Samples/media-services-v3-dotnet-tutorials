@@ -226,12 +226,6 @@ namespace EncryptWithDRM
                     });
 
                 policy = await client.ContentKeyPolicies.CreateOrUpdateAsync(resourceGroupName, accountName, contentKeyPolicyName, options);
-
-
-                ContentKeyPolicyProperties properties = await client.ContentKeyPolicies.GetPolicyPropertiesWithSecretsAsync(resourceGroupName, accountName, contentKeyPolicyName);
-                ContentKeyPolicyTokenRestriction restriction2 = (ContentKeyPolicyTokenRestriction)properties.Options.First().Restriction;
-                ContentKeyPolicyRestrictionTokenKey key = restriction2.PrimaryVerificationKey;
-
             }
 
             return policy;
