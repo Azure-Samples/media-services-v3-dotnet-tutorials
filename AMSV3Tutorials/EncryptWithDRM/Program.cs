@@ -227,7 +227,19 @@ namespace EncryptWithDRM
 
                 policy = await client.ContentKeyPolicies.CreateOrUpdateAsync(resourceGroupName, accountName, contentKeyPolicyName, options);
             }
-
+            else
+            {
+                var policyProperties = await client.ContentKeyPolicies.GetPolicyPropertiesWithSecretsAsync(resourceGroupName, accountName, contentKeyPolicyName);
+                var restriction = policyProperties.Options[0].Restriction as ContentKeyPolicyTokenRestriction;
+                if (restriction != null)
+                {
+                    var signingKey = restriction.PrimaryVerificationKey as ContentKeyPolicySymmetricTokenKey;
+                    if (signingKey != null)
+                    {
+                        TokenSigningKey = signingKey.KeyValue;
+                    }
+                }
+            }
             return policy;
         }
         // </GetOrCreateContentKeyPolicy>
