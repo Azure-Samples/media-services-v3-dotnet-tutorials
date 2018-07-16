@@ -213,7 +213,8 @@ namespace EncryptWithDRM
                     new ContentKeyPolicyOption()
                     {
                         Configuration = playReadyConfig,
-                        //Restriction = new ContentKeyPolicyOpenRestriction()
+                        // If you want to set an open restriction, use
+                        // Restriction = new ContentKeyPolicyOpenRestriction()
                         Restriction = restriction
                     });
 
@@ -221,7 +222,6 @@ namespace EncryptWithDRM
                     new ContentKeyPolicyOption()
                     {
                         Configuration = widevineConfig,
-                        //Restriction = new ContentKeyPolicyOpenRestriction()
                         Restriction = restriction
                     });
 
@@ -229,6 +229,7 @@ namespace EncryptWithDRM
             }
             else
             {
+                // Get the signing key from the existing policy.
                 var policyProperties = await client.ContentKeyPolicies.GetPolicyPropertiesWithSecretsAsync(resourceGroupName, accountName, contentKeyPolicyName);
                 var restriction = policyProperties.Options[0].Restriction as ContentKeyPolicyTokenRestriction;
                 if (restriction != null)
