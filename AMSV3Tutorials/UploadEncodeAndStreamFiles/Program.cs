@@ -34,6 +34,11 @@ namespace UploadEncodeAndStreamFiles
             }
             catch (Exception exception)
             {
+                if (exception.Source.Contains("ActiveDirectory"))
+                {
+                     Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
+                }
+
                 Console.Error.WriteLine($"{exception.Message}");
 
                 ApiErrorException apiException = exception.GetBaseException() as ApiErrorException;
