@@ -649,7 +649,7 @@ namespace EncryptWithDRM
                 uriBuilder.Scheme = "https";
                 uriBuilder.Host = streamingEndpoint.HostName;
 
-                // Look for just the DASH path and generate a URL for the Azure Media Player to playback the content with the AES token to decrypt.
+                // Look for just the DASH path and generate a URL for the Azure Media Player to playback the encrypted DASH content. 
                 // Note that the JWT token is set to expire in 1 hour. 
                 if (path.StreamingProtocol == "Dash")
                 {
