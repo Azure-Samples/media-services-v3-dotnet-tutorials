@@ -10,17 +10,16 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt " Version="5.2.2" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.2.2"/>
-    <PackageReference Include="Microsoft.Azure.Management.Media" Version="1.8.0-preview" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.0"/>
-    <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure.Authentication" Version="2.3.3" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.2.0" />
+ <ItemGroup>
+   <PackageReference Include="System.IdentityModel.Tokens.Jwt " Version="5.3.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.3.0"/>
+    <PackageReference Include="Microsoft.Azure.Management.Media" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1"/>
+    <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure.Authentication" Version="2.3.4" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
-
   </ItemGroup>
 
   <ItemGroup>

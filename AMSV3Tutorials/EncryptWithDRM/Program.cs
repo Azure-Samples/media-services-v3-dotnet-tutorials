@@ -651,7 +651,7 @@ namespace EncryptWithDRM
 
                 // Look for just the DASH path and generate a URL for the Azure Media Player to playback the content with the AES token to decrypt.
                 // Note that the JWT token is set to expire in 1 hour. 
-                if (path.StreamingProtocol == "Dash")
+                if (path.StreamingProtocol == StreamingPolicyStreamingProtocol.Dash)
                 {
                     uriBuilder.Path = path.Paths[0];
 
