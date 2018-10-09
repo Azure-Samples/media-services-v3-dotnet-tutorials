@@ -43,6 +43,6 @@ The following NuGet packages were added to the project:
 * Set the desired project as the **Set as Startup project**.
 * Add appropriate values to the appsettings.json configuration file. For more information, see [Access APIs](https://docs.microsoft.com/azure/media-services/latest/access-api-cli-how-to).
 
-If you get the following error message, when first attempting run a project, close VS and reopen it. Then, rebuild the solution.  
+If you get the following error message, when first attempting to run a project, close VS and reopen it. Then, rebuild the solution.  
 
 ![VS 2017 error](VS2017error.png)
