@@ -37,8 +37,12 @@ The following NuGet packages were added to the project:
 |Microsoft.Extensions.Configuration.Json|Read configuration values from environment variables and local JSON files
 |WindowsAzure.Storage|Storage SDK|
 
-## To run each project in the solution
+## To build and run each project in the solution
 
 * Clean and rebuild the solution.
 * Set the desired project as the **Set as Startup project**.
 * Add appropriate values to the appsettings.json configuration file. For more information, see [Access APIs](https://docs.microsoft.com/azure/media-services/latest/access-api-cli-how-to).
+
+If you get the following error message, when first attempting run a project, close VS and reopen it. Then, rebuild the solution.  
+
+![VS 2017 error](VS2017error.png)
