@@ -563,7 +563,7 @@ namespace EncryptWithDRM
                     AssetName = assetName,
                     // SecureStreaming policy supports envelope and cenc encryption
                     // And sets two content keys on the StreamingLocator
-                    StreamingPolicyName = PredefinedStreamingPolicy.SecureStreaming,
+                    StreamingPolicyName = "Predefined_MultiDrmCencStreaming",
                     DefaultContentKeyPolicyName = contentPolicyName
                 });
 
