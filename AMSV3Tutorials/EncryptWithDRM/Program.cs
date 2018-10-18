@@ -102,7 +102,7 @@ namespace EncryptWithDRM
                 // to the Key Delivery Component must have the identifier of the content key in it. 
                 ContentKeyPolicy policy = await GetOrCreateContentKeyPolicyAsync(client, config.ResourceGroup, config.AccountName, ContentKeyPolicyName, TokenSigningKey);
 
-                // Because this sample sets StreamingLocator.StreamingPolicyName to SecureStreaming policy,
+                // Because this sample sets StreamingLocator.StreamingPolicyName to "Predefined_MultiDrmCencStreaming" policy,
                 // two content keys get generated and set on the locator. 
                 StreamingLocator locator = await CreateStreamingLocatorAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName, ContentKeyPolicyName);
 
@@ -532,9 +532,9 @@ namespace EncryptWithDRM
         /// Creates a StreamingLocator for the specified asset and with the specified streaming policy name.
         /// Once the StreamingLocator is created the output asset is available to clients for playback.
         /// 
-        /// This StreamingLocator uses PredefinedStreamingPolicy.SecureStreaming 
+        /// This StreamingLocator uses "Predefined_MultiDrmCencStreaming" 
         /// because this sample encrypts with PlayReady and Widevine (CENC encryption).  
-        /// SecureStreaming policy also adds AES encryption.
+        /// "Predefined_MultiDrmCencStreaming" policy also adds AES encryption.
         /// As a result, two content keys are added to the StreamingLocator.
         /// 
         /// </summary>
@@ -553,7 +553,7 @@ namespace EncryptWithDRM
             string locatorName,
             string contentPolicyName)
         {
-            // If you also added FairPlay, use PredefinedStreamingPolicy.SecureStreamingWithFairPlay
+            // If you also added FairPlay, use "Predefined_MultiDrmStreaming
             StreamingLocator locator = await client.StreamingLocators.CreateAsync(
                 resourceGroup,
                 accountName,
@@ -561,7 +561,7 @@ namespace EncryptWithDRM
                 new StreamingLocator
                 {
                     AssetName = assetName,
-                    // SecureStreaming policy supports envelope and cenc encryption
+                    // "Predefined_MultiDrmCencStreaming" policy supports envelope and cenc encryption
                     // And sets two content keys on the StreamingLocator
                     StreamingPolicyName = "Predefined_MultiDrmCencStreaming",
                     DefaultContentKeyPolicyName = contentPolicyName
