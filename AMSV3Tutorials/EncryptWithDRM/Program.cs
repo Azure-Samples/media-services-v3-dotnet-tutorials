@@ -118,9 +118,11 @@ namespace EncryptWithDRM
                 string dashPath = await GetDASHStreamingUrlAsync(client, config.ResourceGroup, config.AccountName, locator.Name);
 
                 Console.WriteLine("Copy and paste the following URL in your browser to play back the file in the Azure Media Player.");
+                Console.WriteLine("You can use Edge/IE11 for PlayReady and Chrome/Firefox Widevine.");
+
                 Console.WriteLine();
 
-                Console.WriteLine($"https://ampdemo.azureedge.net/?url={dashPath}&playready=true&playreadytoken=Bearer%3D{token}");
+                Console.WriteLine($"https://ampdemo.azureedge.net/?url={dashPath}&playready=true&widevine=true&token=Bearer%3D{token}");
                 Console.WriteLine();
             }
 
@@ -469,7 +471,7 @@ namespace EncryptWithDRM
                         SecurityLevel = 1,
                         RequiredOutputProtection = new OutputProtection()
                         {
-                            HDCP = "HDCP_V2"
+                            HDCP = "HDCP_NONE"
                         }
                     }
                 },
