@@ -84,11 +84,7 @@ namespace UploadEncodeAndStreamFiles
             // Use the name of the created input asset to create the job input.
             JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
-            // Output from the encoding Job must be written to an Asset, so let's create one
-            Asset outputAsset = await CreateOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAssetName);
-
-            Job job = await SubmitJobAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName, jobInput, outputAssetName);
-
+            Job job = await SubmitJobAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName, inputAssetName, outputAsset.Name);
             // In this demo code, we will poll for Job status
             // Polling is not a recommended best practice for production applications because of the latency it introduces.
             // Overuse of this API may trigger throttling. Developers should instead use Event Grid.
@@ -292,7 +288,7 @@ namespace UploadEncodeAndStreamFiles
         /// <param name="accountName"> The Media Services account name.</param>
         /// <param name="transformName">The name of the transform.</param>
         /// <param name="jobName">The (unique) name of the job.</param>
-        /// <param name="jobInput"></param>
+        /// <param name="inputAssetName">The name of the input asset.</param>
         /// <param name="outputAssetName">The (unique) name of the  output asset that will store the result of the encoding job. </param>
         // <SubmitJob>
         private static async Task<Job> SubmitJobAsync(IAzureMediaServicesClient client,
@@ -300,9 +296,12 @@ namespace UploadEncodeAndStreamFiles
             string accountName,
             string transformName,
             string jobName,
-            JobInput jobInput,
+            string inputAssetName,
             string outputAssetName)
         {
+            // Use the name of the created input asset to create the job input.
+            JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
+
             JobOutput[] jobOutputs =
             {
                 new JobOutputAsset(outputAssetName),
