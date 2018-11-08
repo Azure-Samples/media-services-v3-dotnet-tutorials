@@ -87,7 +87,7 @@ namespace AnalyzeVideos
             // Output from the encoding Job must be written to an Asset, so let's create one
             Asset outputAsset = await CreateOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAssetName);
 
-            Job job = await SubmitJobAsync(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName, jobInput, outputAssetName);
+            Job job = await SubmitJobAsync(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, jobName, jobInput, outputAsset.Name);
 
             // In this demo code, we will poll for Job status
             // Polling is not a recommended best practice for production applications because of the latency it introduces.
@@ -100,7 +100,7 @@ namespace AnalyzeVideos
                 if (!Directory.Exists(OutputFolderName))
                     Directory.CreateDirectory(OutputFolderName);
 
-                await DownloadOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolderName);
+                await DownloadOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, OutputFolderName);
             }
 
             Console.WriteLine("Done.");
