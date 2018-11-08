@@ -291,6 +291,9 @@ namespace EncryptWithAES
                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
                 string uniqueness = $"-{Guid.NewGuid().ToString("N")}";
                 outputAssetName += uniqueness;
+                
+                Console.WriteLine("Warning – found an existing Asset with name = " + assetName);
+                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);                
             }
 
             return await client.Assets.CreateOrUpdateAsync(resourceGroupName, accountName, outputAssetName, asset);
