@@ -84,6 +84,9 @@ namespace UploadEncodeAndStreamFiles
             // Use the name of the created input asset to create the job input.
             JobInput jobInput = new JobInputAsset(assetName: inputAssetName);
 
+            // Output from the encoding Job must be written to an Asset, so let's create one
+            Asset outputAsset = await CreateOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAssetName);
+
             Job job = await SubmitJobAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, jobName, inputAssetName, outputAsset.Name);
             // In this demo code, we will poll for Job status
             // Polling is not a recommended best practice for production applications because of the latency it introduces.
