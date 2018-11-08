@@ -99,7 +99,7 @@ namespace UploadEncodeAndStreamFiles
                 if (!Directory.Exists(OutputFolderName))
                     Directory.CreateDirectory(OutputFolderName);
 
-                await DownloadOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAssetName, OutputFolderName);
+                await DownloadOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, OutputFolderName);
 
                 StreamingLocator locator = await CreateStreamingLocatorAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName);
 
