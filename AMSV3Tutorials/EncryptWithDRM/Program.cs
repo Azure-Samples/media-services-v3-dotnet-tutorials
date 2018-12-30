@@ -208,6 +208,7 @@ namespace EncryptWithDRM
 
                 ContentKeyPolicyPlayReadyConfiguration playReadyConfig = ConfigurePlayReadyLicenseTemplate();
                 ContentKeyPolicyWidevineConfiguration widevineConfig = ConfigureWidevineLicenseTempate();
+                // ContentKeyPolicyFairPlayConfiguration fairplayConfig = ConfigureFairPlayPolicyOptions()
 
                 List<ContentKeyPolicyOption> options = new List<ContentKeyPolicyOption>();
 
@@ -226,6 +227,15 @@ namespace EncryptWithDRM
                         Configuration = widevineConfig,
                         Restriction = restriction
                     });
+                
+             // add CBCS ContentKeyPolicyOption into the list
+             //   options.Add(
+             //       new ContentKeyPolicyOption()
+             //       {
+             //           Configuration = fairplayConfig,
+             //           Restriction = restriction,
+             //           Name = "ContentKeyPolicyOption_CBCS"
+             //       });
 
                 policy = await client.ContentKeyPolicies.CreateOrUpdateAsync(resourceGroupName, accountName, contentKeyPolicyName, options);
             }
