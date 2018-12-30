@@ -208,7 +208,7 @@ namespace EncryptWithDRM
 
                 ContentKeyPolicyPlayReadyConfiguration playReadyConfig = ConfigurePlayReadyLicenseTemplate();
                 ContentKeyPolicyWidevineConfiguration widevineConfig = ConfigureWidevineLicenseTempate();
-                // ContentKeyPolicyFairPlayConfiguration fairplayConfig = ConfigureFairPlayPolicyOptions()
+                // ContentKeyPolicyFairPlayConfiguration fairplayConfig = ConfigureFairPlayPolicyOptions();
 
                 List<ContentKeyPolicyOption> options = new List<ContentKeyPolicyOption>();
 
