@@ -544,9 +544,7 @@ namespace EncryptWithDRM
         /// Once the StreamingLocator is created the output asset is available to clients for playback.
         /// 
         /// This StreamingLocator uses "Predefined_MultiDrmCencStreaming" 
-        /// because this sample encrypts with PlayReady and Widevine (CENC encryption).  
-        /// "Predefined_MultiDrmCencStreaming" policy also adds AES encryption.
-        /// As a result, two content keys are added to the StreamingLocator.
+        /// because this sample encrypts with PlayReady and Widevine (CENC encryption). 
         /// 
         /// </summary>
         /// <param name="client">The Media Services client.</param>
