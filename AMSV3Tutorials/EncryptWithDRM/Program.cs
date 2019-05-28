@@ -102,8 +102,6 @@ namespace EncryptWithDRM
                 // to the Key Delivery Component must have the identifier of the content key in it. 
                 ContentKeyPolicy policy = await GetOrCreateContentKeyPolicyAsync(client, config.ResourceGroup, config.AccountName, ContentKeyPolicyName, TokenSigningKey);
 
-                // Because this sample sets StreamingLocator.StreamingPolicyName to "Predefined_MultiDrmCencStreaming" policy,
-                // two content keys get generated and set on the locator. 
                 StreamingLocator locator = await CreateStreamingLocatorAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName, ContentKeyPolicyName);
 
                 // In this example, we want to play the PlayReady (CENC) encrypted stream. 
