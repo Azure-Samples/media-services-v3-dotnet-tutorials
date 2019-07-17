@@ -1,7 +1,9 @@
 ---
-services: media-services
-platforms: dotnet-core
-author: Juliako
+topic: sample
+languages:
+  - csharp
+products:
+  - azure-media-services
 ---
 
 # Azure Media Services v3 tutorials 
