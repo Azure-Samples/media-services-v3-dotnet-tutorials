@@ -602,7 +602,11 @@ namespace EncryptWithDRM
             {
                 new Claim(ContentKeyPolicyTokenClaim.ContentKeyIdentifierClaim.ClaimType, keyIdentifier)
             };
-
+            
+            // To set a limit on how many times the same token can be used to request a key or a license.
+            // add  the "urn:microsoft:azure:mediaservices:maxuses" claim.
+            // For example, claims.Add(new Claim("urn:microsoft:azure:mediaservices:maxuses", 4));
+            
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
