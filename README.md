@@ -1,9 +1,11 @@
 ---
-topic: sample
+page_type: sample
 languages:
   - csharp
 products:
+  - azure
   - azure-media-services
+description: "The projects in this sample support the Azure Media Services v3 articles on docs.microsoft.com."
 ---
 
 # Azure Media Services v3 tutorials 
