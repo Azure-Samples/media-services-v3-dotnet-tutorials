@@ -1,11 +1,11 @@
 ---
 page_type: sample
 languages:
-  - csharp
+- csharp
 products:
-  - azure
-  - azure-media-services
-description: "The projects in this sample support the Azure Media Services v3 articles on docs.microsoft.com."
+- azure
+description: "The projects in this repository were created using Visual Studio 2017. They target netcoreapp2.0. "
+urlFragment: media-services-v3-dotnet-tutorials
 ---
 
 # Azure Media Services v3 tutorials 
