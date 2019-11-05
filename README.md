@@ -10,10 +10,13 @@ urlFragment: media-services-v3-dotnet-tutorials
 
 # Azure Media Services v3 tutorials 
 
-The projects in this repository were created using Visual Studio 2017. They target netcoreapp2.0. 
+## NOTE
+ 
+You can find the latest and most extensive .NET samples in the [Azure Media Services v3](https://github.com/Azure-Samples/media-services-v3-dotnet) repository.
 
+## Overview
 
-The projects in this repository support the Azure Media Services v3 articles:
+The projects in this repository were created using Visual Studio 2017. They target netcoreapp2.0. These projects support the Azure Media Services v3 articles:
 
 |Project name|Article|
 |---|---|
