@@ -286,4 +286,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
 /AMSV3Tutorials/packages
+/AMSV3Tutorials/AnalyzeVideos/Output
