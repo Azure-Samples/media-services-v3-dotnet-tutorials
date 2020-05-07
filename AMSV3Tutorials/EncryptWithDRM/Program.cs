@@ -4,18 +4,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Rest;
 using Microsoft.Rest.Azure.Authentication;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace EncryptWithDRM
 {
@@ -197,7 +196,7 @@ namespace EncryptWithDRM
                     ContentKeyPolicyTokenClaim.ContentKeyIdentifierClaim
                 };
                 List<ContentKeyPolicyRestrictionTokenKey> alternateKeys = null;
-                ContentKeyPolicyTokenRestriction restriction 
+                ContentKeyPolicyTokenRestriction restriction
                     = new ContentKeyPolicyTokenRestriction(Issuer, Audience, primaryKey, ContentKeyPolicyRestrictionTokenType.Jwt, alternateKeys, requiredClaims);
 
                 ContentKeyPolicyPlayReadyConfiguration playReadyConfig = ConfigurePlayReadyLicenseTemplate();
@@ -221,15 +220,15 @@ namespace EncryptWithDRM
                         Configuration = widevineConfig,
                         Restriction = restriction
                     });
-                
-             // add CBCS ContentKeyPolicyOption into the list
-             //   options.Add(
-             //       new ContentKeyPolicyOption()
-             //       {
-             //           Configuration = fairplayConfig,
-             //           Restriction = restriction,
-             //           Name = "ContentKeyPolicyOption_CBCS"
-             //       });
+
+                // add CBCS ContentKeyPolicyOption into the list
+                //   options.Add(
+                //       new ContentKeyPolicyOption()
+                //       {
+                //           Configuration = fairplayConfig,
+                //           Restriction = restriction,
+                //           Name = "ContentKeyPolicyOption_CBCS"
+                //       });
 
                 policy = await client.ContentKeyPolicies.CreateOrUpdateAsync(resourceGroupName, accountName, contentKeyPolicyName, options);
             }
@@ -321,9 +320,9 @@ namespace EncryptWithDRM
                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
                 string uniqueness = $"-{Guid.NewGuid().ToString("N")}";
                 outputAssetName += uniqueness;
-                
+
                 Console.WriteLine("Warning – found an existing Asset with name = " + assetName);
-                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);                
+                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);
             }
 
             return await client.Assets.CreateOrUpdateAsync(resourceGroupName, accountName, outputAssetName, asset);
@@ -508,7 +507,6 @@ namespace EncryptWithDRM
         // <ConfigureFairPlayPolicyOptions>
         private static ContentKeyPolicyFairPlayConfiguration ConfigureFairPlayPolicyOptions()
         {
-
             string askHex = "";
             string FairPlayPfxPassword = "";
 
@@ -602,11 +600,11 @@ namespace EncryptWithDRM
             {
                 new Claim(ContentKeyPolicyTokenClaim.ContentKeyIdentifierClaim.ClaimType, keyIdentifier)
             };
-            
+
             // To set a limit on how many times the same token can be used to request a key or a license.
             // add  the "urn:microsoft:azure:mediaservices:maxuses" claim.
             // For example, claims.Add(new Claim("urn:microsoft:azure:mediaservices:maxuses", 4));
-            
+
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
@@ -656,9 +654,11 @@ namespace EncryptWithDRM
 
             foreach (StreamingPath path in paths.StreamingPaths)
             {
-                UriBuilder uriBuilder = new UriBuilder();
-                uriBuilder.Scheme = "https";
-                uriBuilder.Host = streamingEndpoint.HostName;
+                UriBuilder uriBuilder = new UriBuilder
+                {
+                    Scheme = "https",
+                    Host = streamingEndpoint.HostName
+                };
 
                 // Look for just the DASH path and generate a URL for the Azure Media Player to playback the encrypted DASH content. 
                 // Note that the JWT token is set to expire in 1 hour. 
@@ -720,8 +720,8 @@ namespace EncryptWithDRM
                 // A non-negative integer value that indicates the maximum number of results to be returned at a time,
                 // up to the per-operation limit of 5000. If this value is null, the maximum possible number of results
                 // will be returned, up to 5000.
-                int? ListBlobsSegmentMaxResult = null;    
-                
+                int? ListBlobsSegmentMaxResult = null;
+
                 BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, ListBlobsSegmentMaxResult, continuationToken, null, null);
 
                 foreach (IListBlobItem blobItem in segment.Results)
