@@ -128,7 +128,7 @@ namespace EncryptWithDRM
             Console.ReadLine();
 
             Console.WriteLine("Cleaning up...");
-            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, ContentKeyPolicyName);
+            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, ContentKeyPolicyName, new List<string> { outputAsset.Name }, job.Name);
         }
         // </RunAsync>
 
@@ -394,7 +394,7 @@ namespace EncryptWithDRM
             string transformName,
             string jobName)
         {
-            const int SleepIntervalMs = 60 * 1000;
+            const int SleepIntervalMs = 20 * 1000;
 
             Job job = null;
 
@@ -749,7 +749,7 @@ namespace EncryptWithDRM
         /// <summary>
         /// Deletes the jobs and assets that were created.
         /// Generally, you should clean up everything except objects 
-        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist StreamingLocators).
+        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist output assets and StreamingLocators).
         /// </summary>
         /// <param name="client"></param>
         /// <param name="resourceGroupName"></param>
@@ -761,29 +761,18 @@ namespace EncryptWithDRM
             string resourceGroupName,
             string accountName,
             string transformName,
-            string contentKeyPolicyName)
+            string contentKeyPolicyName,
+            List<string> assetNames,
+            string jobName)
         {
+            await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, jobName);
 
-            var jobs = await client.Jobs.ListAsync(resourceGroupName, accountName, transformName);
-            foreach (var job in jobs)
+            foreach (var assetName in assetNames)
             {
-                await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, job.Name);
-            }
-
-            var streamingLocators = await client.StreamingLocators.ListAsync(resourceGroupName, accountName);
-            foreach (var locator in streamingLocators)
-            {
-                await client.StreamingLocators.DeleteAsync(resourceGroupName, accountName, locator.Name);
-            }
-
-            var assets = await client.Assets.ListAsync(resourceGroupName, accountName);
-            foreach (var asset in assets)
-            {
-                await client.Assets.DeleteAsync(resourceGroupName, accountName, asset.Name);
+                await client.Assets.DeleteAsync(resourceGroupName, accountName, assetName);
             }
 
             client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
-
         }
         // </CleanUp>
     }

@@ -62,5 +62,10 @@ namespace EncryptWithAES
         {
             get { return _config["Region"]; }
         }
+
+        public string SymmetricKey
+        {
+            get { return _config["SymmetricKey"]; }
+        }
     }
 }

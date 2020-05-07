@@ -345,7 +345,7 @@ namespace UploadEncodeAndStreamFiles
             string transformName,
             string jobName)
         {
-            const int SleepIntervalMs = 60 * 1000;
+            const int SleepIntervalMs = 20 * 1000;
 
             Job job = null;
 
@@ -528,7 +528,7 @@ namespace UploadEncodeAndStreamFiles
         /// <summary>
         /// Deletes the jobs and assets that were created.
         /// Generally, you should clean up everything except objects 
-        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist StreamingLocators).
+        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist output assets and StreamingLocators).
         /// </summary>
         /// <param name="client"></param>
         /// <param name="resourceGroupName"></param>
@@ -539,20 +539,19 @@ namespace UploadEncodeAndStreamFiles
             IAzureMediaServicesClient client,
             string resourceGroupName,
             string accountName,
-            string transformName)
+            string transformName,
+            string contentKeyPolicyName,
+            List<string> assetNames,
+            string jobName)
         {
+            await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, jobName);
 
-            var jobs = await client.Jobs.ListAsync(resourceGroupName, accountName, transformName);
-            foreach (var job in jobs)
+            foreach (var assetName in assetNames)
             {
-                await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, job.Name);
+                await client.Assets.DeleteAsync(resourceGroupName, accountName, assetName);
             }
 
-            var assets = await client.Assets.ListAsync(resourceGroupName, accountName);
-            foreach (var asset in assets)
-            {
-                await client.Assets.DeleteAsync(resourceGroupName, accountName, asset.Name);
-            }
+            client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
         }
         // </CleanUp>
     }
