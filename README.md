@@ -4,7 +4,7 @@ languages:
 - csharp
 products:
 - azure
-description: "The projects in this repository were created using Visual Studio 2017. They target netcoreapp2.0. "
+description: "The projects in this repository were created using Visual Studio 2019. They target netcoreapp3.0. "
 urlFragment: media-services-v3-dotnet-tutorials
 ---
 
@@ -16,7 +16,7 @@ You can find the latest and most extensive .NET samples in the [Azure Media Serv
 
 ## Overview
 
-The projects in this repository were created using Visual Studio 2017. They target netcoreapp2.0. These projects support the Azure Media Services v3 articles:
+The projects in this repository were created using Visual Studio 2019. They target netcoreapp3.0. These projects support the Azure Media Services v3 articles:
 
 |Project name|Article|
 |---|---|
@@ -29,7 +29,7 @@ The projects in this repository were created using Visual Studio 2017. They targ
 
 To run samples in this repository, you need:
 
-* Visual Studio 2017.  
+* Visual Studio 2019.  
 * An Azure Media Services account. See the steps described in [Create a Media Services account](https://docs.microsoft.com/azure/media-services/latest/create-account-cli-quickstart).
 
 ## NuGet packages 
@@ -42,7 +42,7 @@ The following NuGet packages were added to the project:
 |Microsoft.Rest.ClientRuntime.Azure.Authentication|ADAL authentication library for Azure SDK for NET|
 |Microsoft.Extensions.Configuration.EnvironmentVariables|Read configuration values from environment variables and local JSON files|
 |Microsoft.Extensions.Configuration.Json|Read configuration values from environment variables and local JSON files
-|WindowsAzure.Storage|Storage SDK|
+|Microsoft.Azure.Storage.Blob|Storage SDK|
 
 ## To build and run each project in the solution
 
