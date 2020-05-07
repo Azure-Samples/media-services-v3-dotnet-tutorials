@@ -115,7 +115,7 @@ namespace EncryptWithDRM
                 string dashPath = await GetDASHStreamingUrlAsync(client, config.ResourceGroup, config.AccountName, locator.Name);
 
                 Console.WriteLine("Copy and paste the following URL in your browser to play back the file in the Azure Media Player.");
-                Console.WriteLine("You can use Edge/IE11 for PlayReady and Chrome/Firefox Widevine.");
+                Console.WriteLine("You can use Edge/IE11 for PlayReady and Chrome/Firefox for Widevine.");
 
                 Console.WriteLine();
 
