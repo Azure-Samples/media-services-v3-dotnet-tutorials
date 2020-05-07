@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Rest;
 using Microsoft.Rest.Azure.Authentication;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace AnalyzeVideos
 {
@@ -37,7 +37,7 @@ namespace AnalyzeVideos
             {
                 if (exception.Source.Contains("ActiveDirectory"))
                 {
-                     Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
+                    Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
                 }
 
                 Console.Error.WriteLine($"{exception.Message}");
@@ -163,10 +163,10 @@ namespace AnalyzeVideos
         /// <param name="transformName">The name of the transform.</param>
         /// <returns></returns>
         // <EnsureTransformExists>
-        private static async Task<Transform> GetOrCreateTransformAsync(IAzureMediaServicesClient client, 
-            string resourceGroupName, 
-            string accountName, 
-            string transformName, 
+        private static async Task<Transform> GetOrCreateTransformAsync(IAzureMediaServicesClient client,
+            string resourceGroupName,
+            string accountName,
+            string transformName,
             Preset preset)
         {
             // Does a Transform already exist with the desired name? Assume that an existing Transform with the desired name
@@ -265,7 +265,7 @@ namespace AnalyzeVideos
                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
                 string uniqueness = $"-{Guid.NewGuid().ToString("N")}";
                 outputAssetName += uniqueness;
-                
+
                 Console.WriteLine("Warning – found an existing Asset with name = " + assetName);
                 Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);
             }
@@ -334,7 +334,7 @@ namespace AnalyzeVideos
             string transformName,
             string jobName)
         {
-            const int SleepIntervalMs = 60 * 1000;
+            const int SleepIntervalMs = 20 * 1000;
 
             Job job = null;
 
@@ -410,8 +410,8 @@ namespace AnalyzeVideos
                 // A non-negative integer value that indicates the maximum number of results to be returned at a time,
                 // up to the per-operation limit of 5000. If this value is null, the maximum possible number of results
                 // will be returned, up to 5000.
-                int? ListBlobsSegmentMaxResult = null;                
-                
+                int? ListBlobsSegmentMaxResult = null;
+
                 BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, ListBlobsSegmentMaxResult, continuationToken, null, null);
 
                 foreach (IListBlobItem blobItem in segment.Results)
@@ -438,7 +438,7 @@ namespace AnalyzeVideos
         /// <summary>
         /// Deletes the jobs and assets that were created.
         /// Generally, you should clean up everything except objects 
-        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist StreamingLocators).
+        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist output assets and StreamingLocators).
         /// </summary>
         /// <param name="client"></param>
         /// <param name="resourceGroupName"></param>
@@ -449,22 +449,20 @@ namespace AnalyzeVideos
             IAzureMediaServicesClient client,
             string resourceGroupName,
             string accountName,
-            string transformName)
+            string transformName,
+            string contentKeyPolicyName,
+            List<string> assetNames,
+            string jobName)
         {
+            await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, jobName);
 
-            var jobs = await client.Jobs.ListAsync(resourceGroupName, accountName, transformName);
-            foreach (var job in jobs)
+            foreach (var assetName in assetNames)
             {
-                await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, job.Name);
+                await client.Assets.DeleteAsync(resourceGroupName, accountName, assetName);
             }
 
-            var assets = await client.Assets.ListAsync(resourceGroupName, accountName);
-            foreach (var asset in assets)
-            {
-                await client.Assets.DeleteAsync(resourceGroupName, accountName, asset.Name);
-            }
+            client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
         }
-        // </CleanUp>
 
     }
 }

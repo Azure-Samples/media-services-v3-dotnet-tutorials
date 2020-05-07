@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Rest;
 using Microsoft.Rest.Azure.Authentication;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace EncryptWithAES
 {
@@ -96,14 +96,13 @@ namespace EncryptWithAES
                 if (!Directory.Exists(OutputFolderName))
                     Directory.CreateDirectory(OutputFolderName);
 
-                // Generate a new random token signing key to use
-                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-                rng.GetBytes(TokenSigningKey);
+                // Set a token signing key that you want to use
+                TokenSigningKey = Convert.FromBase64String(config.SymmetricKey);
 
                 //Create the content key policy that configures how the content key is delivered to end clients
                 // via the Key Delivery component of Azure Media Services.
                 ContentKeyPolicy policy = await GetOrCreateContentKeyPolicyAsync(client, config.ResourceGroup, config.AccountName, ContentKeyPolicyName);
-                
+
                 StreamingLocator locator = await CreateStreamingLocatorAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName, ContentKeyPolicyName);
 
                 // We are using the ContentKeyIdentifierClaim in the ContentKeyPolicy which means that the token presented
@@ -121,7 +120,7 @@ namespace EncryptWithAES
                 Console.WriteLine();
                 Console.WriteLine($"https://ampdemo.azureedge.net/?url={dashPath}&aes=true&aestoken=Bearer%3D{token}");
                 Console.WriteLine();
-               
+
             }
 
             Console.WriteLine("When finished press enter to cleanup.");
@@ -129,7 +128,7 @@ namespace EncryptWithAES
             Console.ReadLine();
 
             Console.WriteLine("Cleaning up...");
-            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, ContentKeyPolicyName);
+            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, ContentKeyPolicyName, new List<string> { outputAsset.Name }, job.Name);
         }
         // </RunAsync>
 
@@ -287,9 +286,9 @@ namespace EncryptWithAES
                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
                 string uniqueness = $"-{Guid.NewGuid().ToString("N")}";
                 outputAssetName += uniqueness;
-                
+
                 Console.WriteLine("Warning – found an existing Asset with name = " + assetName);
-                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);                
+                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);
             }
 
             return await client.Assets.CreateOrUpdateAsync(resourceGroupName, accountName, outputAssetName, asset);
@@ -361,7 +360,7 @@ namespace EncryptWithAES
             string transformName,
             string jobName)
         {
-            const int SleepIntervalMs = 60 * 1000;
+            const int SleepIntervalMs = 20 * 1000;
 
             Job job = null;
 
@@ -565,8 +564,8 @@ namespace EncryptWithAES
                 // A non-negative integer value that indicates the maximum number of results to be returned at a time,
                 // up to the per-operation limit of 5000. If this value is null, the maximum possible number of results
                 // will be returned, up to 5000.
-                int? ListBlobsSegmentMaxResult = null;    
-                
+                int? ListBlobsSegmentMaxResult = null;
+
                 BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, ListBlobsSegmentMaxResult, continuationToken, null, null);
 
                 foreach (IListBlobItem blobItem in segment.Results)
@@ -594,7 +593,7 @@ namespace EncryptWithAES
         /// <summary>
         /// Deletes the jobs and assets that were created.
         /// Generally, you should clean up everything except objects 
-        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist StreamingLocators).
+        /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist output assets and StreamingLocators).
         /// </summary>
         /// <param name="client"></param>
         /// <param name="resourceGroupName"></param>
@@ -606,23 +605,18 @@ namespace EncryptWithAES
             string resourceGroupName,
             string accountName,
             string transformName,
-            string contentKeyPolicyName)
+            string contentKeyPolicyName,
+            List<string> assetNames,
+            string jobName)
         {
+            await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, jobName);
 
-            var jobs = await client.Jobs.ListAsync(resourceGroupName, accountName, transformName);
-            foreach (var job in jobs)
+            foreach (var assetName in assetNames)
             {
-                await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, job.Name);
-            }
-
-            var assets = await client.Assets.ListAsync(resourceGroupName, accountName);
-            foreach (var asset in assets)
-            {
-                await client.Assets.DeleteAsync(resourceGroupName, accountName, asset.Name);
+                await client.Assets.DeleteAsync(resourceGroupName, accountName, assetName);
             }
 
             client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
-
         }
         // </CleanUp>
     }
