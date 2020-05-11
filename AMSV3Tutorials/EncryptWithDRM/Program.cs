@@ -200,7 +200,7 @@ namespace EncryptWithDRM
                     = new ContentKeyPolicyTokenRestriction(Issuer, Audience, primaryKey, ContentKeyPolicyRestrictionTokenType.Jwt, alternateKeys, requiredClaims);
 
                 ContentKeyPolicyPlayReadyConfiguration playReadyConfig = ConfigurePlayReadyLicenseTemplate();
-                ContentKeyPolicyWidevineConfiguration widevineConfig = ConfigureWidevineLicenseTempate();
+                ContentKeyPolicyWidevineConfiguration widevineConfig = ConfigureWidevineLicenseTemplate();
                 // ContentKeyPolicyFairPlayConfiguration fairplayConfig = ConfigureFairPlayPolicyOptions();
 
                 List<ContentKeyPolicyOption> options = new List<ContentKeyPolicyOption>();
@@ -463,8 +463,8 @@ namespace EncryptWithDRM
         /// Configures Widevine license template.
         /// </summary>
         /// <returns></returns>
-        // <ConfigureWidevineLicenseTempate>
-        private static ContentKeyPolicyWidevineConfiguration ConfigureWidevineLicenseTempate()
+        // <ConfigureWidevineLicenseTemplate>
+        private static ContentKeyPolicyWidevineConfiguration ConfigureWidevineLicenseTemplate()
         {
             WidevineTemplate template = new WidevineTemplate()
             {
@@ -498,7 +498,7 @@ namespace EncryptWithDRM
             };
             return objContentKeyPolicyWidevineConfiguration;
         }
-        // </ConfigureWidevineLicenseTempate>
+        // </ConfigureWidevineLicenseTemplate>
 
         /// <summary>
         /// Configures FairPlay policy options.
