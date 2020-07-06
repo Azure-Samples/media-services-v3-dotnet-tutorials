@@ -4,7 +4,7 @@ languages:
 - csharp
 products:
 - azure
-description: "The projects in this repository were created using Visual Studio 2019. They target netcoreapp3.0. "
+description: "The projects in this repository were created using Visual Studio 2019. They target netcoreapp3.1. "
 urlFragment: media-services-v3-dotnet-tutorials
 ---
 
