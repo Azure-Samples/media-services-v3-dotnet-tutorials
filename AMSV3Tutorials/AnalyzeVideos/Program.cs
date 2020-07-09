@@ -463,6 +463,7 @@ namespace AnalyzeVideos
 
             client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
         }
+        // </CleanUp>
 
     }
 }
