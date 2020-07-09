@@ -128,7 +128,7 @@ namespace EncryptWithAES
             Console.ReadLine();
 
             Console.WriteLine("Cleaning up...");
-            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, ContentKeyPolicyName, new List<string> { outputAsset.Name }, job.Name);
+            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, AdaptiveStreamingTransformName, job.Name, new List<string> { outputAsset.Name }, ContentKeyPolicyName);
         }
         // </RunAsync>
 
@@ -591,7 +591,7 @@ namespace EncryptWithAES
 
 
         /// <summary>
-        /// Deletes the jobs and assets that were created.
+        /// Deletes the jobs, assets and potentially the content key policy that were created.
         /// Generally, you should clean up everything except objects 
         /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist output assets and StreamingLocators).
         /// </summary>
@@ -599,15 +599,20 @@ namespace EncryptWithAES
         /// <param name="resourceGroupName"></param>
         /// <param name="accountName"></param>
         /// <param name="transformName"></param>
+        /// <param name="jobName"></param>
+        /// <param name="assetNames"></param>
+        /// <param name="contentKeyPolicyName"></param>
+        /// <returns></returns>
         // <CleanUp>
         private static async Task CleanUpAsync(
-            IAzureMediaServicesClient client,
-            string resourceGroupName,
-            string accountName,
-            string transformName,
-            string contentKeyPolicyName,
-            List<string> assetNames,
-            string jobName)
+           IAzureMediaServicesClient client,
+           string resourceGroupName,
+           string accountName,
+           string transformName,
+           string jobName,
+           List<string> assetNames,
+           string contentKeyPolicyName = null
+           )
         {
             await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, jobName);
 
@@ -616,7 +621,10 @@ namespace EncryptWithAES
                 await client.Assets.DeleteAsync(resourceGroupName, accountName, assetName);
             }
 
-            client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
+            if (contentKeyPolicyName != null)
+            {
+                client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
+            }
         }
         // </CleanUp>
     }

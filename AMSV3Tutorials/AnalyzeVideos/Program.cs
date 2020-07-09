@@ -109,9 +109,11 @@ namespace AnalyzeVideos
             }
 
             Console.WriteLine("Done.");
-            Console.WriteLine("Press Enter to Continue");
+            Console.WriteLine("When finished press enter to cleanup.");
+            Console.Out.Flush();
             Console.ReadLine();
-
+            Console.WriteLine("Cleaning up...");
+            await CleanUpAsync(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, job.Name, new List<string> { outputAsset.Name }, null);
         }
         // </RunAsync>
 
@@ -435,8 +437,9 @@ namespace AnalyzeVideos
         }
         // </DownloadResults>
 
+
         /// <summary>
-        /// Deletes the jobs and assets that were created.
+        /// Deletes the jobs, assets and potentially the content key policy that were created.
         /// Generally, you should clean up everything except objects 
         /// that you are planning to reuse (typically, you will reuse Transforms, and you will persist output assets and StreamingLocators).
         /// </summary>
@@ -444,15 +447,20 @@ namespace AnalyzeVideos
         /// <param name="resourceGroupName"></param>
         /// <param name="accountName"></param>
         /// <param name="transformName"></param>
+        /// <param name="jobName"></param>
+        /// <param name="assetNames"></param>
+        /// <param name="contentKeyPolicyName"></param>
+        /// <returns></returns>
         // <CleanUp>
         private static async Task CleanUpAsync(
-            IAzureMediaServicesClient client,
-            string resourceGroupName,
-            string accountName,
-            string transformName,
-            string contentKeyPolicyName,
-            List<string> assetNames,
-            string jobName)
+           IAzureMediaServicesClient client,
+           string resourceGroupName,
+           string accountName,
+           string transformName,
+           string jobName,
+           List<string> assetNames,
+           string contentKeyPolicyName = null
+           )
         {
             await client.Jobs.DeleteAsync(resourceGroupName, accountName, transformName, jobName);
 
@@ -461,9 +469,11 @@ namespace AnalyzeVideos
                 await client.Assets.DeleteAsync(resourceGroupName, accountName, assetName);
             }
 
-            client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
+            if (contentKeyPolicyName != null)
+            {
+                client.ContentKeyPolicies.Delete(resourceGroupName, accountName, contentKeyPolicyName);
+            }
         }
         // </CleanUp>
-
     }
 }
