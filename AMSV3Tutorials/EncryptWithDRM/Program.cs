@@ -22,11 +22,11 @@ namespace EncryptWithDRM
     {
         private const string AdaptiveStreamingTransformName = "MyTransformWithAdaptiveStreamingPreset";
 
-        private static string Issuer = "myIssuer";
-        private static string Audience = "myAudience";
+        private static readonly string Issuer = "myIssuer";
+        private static readonly string Audience = "myAudience";
 
         private static byte[] TokenSigningKey = new byte[40];
-        private static string ContentKeyPolicyName = "DRMContentKeyPolicy";
+        private static readonly string ContentKeyPolicyName = "DRMContentKeyPolicy";
 
         public static async Task Main(string[] args)
         {
@@ -44,8 +44,7 @@ namespace EncryptWithDRM
             {
                 Console.Error.WriteLine($"{exception.Message}");
 
-                ApiErrorException apiException = exception.GetBaseException() as ApiErrorException;
-                if (apiException != null)
+                if (exception.GetBaseException() is ApiErrorException apiException)
                 {
                     Console.Error.WriteLine(
                         $"ERROR: API call failed with error code '{apiException.Body.Error.Code}' and message '{apiException.Body.Error.Message}'.");
@@ -236,11 +235,9 @@ namespace EncryptWithDRM
             {
                 // Get the signing key from the existing policy.
                 var policyProperties = await client.ContentKeyPolicies.GetPolicyPropertiesWithSecretsAsync(resourceGroupName, accountName, contentKeyPolicyName);
-                var restriction = policyProperties.Options[0].Restriction as ContentKeyPolicyTokenRestriction;
-                if (restriction != null)
+                if (policyProperties.Options[0].Restriction is ContentKeyPolicyTokenRestriction restriction)
                 {
-                    var signingKey = restriction.PrimaryVerificationKey as ContentKeyPolicySymmetricTokenKey;
-                    if (signingKey != null)
+                    if (restriction.PrimaryVerificationKey is ContentKeyPolicySymmetricTokenKey signingKey)
                     {
                         TokenSigningKey = signingKey.KeyValue;
                     }
@@ -318,7 +315,7 @@ namespace EncryptWithDRM
                 // Name collision! In order to get the sample to work, let's just go ahead and create a unique asset name
                 // Note that the returned Asset can have a different name than the one specified as an input parameter.
                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
-                string uniqueness = $"-{Guid.NewGuid().ToString("N")}";
+                string uniqueness = $"-{Guid.NewGuid():N}";
                 outputAssetName += uniqueness;
 
                 Console.WriteLine("Warning – found an existing Asset with name = " + assetName);
@@ -396,8 +393,7 @@ namespace EncryptWithDRM
         {
             const int SleepIntervalMs = 20 * 1000;
 
-            Job job = null;
-
+            Job job;
             do
             {
                 job = await client.Jobs.GetAsync(resourceGroupName, accountName, transformName, jobName);
@@ -409,7 +405,7 @@ namespace EncryptWithDRM
                     Console.Write($"\tJobOutput[{i}] is '{output.State}'.");
                     if (output.State == JobState.Processing)
                     {
-                        Console.Write($"  Progress: '{output.Progress}'.");
+                        Console.Write($"  Progress (%): '{output.Progress}'.");
                     }
 
                     Console.WriteLine();
@@ -726,8 +722,7 @@ namespace EncryptWithDRM
 
                 foreach (IListBlobItem blobItem in segment.Results)
                 {
-                    CloudBlockBlob blob = blobItem as CloudBlockBlob;
-                    if (blob != null)
+                    if (blobItem is CloudBlockBlob blob)
                     {
                         string path = Path.Combine(directory, blob.Name);
 
