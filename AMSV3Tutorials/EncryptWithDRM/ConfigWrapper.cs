@@ -58,9 +58,9 @@ namespace EncryptWithDRM
             get { return new Uri(_config["ArmEndpoint"]); }
         }
 
-        public string Region
+        public string Location
         {
-            get { return _config["Region"]; }
+            get { return _config["Location"]; }
         }
 
         public string SymmetricKey
