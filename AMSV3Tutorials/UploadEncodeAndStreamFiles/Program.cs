@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Rest;
@@ -36,7 +36,7 @@ namespace UploadEncodeAndStreamFiles
             {
                 if (exception.Source.Contains("ActiveDirectory"))
                 {
-                     Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
+                    Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
                 }
 
                 Console.Error.WriteLine($"{exception.Message}");
@@ -193,11 +193,11 @@ namespace UploadEncodeAndStreamFiles
 
             // Use Storage API to get a reference to the Asset container
             // that was created by calling Asset's CreateOrUpdate method.  
-            CloudBlobContainer container = new CloudBlobContainer(sasUri);
-            var blob = container.GetBlockBlobReference(Path.GetFileName(fileToUpload));
+            BlobContainerClient container = new BlobContainerClient(sasUri);
+            BlobClient blob = container.GetBlobClient(Path.GetFileName(fileToUpload));
 
             // Use Strorage API to upload the file into the container in storage.
-            await blob.UploadFromFileAsync(fileToUpload);
+            await blob.UploadAsync(fileToUpload);
 
             return asset;
         }
@@ -226,9 +226,9 @@ namespace UploadEncodeAndStreamFiles
                 // You may want to update this part to throw an Exception instead, and handle name collisions differently.
                 string uniqueness = $"-{Guid.NewGuid():N}";
                 outputAssetName += uniqueness;
-                
+
                 Console.WriteLine("Warning – found an existing Asset with name = " + assetName);
-                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);                
+                Console.WriteLine("Creating an Asset with this name instead: " + outputAssetName);
             }
 
             return await client.Assets.CreateOrUpdateAsync(resourceGroupName, accountName, outputAssetName, asset);
@@ -485,38 +485,34 @@ namespace UploadEncodeAndStreamFiles
                 expiryTime: DateTime.UtcNow.AddHours(1).ToUniversalTime());
 
             Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
-            CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
+            BlobContainerClient container = new BlobContainerClient(containerSasUrl);
 
             string directory = Path.Combine(outputFolderName, assetName);
             Directory.CreateDirectory(directory);
 
             Console.WriteLine($"Downloading output results to '{directory}'...");
 
-            BlobContinuationToken continuationToken = null;
+            string continuationToken = null;
             IList<Task> downloadTasks = new List<Task>();
 
             do
             {
-                // A non-negative integer value that indicates the maximum number of results to be returned at a time,
-                // up to the per-operation limit of 5000. If this value is null, the maximum possible number of results
-                // will be returned, up to 5000.
-                int? ListBlobsSegmentMaxResult = null;    
-                
-                BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, ListBlobsSegmentMaxResult, continuationToken, null, null);
+                var resultSegment = container.GetBlobs().AsPages(continuationToken);
 
-                foreach (IListBlobItem blobItem in segment.Results)
+                foreach (Azure.Page<BlobItem> blobPage in resultSegment)
                 {
-                    if (blobItem is CloudBlockBlob blob)
+                    foreach (BlobItem blobItem in blobPage.Values)
                     {
-                        string path = Path.Combine(directory, blob.Name);
+                        var blobClient = container.GetBlobClient(blobItem.Name);
+                        string filename = Path.Combine(directory, blobItem.Name);
 
-                        downloadTasks.Add(blob.DownloadToFileAsync(path, FileMode.Create));
+                        downloadTasks.Add(blobClient.DownloadToAsync(filename));
                     }
+                    // Get the continuation token and loop until it is empty.
+                    continuationToken = blobPage.ContinuationToken;
                 }
 
-                continuationToken = segment.ContinuationToken;
-            }
-            while (continuationToken != null);
+            } while (continuationToken != "");
 
             await Task.WhenAll(downloadTasks);
 
