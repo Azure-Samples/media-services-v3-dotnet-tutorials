@@ -79,7 +79,7 @@ namespace AnalyzeVideos
             // In this Transform, we specify to use the VideoAnalyzerPreset preset. 
             // This preset enables you to extract multiple audio and video insights from a video. 
             // In the example, the language ("en-US") is passed to its constructor. 
-            // You can also specify what insights you want to extract by passing InsightsToExtract to the constructor.
+            // You can also specify what insights you want to extract by passing InsightsToExtract to the constructor, and which audio mode (standard or basic).
             _ = await GetOrCreateTransformAsync(client, config.ResourceGroup, config.AccountName, VideoAnalyzerTransformName, new VideoAnalyzerPreset("en-US"));
 
             // Create a new input Asset and upload the specified local video file into it.
