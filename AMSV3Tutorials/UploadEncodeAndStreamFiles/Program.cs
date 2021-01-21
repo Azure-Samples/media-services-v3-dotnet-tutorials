@@ -101,7 +101,14 @@ namespace UploadEncodeAndStreamFiles
                 await DownloadOutputAssetAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, OutputFolderName);
 
                 StreamingLocator locator = await CreateStreamingLocatorAsync(client, config.ResourceGroup, config.AccountName, outputAsset.Name, locatorName);
-
+                
+                // Note that the URLs returned by this method include a /manifest path followed by a (format=)
+                // parameter that controls the type of manifest that is returned. 
+                // The /manifest(format=m3u8-aapl) will provide Apple HLS v4 manifest using MPEG TS segments.
+                // The /manifest(format=mpd-time-csf) will provide MPEG DASH manifest.
+                // And using just /manifest alone will return Microsoft Smooth Streaming format.
+                // There are additional formats available that are not returned in this call, please check the documentation
+                // on the dynamic packager for additional formats - see https://docs.microsoft.com/azure/media-services/latest/dynamic-packaging-overview
                 IList<string> urls = await GetStreamingUrlsAsync(client, config.ResourceGroup, config.AccountName, locator.Name);
                 foreach (var url in urls)
                 {
@@ -109,8 +116,10 @@ namespace UploadEncodeAndStreamFiles
                 }
             }
 
-            Console.WriteLine("Done. Copy and paste the Streaming URL into the Azure Media Player at 'http://aka.ms/azuremediaplayer'.");
-        }
+            Console.WriteLine("Done. Copy and paste the Streaming URL ending in '/manifest' into the Azure Media Player at 'http://aka.ms/azuremediaplayer'.");
+            Console.WriteLine("See the documentation on Dynamic Packaging for additional format support, including CMAF.");
+            Console.WriteLine("https://docs.microsoft.com/azure/media-services/latest/dynamic-packaging-overview");    
+        }r
         // </RunAsync>
 
         /// <summary>
