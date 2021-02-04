@@ -44,6 +44,11 @@ The following NuGet packages were added to the project:
 |Microsoft.Extensions.Configuration.Json|Read configuration values from environment variables and local JSON files
 |Microsoft.Azure.Storage.Blob|Storage SDK|
 
+## Common Issues and Troubleshooting
+
+* Assets in Media Services have naming conventions that must be adhered to in order to avoid errors. For example the client.Assets.CreateOrUpdateAsync can fail with message "The resource type is invalid" if the name does not match the [naming conventions listed in this article](https://docs.microsoft.com/en-us/azure/media-services/latest/media-services-apis-overview#naming-conventions)
+
+ 
 ## To build and run each project in the solution
 
 * Clean and rebuild the solution.
