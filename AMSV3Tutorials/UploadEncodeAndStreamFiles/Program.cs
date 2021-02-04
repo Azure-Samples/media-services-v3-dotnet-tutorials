@@ -119,7 +119,7 @@ namespace UploadEncodeAndStreamFiles
             Console.WriteLine("Done. Copy and paste the Streaming URL ending in '/manifest' into the Azure Media Player at 'http://aka.ms/azuremediaplayer'.");
             Console.WriteLine("See the documentation on Dynamic Packaging for additional format support, including CMAF.");
             Console.WriteLine("https://docs.microsoft.com/azure/media-services/latest/dynamic-packaging-overview");    
-        }r
+        }
         // </RunAsync>
 
         /// <summary>
