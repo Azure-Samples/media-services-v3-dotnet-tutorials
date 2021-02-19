@@ -14,6 +14,10 @@ urlFragment: media-services-v3-dotnet-tutorials
  
 You can find the latest and most extensive .NET samples in the [Azure Media Services v3](https://github.com/Azure-Samples/media-services-v3-dotnet) repository.
 
+This repo contains a base set of tutorials for the documentation only. Be sure to check out the more detailed set of samples in https://github.com/Azure-Samples/media-services-v3-dotnet
+
+We are attempting to consolidate more of our .NET samples into that single repository going forward. 
+
 ## Overview
 
 The projects in this repository were created using Visual Studio 2019. They target netcoreapp3.0. These projects support the Azure Media Services v3 articles:
