@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Rest.Azure.Authentication;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Azure.EventHubs.Processor;
+using Microsoft.Azure.EventHubs;
 using System.Diagnostics;
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -104,8 +105,13 @@ namespace LiveSample
             string liveEventName = "liveevent-" + uniqueness; // WARNING: Be careful not to leak live events using this sample!
             string assetName = "archiveAsset" + uniqueness;
             string liveOutputName = "liveOutput" + uniqueness;
+            string drvStreamingLocatorName = "streamingLocator" + uniqueness;
+            string archiveStreamingLocatorName = "fullLocator-" + uniqueness;
+            string drvAssetFilterName = "filter-" + uniqueness;
             string streamingLocatorName = "streamingLocator" + uniqueness;
             string streamingEndpointName = "default"; // Change this to your specific streaming endpoint name if not using "default"
+            EventProcessorHost eventProcessorHost = null;
+            bool stopEndpoint = false;
 
             try
             {
@@ -239,9 +245,32 @@ namespace LiveSample
                         )
                     )
                 }*/
-
-
                 );
+
+
+                // Start monitoring LiveEvent events using Event Grid and Event Hub
+                try
+                {
+                    // Please refer README for Event Hub and storage settings.
+                    Console.WriteLine("Starting monitoring LiveEvent events...");
+                    string StorageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}",
+                        config.StorageAccountName, config.StorageAccountKey);
+
+                    // Create a new host to process events from an Event Hub.
+                    Console.WriteLine("Creating a new host to process events from an Event Hub...");
+                    eventProcessorHost = new EventProcessorHost(config.EventHubName,
+                        PartitionReceiver.DefaultConsumerGroupName, config.EventHubConnectionString,
+                        StorageConnectionString, config.StorageContainerName);
+
+                    // Registers the Event Processor Host and starts receiving messages.
+                    await eventProcessorHost.RegisterEventProcessorFactoryAsync(new MediaServicesEventProcessorFactory(liveEventName),
+                        EventProcessorOptions.DefaultOptions);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to connect to Event Hub, please refer README for Event Hub and storage settings. Skipping event monitoring...");
+                    Console.WriteLine(e.Message);
+                }
 
                 Console.WriteLine("Creating the LiveEvent, please be patient as this can take time to complete async.");
                 Console.WriteLine("Live Event creation is an async operation in Azure and timing can depend on resources available.");
@@ -270,7 +299,7 @@ namespace LiveSample
                     // That increases the speed of startup when you are ready to go live. 
                     autoStart: false);
                 watch.Stop();
-                string elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds/10);
+                string elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
                 Console.WriteLine($"Create Live Event run time : {elapsedTime}");
                 #endregion
 
@@ -300,6 +329,8 @@ namespace LiveSample
                 LiveOutput liveOutput = new LiveOutput(
                     assetName: asset.Name,
                     manifestName: manifestName, // The HLS and DASH manifest file name. This is recommended to set if you want a deterministic manifest path up front.
+                    // archive window can be set from 3 minutes to 25 hours. Content that falls outside of ArchiveWindowLength
+                    // is continuously discarded from storage and is non-recoverable. For a full event archive, set to the maximum, 25 hours.
                     archiveWindowLength: TimeSpan.FromHours(1)
                 );
                 liveOutput = await client.LiveOutputs.CreateAsync(
@@ -308,7 +339,7 @@ namespace LiveSample
                     liveEventName,
                     liveOutputName,
                     liveOutput);
-                elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds/10);
+                elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
                 Console.WriteLine($"Create Live Output run time : {elapsedTime}");
                 Console.WriteLine();
                 #endregion
@@ -318,9 +349,9 @@ namespace LiveSample
                 watch = Stopwatch.StartNew();
                 // Start the Live Event - this will take some time...
                 await client.LiveEvents.StartAsync(config.ResourceGroup, config.AccountName, liveEventName);
-                elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds/10);
+                elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
                 Console.WriteLine($"Start Live Event run time : {elapsedTime}");
-                 Console.WriteLine();
+                Console.WriteLine();
 
                 // Refresh the liveEvent object's settings after starting it...
                 liveEvent = await client.LiveEvents.GetAsync(config.ResourceGroup, config.AccountName, liveEventName);
@@ -360,13 +391,35 @@ namespace LiveSample
                 var ignoredInput = Console.ReadLine();
 
 
+                AssetFilter drvAssetFilter = new AssetFilter(
+                   presentationTimeRange: new PresentationTimeRange(
+                       forceEndTimestamp: false,
+                       // 300 seconds sliding window
+                       presentationWindowDuration: 3000000000L,
+                       // This value defines the latest live position that a client can seek back to 10 seconds, must be smaller than sliding window.
+                       liveBackoffDuration: 100000000L)
+                );
+
+                drvAssetFilter = await client.AssetFilters.CreateOrUpdateAsync(config.ResourceGroup, config.AccountName,
+                    assetName, drvAssetFilterName, drvAssetFilter);
+
+
                 // Create the Streaming Locator URL for playback of the contents in the Live Output recording
                 #region CreateStreamingLocator
                 Console.WriteLine($"Creating a streaming locator named {streamingLocatorName}");
                 Console.WriteLine();
 
-                StreamingLocator locator = new StreamingLocator(assetName: asset.Name, streamingPolicyName: PredefinedStreamingPolicy.ClearStreamingOnly);
-                locator = await client.StreamingLocators.CreateAsync(config.ResourceGroup, config.AccountName, streamingLocatorName, locator);
+                IList<string> filters = new List<string>();
+                filters.Add(drvAssetFilterName);
+                StreamingLocator locator = await client.StreamingLocators.CreateAsync(config.ResourceGroup,
+                    config.AccountName,
+                    drvStreamingLocatorName,
+                    new StreamingLocator
+                    {
+                        AssetName = assetName,
+                        StreamingPolicyName = PredefinedStreamingPolicy.ClearStreamingOnly,
+                        Filters = filters   // Associate the dvr filter with StreamingLocator.
+                    });
 
                 // Get the default Streaming Endpoint on the account
                 StreamingEndpoint streamingEndpoint = await client.StreamingEndpoints.GetAsync(config.ResourceGroup, config.AccountName, streamingEndpointName);
@@ -376,6 +429,9 @@ namespace LiveSample
                 {
                     Console.WriteLine("Streaming Endpoint was Stopped, restarting now..");
                     await client.StreamingEndpoints.StartAsync(config.ResourceGroup, config.AccountName, streamingEndpointName);
+
+                    // Since we started the endpoint, we should stop it in cleanup.
+                    stopEndpoint = true;
                 }
                 #endregion
 
@@ -398,9 +454,22 @@ namespace LiveSample
                 Console.WriteLine("Press enter to stop the LiveOutput...");
                 Console.Out.Flush();
                 ignoredInput = Console.ReadLine();
-                
-                
 
+                 // If we started the endpoint, we'll stop it. Otherwise, we'll keep the endpoint running and print urls
+                // that can be played even after this sample ends.
+                if (!stopEndpoint)
+                {
+                    StreamingLocator archiveLocator = await client.StreamingLocators.CreateAsync(config.ResourceGroup,
+                        config.AccountName,
+                        archiveStreamingLocatorName,
+                        new StreamingLocator
+                        {
+                            AssetName = assetName,
+                            StreamingPolicyName = PredefinedStreamingPolicy.ClearStreamingOnly
+                        });
+                    Console.WriteLine("To playback the archived on-demand asset, Use the following urls:");
+                    BuildManifestPaths(scheme, hostname, archiveLocator.StreamingLocatorId.ToString(), manifestName);
+                }
 
             }
             catch (ApiErrorException e)
@@ -417,9 +486,27 @@ namespace LiveSample
 
                 Console.WriteLine("Cleaning up resources, stopping Live Event billing, and deleting live Event...");
                 Console.WriteLine("CRITICAL WARNING ($$$$) DON'T WASTE MONEY!: - Wait here for the All Clear - this takes a few minutes sometimes to clean up. DO NOT STOP DEBUGGER yet or you will leak billable resources!");
-  
+
                 await CleanupLiveEventAndOutputAsync(client, config.ResourceGroup, config.AccountName, liveEventName, liveOutputName);
                 await CleanupLocatorandAssetAsync(client, config.ResourceGroup, config.AccountName, streamingLocatorName, assetName);
+
+                // Stop event monitoring.
+                if (eventProcessorHost != null)
+                {
+                    await eventProcessorHost.UnregisterEventProcessorAsync();
+                }
+
+                if (stopEndpoint)
+                {
+                    // Because we started the endpoint, we'll stop it.
+                    await client.StreamingEndpoints.StopAsync(config.ResourceGroup, config.AccountName, streamingEndpointName);
+                }
+                else
+                {
+                    // We will keep the endpoint running because it was not started by us. There are costs to keep it running.
+                    // Please refer https://azure.microsoft.com/en-us/pricing/details/media-services/ for pricing. 
+                    Console.WriteLine($"The endpoint {streamingEndpointName} is running. To halt further billing on the endpoint, please stop it in Azure portal or AMS Explorer.");
+                }
 
                 Console.WriteLine("The LiveOutput and LiveEvent are now deleted.  The event is available as an archive and can still be streamed.");
                 Console.WriteLine("All Clear, and all cleaned up. Please double check in the portal to make sure you have not leaked any Live Events, or left any Running still which would result in unwanted billing.");
@@ -495,9 +582,9 @@ namespace LiveSample
                 Console.WriteLine("Deleting Live Output");
                 Stopwatch watch = Stopwatch.StartNew();
 
-                await client.LiveOutputs.DeleteAsync(resourceGroup,accountName,liveEventName,liveOutputName);
+                await client.LiveOutputs.DeleteAsync(resourceGroup, accountName, liveEventName, liveOutputName);
 
-                String elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds/10);
+                String elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
                 Console.WriteLine($"Delete Live Output run time : {elapsedTime}");
 
                 if (liveEvent != null)
@@ -507,7 +594,7 @@ namespace LiveSample
                         watch = Stopwatch.StartNew();
                         // If the LiveEvent is running, stop it and have it remove any LiveOutputs
                         await client.LiveEvents.StopAsync(resourceGroup, accountName, liveEventName, removeOutputsOnStop: false);
-                        elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds/10);
+                        elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
                         Console.WriteLine($"Stop Live Event run time : {elapsedTime}");
                     }
 
