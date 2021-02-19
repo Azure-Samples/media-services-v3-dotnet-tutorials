@@ -394,10 +394,10 @@ namespace LiveSample
                 AssetFilter drvAssetFilter = new AssetFilter(
                    presentationTimeRange: new PresentationTimeRange(
                        forceEndTimestamp: false,
-                       // 300 seconds sliding window
-                       presentationWindowDuration: 3000000000L,
-                       // This value defines the latest live position that a client can seek back to 10 seconds, must be smaller than sliding window.
-                       liveBackoffDuration: 100000000L)
+                       // 10 minute (600) seconds sliding window
+                       presentationWindowDuration: 6000000000L,
+                       // This value defines the latest live position that a client can seek back to 2 seconds, must be smaller than sliding window.
+                       liveBackoffDuration: 20000000L)
                 );
 
                 drvAssetFilter = await client.AssetFilters.CreateOrUpdateAsync(config.ResourceGroup, config.AccountName,
