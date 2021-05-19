@@ -20,6 +20,11 @@
     <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure.Authentication" Version="2.4.1" />
   </ItemGroup>
 
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\Common_Utils\Common_Utils.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
