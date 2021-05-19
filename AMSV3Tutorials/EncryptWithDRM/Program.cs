@@ -12,16 +12,17 @@ using Common_Utils;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Rest;
-using Microsoft.Rest.Azure.Authentication;
 
 namespace EncryptWithDRM
 {
     class Program
     {
         private const string AdaptiveStreamingTransformName = "MyTransformWithAdaptiveStreamingPreset";
+
+        // Set this variable to true if you want to authenticate Interactively through the browser using your Azure user account
+        private const bool UseInteractiveAuth = false;
 
         private static readonly string Issuer = "myIssuer";
         private static readonly string Audience = "myAudience";
@@ -64,7 +65,17 @@ namespace EncryptWithDRM
         // <RunAsync>
         private static async Task RunAsync(ConfigWrapper config)
         {
-            IAzureMediaServicesClient client = await CreateMediaServicesClientAsync(config);
+            IAzureMediaServicesClient client;
+            try
+            {
+                client = await Authentication.CreateMediaServicesClientAsync(config, UseInteractiveAuth);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
+                Console.Error.WriteLine($"{e.Message}");
+                return;
+            }
 
             // Set the polling interval for long running operations to 2 seconds.
             // The default value is 30 seconds for the .NET client SDK
@@ -132,42 +143,6 @@ namespace EncryptWithDRM
         }
         // </RunAsync>
 
-        /// <summary>
-        /// Create the ServiceClientCredentials object based on the credentials
-        /// supplied in local configuration file.
-        /// </summary>
-        /// <param name="config">The parm is of type ConfigWrapper. This class reads values from local configuration file.</param>
-        /// <returns></returns>
-        // <GetCredentialsAsync>
-        private static async Task<ServiceClientCredentials> GetCredentialsAsync(ConfigWrapper config)
-        {
-            // Use ApplicationTokenProvider.LoginSilentWithCertificateAsync or UserTokenProvider.LoginSilentAsync to get a token using service principal with certificate
-            //// ClientAssertionCertificate
-            //// ApplicationTokenProvider.LoginSilentWithCertificateAsync
-
-            // Use ApplicationTokenProvider.LoginSilentAsync to get a token using a service principal with symetric key
-            ClientCredential clientCredential = new ClientCredential(config.AadClientId, config.AadSecret);
-            return await ApplicationTokenProvider.LoginSilentAsync(config.AadTenantId, clientCredential, ActiveDirectoryServiceSettings.Azure);
-        }
-        // </GetCredentialsAsync>
-
-        /// <summary>
-        /// Creates the AzureMediaServicesClient object based on the credentials
-        /// supplied in local configuration file.
-        /// </summary>
-        /// <param name="config">The parm is of type ConfigWrapper. This class reads values from local configuration file.</param>
-        /// <returns></returns>
-        // <CreateMediaServicesClient>
-        private static async Task<IAzureMediaServicesClient> CreateMediaServicesClientAsync(ConfigWrapper config)
-        {
-            var credentials = await GetCredentialsAsync(config);
-
-            return new AzureMediaServicesClient(config.ArmEndpoint, credentials)
-            {
-                SubscriptionId = config.SubscriptionId,
-            };
-        }
-        // </CreateMediaServicesClient>
 
         /// <summary>
         /// Create the content key policy that configures how the content key is delivered to end clients 
