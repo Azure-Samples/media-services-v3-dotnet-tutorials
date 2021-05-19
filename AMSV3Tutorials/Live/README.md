@@ -43,11 +43,6 @@ To create an encoding LiveEvent - set the encoding type on create of the LiveEve
     encodingType:LiveEventEncodingType.Standard,   
 
 
-
-## Required Assemblies in the project
-- Microsoft.Azure.Management.Media -Version 3.0.3
-- Microsoft.Rest.ClientRuntime.Azure.Authentication -Version 2.4.1
-
 ## Update the appsettings.json
 
 To use this project, you must first update the appsettings.json with your account settings. The settings for your account can be retrieved using the following Azure CLI command in the Media Services module.
