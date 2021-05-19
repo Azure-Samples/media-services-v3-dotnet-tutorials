@@ -23,7 +23,7 @@ namespace EncryptWithAES
 
         // Set this variable to true if you want to authenticate Interactively through the browser using your Azure user account
         private const bool UseInteractiveAuth = false;
-
+        private const string SourceUri = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/Ignite-short.mp4";
         private static readonly string Issuer = "myIssuer";
         private static readonly string Audience = "myAudience";
         private static byte[] TokenSigningKey = new byte[40];
@@ -31,11 +31,24 @@ namespace EncryptWithAES
 
         public static async Task Main(string[] args)
         {
-            ConfigWrapper config = new ConfigWrapper(new ConfigurationBuilder()
+            // If Visual Studio is used, let's read the .env file which should be in the root folder (same folder than the solution .sln file).
+            // Same code will work in VS Code, but VS Code uses also launch.json to get the .env file.
+            // You can create this ".env" file by saving the "sample.env" file as ".env" file and fill it with the right values.
+            try
+            {
+                DotEnv.Load(".env");
+            }
+            catch
+            {
+
+            }
+
+            ConfigWrapper config = new(new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
+                .AddEnvironmentVariables() // parses the values from the optional .env file at the solution root
                 .Build());
+
 
             try
             {
@@ -290,7 +303,7 @@ namespace EncryptWithAES
             // This example shows how to encode from any HTTPs source URL - a new feature of the v3 API.  
             // Change the URL to any accessible HTTPs URL or SAS URL from Azure.
             JobInputHttp jobInput =
-                new JobInputHttp(files: new[] { "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/Ignite-short.mp4" });
+                new JobInputHttp(files: new[] { SourceUri });
 
             JobOutput[] jobOutputs =
             {

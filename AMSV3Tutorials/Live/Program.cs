@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
-using Microsoft.Rest.Azure.Authentication;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Azure.EventHubs.Processor;
 using Microsoft.Azure.EventHubs;
 using System.Diagnostics;
+using Common_Utils;
 
 ////////////////////////////////////////////////////////////////////////////////////
 //  Azure Media Services Live streaming sample 
@@ -54,13 +53,30 @@ namespace LiveSample
     {
         private static string liveEventName;
 
+        // Set this variable to true if you want to authenticate Interactively through the browser using your Azure user account
+        private const bool UseInteractiveAuth = false;
+
+
         public static async Task Main(string[] args)
         {
-            ConfigWrapper config = new ConfigWrapper(new ConfigurationBuilder()
+            // If Visual Studio is used, let's read the .env file which should be in the root folder (same folder than the solution .sln file).
+            // Same code will work in VS Code, but VS Code uses also launch.json to get the .env file.
+            // You can create this ".env" file by saving the "sample.env" file as ".env" file and fill it with the right values.
+            try
+            {
+                DotEnv.Load(".env");
+            }
+            catch
+            {
+
+            }
+
+            ConfigWrapper config = new(new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
+                .AddEnvironmentVariables() // parses the values from the optional .env file at the solution root
                 .Build());
+
 
             try
             {
@@ -97,7 +113,17 @@ namespace LiveSample
         private static async Task RunAsync(ConfigWrapper config)
         {
 
-            IAzureMediaServicesClient client = await CreateMediaServicesClientAsync(config);
+            IAzureMediaServicesClient client;
+            try
+            {
+                client = await Authentication.CreateMediaServicesClientAsync(config, UseInteractiveAuth);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("TIP: Make sure that you have filled out the appsettings.json file before running this sample.");
+                Console.Error.WriteLine($"{e.Message}");
+                return;
+            }
 
             // Creating a unique suffix so that we don't have name collisions if you run the sample
             // multiple times without cleaning up.
@@ -329,8 +355,8 @@ namespace LiveSample
                 LiveOutput liveOutput = new LiveOutput(
                     assetName: asset.Name,
                     manifestName: manifestName, // The HLS and DASH manifest file name. This is recommended to set if you want a deterministic manifest path up front.
-                    // archive window can be set from 3 minutes to 25 hours. Content that falls outside of ArchiveWindowLength
-                    // is continuously discarded from storage and is non-recoverable. For a full event archive, set to the maximum, 25 hours.
+                                                // archive window can be set from 3 minutes to 25 hours. Content that falls outside of ArchiveWindowLength
+                                                // is continuously discarded from storage and is non-recoverable. For a full event archive, set to the maximum, 25 hours.
                     archiveWindowLength: TimeSpan.FromHours(1)
                 );
                 liveOutput = await client.LiveOutputs.CreateAsync(
@@ -455,7 +481,7 @@ namespace LiveSample
                 Console.Out.Flush();
                 ignoredInput = Console.ReadLine();
 
-                 // If we started the endpoint, we'll stop it. Otherwise, we'll keep the endpoint running and print urls
+                // If we started the endpoint, we'll stop it. Otherwise, we'll keep the endpoint running and print urls
                 // that can be played even after this sample ends.
                 if (!stopEndpoint)
                 {
@@ -531,46 +557,6 @@ namespace LiveSample
             Console.WriteLine($"https://ampdemo.azureedge.net/?url={dashManifest}&heuristicprofile=lowlatency");
             Console.WriteLine();
         }
-
-        /// <summary>
-        /// Create the ServiceClientCredentials object based on the credentials
-        /// supplied in local configuration file.
-        /// </summary>
-        /// <param name="config">The parm is of type ConfigWrapper. This class reads values from local configuration file.</param>
-        /// <returns></returns>
-        // <GetCredentialsAsync>
-        private static async Task<ServiceClientCredentials> GetCredentialsAsync(ConfigWrapper config)
-        {
-            // Use ApplicationTokenProvider.LoginSilentWithCertificateAsync or UserTokenProvider.LoginSilentAsync to get a token using service principal with certificate
-            //// ClientAssertionCertificate
-            //// ApplicationTokenProvider.LoginSilentWithCertificateAsync
-
-            // Use ApplicationTokenProvider.LoginSilentAsync to get a token using a service principal with symetric key
-            ClientCredential clientCredential = new ClientCredential(config.AadClientId, config.AadSecret);
-            return await ApplicationTokenProvider.LoginSilentAsync(config.AadTenantId, clientCredential, ActiveDirectoryServiceSettings.Azure);
-        }
-        // </GetCredentialsAsync>
-
-        /// <summary>
-        /// Creates the AzureMediaServicesClient object based on the credentials
-        /// supplied in local configuration file.
-        /// </summary>
-        /// <param name="config">The parm is of type ConfigWrapper. This class reads values from local configuration file.</param>
-        /// <returns></returns>
-        // <CreateMediaServicesClient>
-        private static async Task<IAzureMediaServicesClient> CreateMediaServicesClientAsync(ConfigWrapper config)
-        {
-            var credentials = await GetCredentialsAsync(config);
-
-            return new AzureMediaServicesClient(config.ArmEndpoint, credentials)
-            {
-                SubscriptionId = config.SubscriptionId,
-                // Set to poll long running operations every 2 seconds. Default is 30. 
-                // This helps speed up all code when creating Live Events and Live Outputs.
-                LongRunningOperationRetryTimeout = 2
-            };
-        }
-        // </CreateMediaServicesClient>
 
         // <CleanupLiveEventAndOutput>
         private static async Task CleanupLiveEventAndOutputAsync(IAzureMediaServicesClient client, string resourceGroup, string accountName, string liveEventName, string liveOutputName)
