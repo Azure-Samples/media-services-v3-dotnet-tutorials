@@ -57,7 +57,7 @@ The following NuGet packages were added to the project:
 
 * Clean and rebuild the solution.
 * Set the desired project as the **Set as Startup project**.
-* Add appropriate values to the appsettings.json configuration file. For more information, see [Access APIs](https://docs.microsoft.com/azure/media-services/latest/access-api-cli-how-to). As an alternative, you can create a .env file derived from the sample.env template and store this file in the [AMSV3Tutorials folder](/AMSV3Tutorials).
+* Add appropriate values to the appsettings.json configuration file. For more information, see [Access APIs](https://docs.microsoft.com/azure/media-services/latest/access-api-cli-how-to). As an alternative, you can create a .env file derived from the [sample.env template](/AMSV3Tutorials/sample.env) and store this file in the [AMSV3Tutorials folder](/AMSV3Tutorials).
 
 If you get the following error message, when first attempting to run a project, close VS and reopen it. Then, rebuild the solution.  
 
