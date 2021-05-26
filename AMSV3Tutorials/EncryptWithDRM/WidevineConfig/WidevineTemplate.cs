@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace EncryptWithDRM
+namespace WidevineConfig
 {
     /// <summary>
     /// Widevine template.
