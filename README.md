@@ -25,8 +25,8 @@ The projects in this repository were created using Visual Studio 2019. They targ
 |Project name|Article|
 |---|---|
 |UploadEncodeAndStreamFiles/UploadEncodeAndStreamFiles.csproj|[Tutorial: Upload, encode, download, and stream videos](https://docs.microsoft.com/azure/media-services/latest/stream-files-tutorial-with-api)|
-|AnalyzeVideos/AnalyzeVideos.csproj|[Tutorial: Analyze videos with Media Services](https://docs.microsoft.com/azure/media-services/latest/analyze-videos-tutorial-with-api)|
-|EncryptWithAES/EncryptWithAES.csproj|[Use AES-128 dynamic encryption and the key delivery service](https://docs.microsoft.com/azure/media-services/latest/protect-with-aes128)|
+|AnalyzeVideos/AnalyzeVideos.csproj|[Tutorial: Analyze videos with Media Services](https://docs.microsoft.com/azure/media-services/latest/analyze-videos-tutorial)|
+|EncryptWithAES/EncryptWithAES.csproj|[Use AES-128 dynamic encryption and the key delivery service](https://docs.microsoft.com/azure/media-services/latest/drm-protect-with-aes128-tutorial)|
 |EncryptWithDRM/EncryptWithDRM.csproj|[Use DRM dynamic encryption and license delivery service](https://docs.microsoft.com/azure/media-services/latest/protect-with-drm)|
 
 ## Prerequisites
