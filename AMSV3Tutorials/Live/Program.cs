@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Common_Utils;
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
 using Microsoft.Azure.Management.Media;
 using Microsoft.Azure.Management.Media.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Rest;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Azure.EventHubs.Processor;
-using Microsoft.Azure.EventHubs;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using Common_Utils;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 ////////////////////////////////////////////////////////////////////////////////////
 //  Azure Media Services Live streaming sample 
