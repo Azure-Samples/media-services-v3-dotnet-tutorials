@@ -51,8 +51,6 @@ namespace LiveSample
 {
     class Program
     {
-        private static string liveEventName;
-
         // Set this variable to true if you want to authenticate Interactively through the browser using your Azure user account
         private const bool UseInteractiveAuth = false;
 
