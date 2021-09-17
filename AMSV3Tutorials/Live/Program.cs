@@ -87,7 +87,7 @@ namespace LiveSample
 
                 Console.Error.WriteLine($"{exception.Message}");
 
-                ApiErrorException apiException = exception.GetBaseException() as ApiErrorException;
+                ErrorResponseException apiException = exception.GetBaseException() as ErrorResponseException;
                 if (apiException != null)
                 {
                     Console.Error.WriteLine(
@@ -188,7 +188,6 @@ namespace LiveSample
                                 allAllowIPRange
                             }
                         )
-
                 };
 
                 // Create the LiveEvent Preview IP access control object. 
@@ -494,7 +493,7 @@ namespace LiveSample
                 }
 
             }
-            catch (ApiErrorException e)
+            catch (ErrorResponseException e)
             {
                 Console.WriteLine("Hit ApiErrorException");
                 Console.WriteLine($"\tCode: {e.Body.Error.Code}");
@@ -553,8 +552,8 @@ namespace LiveSample
             Console.WriteLine($"https://ampdemo.azureedge.net/?url={dashManifest}&heuristicprofile=lowlatency");
             Console.WriteLine();
         }
-
         // <CleanupLiveEventAndOutput>
+
         private static async Task CleanupLiveEventAndOutputAsync(IAzureMediaServicesClient client, string resourceGroup, string accountName, string liveEventName, string liveOutputName)
         {
             try
@@ -569,22 +568,19 @@ namespace LiveSample
                 String elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
                 Console.WriteLine($"Delete Live Output run time : {elapsedTime}");
 
-                if (liveEvent != null)
+                if (liveEvent.ResourceState == LiveEventResourceState.Running)
                 {
-                    if (liveEvent.ResourceState == LiveEventResourceState.Running)
-                    {
-                        watch = Stopwatch.StartNew();
-                        // If the LiveEvent is running, stop it and have it remove any LiveOutputs
-                        await client.LiveEvents.StopAsync(resourceGroup, accountName, liveEventName, removeOutputsOnStop: false);
-                        elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
-                        Console.WriteLine($"Stop Live Event run time : {elapsedTime}");
-                    }
-
-                    // Delete the LiveEvent
-                    await client.LiveEvents.DeleteAsync(resourceGroup, accountName, liveEventName);
+                    watch = Stopwatch.StartNew();
+                    // If the LiveEvent is running, stop it and have it remove any LiveOutputs
+                    await client.LiveEvents.StopAsync(resourceGroup, accountName, liveEventName, removeOutputsOnStop: false);
+                    elapsedTime = String.Format(":{0:00}.{1:00}", watch.Elapsed.Seconds, watch.Elapsed.Milliseconds / 10);
+                    Console.WriteLine($"Stop Live Event run time : {elapsedTime}");
                 }
+
+                // Delete the LiveEvent
+                await client.LiveEvents.DeleteAsync(resourceGroup, accountName, liveEventName);
             }
-            catch (ApiErrorException e)
+            catch (ErrorResponseException e)
             {
                 Console.WriteLine("CleanupLiveEventAndOutputAsync -- Hit ApiErrorException");
                 Console.WriteLine($"\tCode: {e.Body.Error.Code}");
@@ -605,7 +601,7 @@ namespace LiveSample
                 // Delete the Archive Asset
                 await client.Assets.DeleteAsync(resourceGroup, accountName, assetName);
             }
-            catch (ApiErrorException e)
+            catch (ErrorResponseException e)
             {
                 Console.WriteLine("CleanupLocatorandAssetAsync -- Hit ApiErrorException");
                 Console.WriteLine($"\tCode: {e.Body.Error.Code}");

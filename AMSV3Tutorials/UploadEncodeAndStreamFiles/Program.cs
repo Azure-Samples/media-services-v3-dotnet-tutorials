@@ -55,7 +55,7 @@ namespace UploadEncodeAndStreamFiles
 
                 Console.Error.WriteLine($"{exception.Message}");
 
-                if (exception.GetBaseException() is ApiErrorException apiException)
+                if (exception.GetBaseException() is ErrorResponseException apiException)
                 {
                     Console.Error.WriteLine(
                         $"ERROR: API call failed with error code '{apiException.Body.Error.Code}' and message '{apiException.Body.Error.Message}'.");
@@ -211,12 +211,22 @@ namespace UploadEncodeAndStreamFiles
         // <CreateOutputAsset>
         private static async Task<Asset> CreateOutputAssetAsync(IAzureMediaServicesClient client, string resourceGroupName, string accountName, string assetName)
         {
-            // Check if an Asset already exists
-            Asset outputAsset = await client.Assets.GetAsync(resourceGroupName, accountName, assetName);
+            bool existingAsset = true;
+            Asset outputAsset;
+            try
+            {
+                // Check if an Asset already exists
+                outputAsset = await client.Assets.GetAsync(resourceGroupName, accountName, assetName);
+            }
+            catch (ErrorResponseException ex) when (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                existingAsset = false;
+            }
+
             Asset asset = new Asset();
             string outputAssetName = assetName;
 
-            if (outputAsset != null)
+            if (existingAsset)
             {
                 // Name collision! In order to get the sample to work, let's just go ahead and create a unique asset name
                 // Note that the returned Asset can have a different name than the one specified as an input parameter.
@@ -249,11 +259,20 @@ namespace UploadEncodeAndStreamFiles
             string accountName,
             string transformName)
         {
-            // Does a Transform already exist with the desired name? Assume that an existing Transform with the desired name
-            // also uses the same recipe or Preset for processing content.
-            Transform transform = await client.Transforms.GetAsync(resourceGroupName, accountName, transformName);
+            bool createTransform = false;
+            Transform transform = null;
+            try
+            {
+                // Does a transform already exist with the desired name? Assume that an existing Transform with the desired name
+                // also uses the same recipe or Preset for processing content.
+                transform = client.Transforms.Get(resourceGroupName, accountName, transformName);
+            }
+            catch (ErrorResponseException ex) when (ex.Response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                createTransform = true;
+            }
 
-            if (transform == null)
+            if (createTransform)
             {
                 // You need to specify what you want it to produce as an output
                 TransformOutput[] output = new TransformOutput[]
@@ -427,12 +446,9 @@ namespace UploadEncodeAndStreamFiles
 
             StreamingEndpoint streamingEndpoint = await client.StreamingEndpoints.GetAsync(resourceGroupName, accountName, DefaultStreamingEndpointName);
 
-            if (streamingEndpoint != null)
+            if (streamingEndpoint.ResourceState != StreamingEndpointResourceState.Running)
             {
-                if (streamingEndpoint.ResourceState != StreamingEndpointResourceState.Running)
-                {
-                    await client.StreamingEndpoints.StartAsync(resourceGroupName, accountName, DefaultStreamingEndpointName);
-                }
+                await client.StreamingEndpoints.StartAsync(resourceGroupName, accountName, DefaultStreamingEndpointName);
             }
 
             ListPathsResponse paths = await client.StreamingLocators.ListPathsAsync(resourceGroupName, accountName, locatorName);
@@ -448,7 +464,6 @@ namespace UploadEncodeAndStreamFiles
                 };
                 streamingUrls.Add(uriBuilder.ToString());
             }
-
             return streamingUrls;
         }
         // </GetStreamingURLs>
