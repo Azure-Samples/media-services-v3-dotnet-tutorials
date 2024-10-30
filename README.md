@@ -12,6 +12,8 @@ urlFragment: media-services-v3-dotnet-tutorials
 
 ## NOTE
 
+**IMPORTANT NOTE : Azure Media Service has been retired on June 30, 2024. Please see the [retirement guide](https://learn.microsoft.com/en-us/azure/media-services/latest/azure-media-services-retirement).**
+
 You can find the latest and most extensive .NET samples in the [Azure Media Services v3](https://github.com/Azure-Samples/media-services-v3-dotnet) repository.
 
 This repo contains a base set of tutorials for the documentation only. Be sure to check out the more detailed set of samples in <https://github.com/Azure-Samples/media-services-v3-dotnet>.
